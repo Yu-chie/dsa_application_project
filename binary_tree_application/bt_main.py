@@ -5,4 +5,12 @@ class Node:
         self.n_left = None
         self.n_val = value
         self.n_right = None
- 
+
+class Tree:
+    pass
+
+class Traversal:
+    pass
+
+class BTMaker:
+    pass
