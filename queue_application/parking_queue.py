@@ -36,7 +36,6 @@ while True:
     print("2. Car Departs")
     print("3. Display Parking Table")
     print("4. Exit")
-    
     choice = input("Enter your choice (1-4): ")
 
 # ------------------------------
@@ -54,6 +53,21 @@ while True:
 #   ENQUEUE car at REAR
 #   arrival_counter += 1
 #   Display "Car Parked Successfully" message
+
+    if choice == '1':
+        if len(queue) >= max_parking:
+            print("Parking Garage is Full")
+        else:
+            plate_number = input("Enter Plate Number: ")
+            car = {
+                'plate_number': plate_number,
+                'arrival_number': arrival_counter,
+                'departure_number': "-",
+                'parking_slot': len(queue) + 1
+            }
+            queue.append(car)
+            arrival_counter += 1
+            print("Car Parked Successfully!")
 
 # ------------------------------
 # OPTION 2: DEQUEUE CAR
