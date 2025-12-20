@@ -12,12 +12,12 @@
 # parking_slot          -> integer (assigned parking slot vertically)
 
 # ------------------------------
-# INITIALIZE
+# INITIALIZE VARIABLES
 # ------------------------------
-# max_parking_size
-# create empty queue
-# arrival_counter = 1
-# departure_counter = 1
+max_parking = 10        # max_parking_size
+queue = []              # create empty queue
+arrival_counter = 1     # arrival_counter = 1
+departure_counter = 1   # departure_counter = 1
 
 # ------------------------------
 # MAIN PROGRAM LOOP
