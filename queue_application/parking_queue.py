@@ -104,6 +104,7 @@ while True:
         if len(queue) == 0:
             print("Parking Garage is Empty")
         else:
+            # : formatting starts < left aligned 15 width of column
             print("\n{:<15} {:<12} {:<14} {:<12}".format('Plate Number', 'Arrival No.', 'Departure No.', 'Parking Slot'))
             print("-" * 55)
             for car in queue:
@@ -119,6 +120,10 @@ while True:
 # ------------------------------
 #   Display "Exiting Program" message
 #   Terminate program
+
+    elif choice == '4':
+        print("Exiting Program")
+        break
 
 # ------------------------------
 # END OF PROGRAM
