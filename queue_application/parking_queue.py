@@ -14,10 +14,10 @@
 # ------------------------------
 # INITIALIZE VARIABLES
 # ------------------------------
-max_parking = 10        # max_parking_size
-queue = []              # create empty queue
-arrival_counter = 1     # arrival_counter = 1
-departure_counter = 1   # departure_counter = 1
+max_parking = 10        # max parking size
+queue = []              # parking queue
+arrival_counter = 1     # counts arrivals
+departure_counter = 1   # counts departures
 
 # ------------------------------
 # MAIN PROGRAM LOOP
@@ -29,6 +29,15 @@ departure_counter = 1   # departure_counter = 1
 #       3. Display Parking Table
 #       4. Exit
 # Input user choice
+
+while True:
+    print("\n===== Parking Garage Menu =====")
+    print("1. Car Arrives")
+    print("2. Car Departs")
+    print("3. Display Parking Table")
+    print("4. Exit")
+    
+    choice = input("Enter your choice (1-4): ")
 
 # ------------------------------
 # OPTION 1: ENQUEUE CAR
