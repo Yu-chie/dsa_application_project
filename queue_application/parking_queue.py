@@ -100,7 +100,19 @@ while True:
 #   FOR each car in queue:
 #       Display car's plate_number, arrival_number, departure_number, parking_slot
 
-
+    elif choice == '3':
+        if len(queue) == 0:
+            print("Parking Garage is Empty")
+        else:
+            print("\n{:<15} {:<12} {:<14} {:<12}".format('Plate Number', 'Arrival No.', 'Departure No.', 'Parking Slot'))
+            print("-" * 55)
+            for car in queue:
+                print("{:<15} {:<12} {:<14} {:<12}".format(
+                    car['plate_number'],
+                    car['arrival_number'],
+                    car['departure_number'],
+                    car['parking_slot']
+                ))
 
 # ------------------------------
 # OPTION 4: EXIT PROGRAM
