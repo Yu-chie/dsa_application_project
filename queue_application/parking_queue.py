@@ -104,11 +104,11 @@ while True:
         if len(queue) == 0:
             print("Parking Garage is Empty")
         else:
-            # : formatting starts < left aligned 15 width of column
-            print("\n{:<15} {:<12} {:<14} {:<12}".format('Plate Number', 'Arrival No.', 'Departure No.', 'Parking Slot'))
+            # : formatting starts ^ center aligned 15 width of column
+            print("\n{:^10} | {:^10} | {:^10} | {:^10}".format('Plate Number', 'Arrival No.', 'Departure No.', 'Parking Slot'))
             print("-" * 55)
             for car in queue:
-                print("{:<15} {:<12} {:<14} {:<12}".format(
+                print("{:^10} | {:^10} | {:^10} | {:^10}".format(
                     car['plate_number'],
                     car['arrival_number'],
                     car['departure_number'],
