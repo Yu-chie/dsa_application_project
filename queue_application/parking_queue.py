@@ -91,6 +91,15 @@ while True:
 #   FOR each car in queue:
 #       Display car's plate_number, arrival_number, departure_number, parking_slot
 
+    elif choice == '2':
+        if len(queue) == 0:
+            print("Parking Garage is Empty")
+        else:
+            car = queue.pop(0)
+            car['departure_number'] = departure_counter
+            departure_counter += 1
+            print(f"Car with Plate Number {car['plate_number']} Departed Successfully!")
+
 # ------------------------------
 # OPTION 4: EXIT PROGRAM
 # ------------------------------
