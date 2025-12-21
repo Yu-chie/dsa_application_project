@@ -31,26 +31,16 @@ class ParkingGarage:
             self.arrival_counter += 1
             print("Car Parked Successfully!")
 
-# MAIN PROGRAM LOOP
-while True:
-    # Display Menu Options
-    print("\n===== Parking Garage Menu =====")
-    print("1. Car Arrives")
-    print("2. Car Departs")
-    print("3. Display Parking Table")
-    print("4. Exit")
-    choice = input("Enter your choice (1-4): ")
-
 # OPTION 2: DEQUEUE CAR
-    elif choice == '2':
+    def car_departs(self):
         # If parking is empty
-        if len(queue) == 0:
+        if len(self.queue) == 0:
             print("Parking Garage is Empty")
         else:
             # Dequeue car
-            car = queue.pop(0)
-            car['departure_number'] = departure_counter
-            departure_counter += 1
+            car = self.queue.pop(0)
+            car['departure_number'] = self.departure_counter
+            self.departure_counter += 1
             print(f"Car with Plate Number {car['plate_number']} Departed Successfully!")
 
 # OPTION 3: DISPLAY PARKING TABLE
@@ -76,3 +66,12 @@ while True:
         print("Exiting Program")
         break       # END OF PROGRAM
 
+# MAIN PROGRAM LOOP
+while True:
+    # Display Menu Options
+    print("\n===== Parking Garage Menu =====")
+    print("1. Car Arrives")
+    print("2. Car Departs")
+    print("3. Display Parking Table")
+    print("4. Exit")
+    choice = input("Enter your choice (1-4): ")
