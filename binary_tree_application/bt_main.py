@@ -21,25 +21,22 @@ class Tree:
     def create_node(self, value):                                     # create node object
         return Node(value)
     
-    def node_child(self, node, value):
+    def node_child(self, node, value):                                # make left and right child
+        if value == ".":
+            value = None
+        
         if node == None:
             return self.create_node(value)
         
         if node.n_left is None:
             node.n_left = self.create_node(value)
-            
-            if node.n_left == ".":
-                node.n_left = None
         
         elif node.n_right is None:
             node.n_right = self.create_node(value)
             
-            if node.n_right == ".":
-                node.n_right = None
-            
         else: 
-            self.insert_left(node.n_left, value)
-            self.insert_right(node.n_right, value)
+            self.node_child(node.n_left, value)
+            self.node_child(node.n_right, value)
         
         return node
         
