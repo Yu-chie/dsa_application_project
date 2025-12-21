@@ -2,9 +2,9 @@ import tkinter as tk
                 
 # class to make nodes
 class Node:
-    def __init__(self, value):
+    def __init__(self, data):
         self.n_left = None
-        self.n_val = value
+        self.n_val = data
         self.n_right = None
 
 # class to make the tree - connections of nodes
@@ -18,9 +18,14 @@ class Tree:
         self.levels = levels                                                     # will get value if correct input
         
     # build tree
-        
-        
+    def create_node(self, value):                                     # create node object
+        return Node(value)
     
+    def node_child(self, node, value):
+        if node == None:
+            return self.create_node(value)
+        
+        
 
 # class for determining tree traversals
 class Traversal:
