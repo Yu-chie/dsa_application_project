@@ -8,18 +8,28 @@ the order of entry and exit, not time
 
 # PARKING GARAGE CLASS DEFINITION
 class ParkingGarage:
-    def __init__(self, max_size):
-        self.max_size = max_size
-        self.queue = []
-        self.arrival_counter = 1
-        self.departure_counter = 1
+    def __init__(self, max_parking):
+        self.max_parking = max_parking  # max parking size
+        self.queue = []                 # parking queue
+        self.arrival_counter = 1        # counts arrivals
+        self.departure_counter = 1      # counts departures
 
-# INITIALIZE VARIABLES
-max_parking = 10        # max parking size
-queue = []              # parking queue
-arrival_counter = 1     # counts arrivals
-departure_counter = 1   # counts departures
-
+# OPTION 1: ENQUEUE CAR
+    def car_arrives(self):
+        # If parking is full
+        if len(self.queue) >= self.max_parking:
+            print("Parking Garage is Full")
+        else:
+            plate_number = input("Enter Plate Number: ")
+            car = {
+                'plate_number': plate_number,
+                'arrival_number': self.arrival_counter,
+                'departure_number': "-",
+                'parking_slot': len(self.queue) + 1
+            }
+            self.queue.append(car)       # Enqueue FIFO
+            self.arrival_counter += 1
+            print("Car Parked Successfully!")
 
 # MAIN PROGRAM LOOP
 while True:
@@ -30,23 +40,6 @@ while True:
     print("3. Display Parking Table")
     print("4. Exit")
     choice = input("Enter your choice (1-4): ")
-
-# OPTION 1: ENQUEUE CAR
-    if choice == '1':
-        # If parking is full
-        if len(queue) >= max_parking:
-            print("Parking Garage is Full")
-        else:
-            plate_number = input("Enter Plate Number: ")
-            car = {
-                'plate_number': plate_number,
-                'arrival_number': arrival_counter,
-                'departure_number': "-",
-                'parking_slot': len(queue) + 1
-            }
-            queue.append(car)       # Enqueue FIFO
-            arrival_counter += 1
-            print("Car Parked Successfully!")
 
 # OPTION 2: DEQUEUE CAR
     elif choice == '2':
