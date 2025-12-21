@@ -25,6 +25,23 @@ class Tree:
         if node == None:
             return self.create_node(value)
         
+        if node.n_left is None:
+            node.n_left = self.create_node(value)
+            
+            if node.n_left == ".":
+                node.n_left = None
+        
+        elif node.n_right is None:
+            node.n_right = self.create_node(value)
+            
+            if node.n_right == ".":
+                node.n_right = None
+            
+        else: 
+            self.insert_left(node.n_left, value)
+            self.insert_right(node.n_right, value)
+        
+        return node
         
 
 # class for determining tree traversals
