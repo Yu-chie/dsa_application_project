@@ -6,13 +6,13 @@ Arrival and Departure values represent
 the order of entry and exit, not time
 """
 
-# ------------------------------
-# DATA TO STORE FOR EACH CAR
-# ------------------------------
-# plate_number          -> string (car identifier)
-# arrival_number        -> integer (order of arrival)
-# departure_number      -> integer or "-" (order of departure)
-# parking_slot          -> integer (assigned parking slot vertically)
+# PARKING GARAGE CLASS DEFINITION
+class ParkingGarage:
+    def __init__(self, max_size):
+        self.max_size = max_size
+        self.queue = []
+        self.arrival_counter = 1
+        self.departure_counter = 1
 
 # INITIALIZE VARIABLES
 max_parking = 10        # max parking size
