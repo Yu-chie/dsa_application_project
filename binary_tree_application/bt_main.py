@@ -45,3 +45,6 @@ class Traversal:
 # class for tkinter implementation
 class BTMaker:
     pass
+
+if __name__ == "__main__":
+    user_input()
