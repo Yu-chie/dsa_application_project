@@ -44,16 +44,16 @@ class ParkingGarage:
             print(f"Car with Plate Number {car['plate_number']} Departed Successfully!")
 
 # OPTION 3: DISPLAY PARKING TABLE
-    elif choice == '3':
+    def display_table(self):
         # If parking is empty
-        if len(queue) == 0:
+        if len(self.queue) == 0:
             print("Parking Garage is Empty")
         else:
             # Display table header
             # : formatting starts ^ center aligned 15 width of column
             print("\n{:^10} | {:^10} | {:^10} | {:^10}".format('Plate Number', 'Arrival No.', 'Departure No.', 'Parking Slot'))
             print("-" * 55)
-            for car in queue:
+            for car in self.queue:
                 print("{:^10} | {:^10} | {:^10} | {:^10}".format(
                     car['plate_number'],
                     car['arrival_number'],
