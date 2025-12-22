@@ -60,16 +60,22 @@ class ParkingGarage:
 
 # OPTION 3: DISPLAY PARKING TABLE
     def display_table(self):
-        # If parking is empty
-        if len(self.queue) == 0:
-            print("Parking Garage is Empty")
-        else:
-            # Display table header
-            # : formatting starts ^ center aligned 15 width of column
-            print("\n{:^10} | {:^10} | {:^10} | {:^10}".format('Plate Number', 'Arrival No.', 'Departure No.', 'Parking Slot'))
-            print("-" * 55)
-            for car in self.queue:
-                print("{:^10} | {:^10} | {:^10} | {:^10}".format(
+        # Display table header
+        # : formatting starts ^ center aligned 15 width of column
+        print("\n{:^7} | {:^15} | {:^15} | {:^15} | {:^15}".format(
+            'Slot', 'Plate Number', 'Arrival No.', 'Departure No.', 'Parking Slot'))
+        print("-" * 55)
+        
+        # Display each car in the queue
+        for i in range(self.max_parking):
+            car = self.queue[i]
+            if car is None:
+                print("{:^7} | {:^15} | {:^15} | {:^15} | {:^15}".format(
+                    i + 1, '-', '-', '-', '-'
+                ))
+            else:
+                print("{:^7} | {:^15} | {:^15} | {:^15} | {:^15}".format(
+                    i + 1,
                     car['plate_number'],
                     car['arrival_number'],
                     car['departure_number'],
