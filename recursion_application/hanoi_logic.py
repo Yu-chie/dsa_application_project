@@ -30,3 +30,9 @@ class TowerOfHanoi:
     def solve(self): #move the entire stack from 0 to 2 and return all states
         self.move_disks(self.size, 0, 2)
         return self.states
+    
+if __name__ == "__main__":
+    size = int(input("Stack size (from 5 to 7): "))
+    solver = TowerOfHanoi(size)
+    for state in solver.solver():
+        print(state)
