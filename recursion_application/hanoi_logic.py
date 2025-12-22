@@ -26,3 +26,7 @@ class TowerOfHanoi:
             self.move_disks(number - 1, stack_from, aux_stack)
             self.move_disks(1, stack_from, stack_to)
             self.move_disks(number - 1, aux_stack, stack_to)
+
+    def solve(self): #move the entire stack from 0 to 2 and return all states
+        self.move_disks(self.size, 0, 2)
+        return self.states
