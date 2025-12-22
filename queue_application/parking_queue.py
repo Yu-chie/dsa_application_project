@@ -8,57 +8,77 @@ the order of entry and exit, not time
 
 # PARKING GARAGE CLASS DEFINITION
 class ParkingGarage:
-    def __init__(self, max_parking):
-        self.max_parking = max_parking  # max parking size
-        self.queue = []                 # parking queue
-        self.arrival_counter = 1        # counts arrivals
-        self.departure_counter = 1      # counts departures
+    def __init__(self, max_parking=10):
+        self.max_parking = max_parking      # max parking size
+        self.queue = [None] * max_parking   # parking queue
+        self.arrival_counter = 1            # counts arrivals
+        self.departure_counter = 1          # counts departures
 
 # OPTION 1: ENQUEUE CAR
     def car_arrives(self):
         # If parking is full
-        if len(self.queue) >= self.max_parking:
+        if None not in self.queue:
             print("Parking Garage is Full")
-        else:
-            plate_number = input("Enter Plate Number: ")
-            car = {
-                'plate_number': plate_number,
-                'arrival_number': self.arrival_counter,
-                'departure_number': "-",
-                'parking_slot': len(self.queue) + 1
-            }
-            self.queue.append(car)       # Enqueue FIFO
-            self.arrival_counter += 1
-            print("Car Parked Successfully!")
+            return
+        
+        plate_number = input("Enter Plate Number: ")
+        
+        car = {
+            'plate_number': plate_number,
+            'arrival_number': self.arrival_counter,
+            'departure_number': "-"
+        }
+        
+        # Enqueue car in first empty slot
+        for i in range(self.max_parking):
+            if self.queue[i] is None:
+                self.queue[i] = car
+                break
+        
+        self.arrival_counter += 1
+        print("Car Parked Successfully!")
 
 # OPTION 2: DEQUEUE CAR
     def car_departs(self):
         # If parking is empty
-        if len(self.queue) == 0:
+        if all(slots is None for slots in self.queue):
             print("Parking Garage is Empty")
-        else:
-            # Dequeue car
-            car = self.queue.pop(0)
-            car['departure_number'] = self.departure_counter
-            self.departure_counter += 1
-            print(f"Car with Plate Number {car['plate_number']} Departed Successfully!")
+            return
+    
+        # Dequeue first car
+        front_car = self.queue[0]
+        front_car['departure_number'] = self.departure_counter
+        self.departure_counter += 1
+        
+        # Shift all cars forward in the queue
+        for i in range(self.max_parking - 1):
+            self.queue[i] = self.queue[i + 1]
+            
+        self.queue[self.max_parking - 1] = None  # Empty last slot
+        
+        print(f"Car with Plate Number {front_car['plate_number']} Departed Successfully!")
 
 # OPTION 3: DISPLAY PARKING TABLE
     def display_table(self):
-        # If parking is empty
-        if len(self.queue) == 0:
-            print("Parking Garage is Empty")
-        else:
-            # Display table header
-            # : formatting starts ^ center aligned 15 width of column
-            print("\n{:^10} | {:^10} | {:^10} | {:^10}".format('Plate Number', 'Arrival No.', 'Departure No.', 'Parking Slot'))
-            print("-" * 55)
-            for car in self.queue:
-                print("{:^10} | {:^10} | {:^10} | {:^10}".format(
+        # Display table header
+        # : formatting starts ^ center aligned 15 width of column
+        print("\n{:^7} | {:^15} | {:^15} | {:^15}".format(
+            'Slot', 'Plate Number', 'Arrival No.', 'Departure No.'))
+        print("-" * 55)
+        
+        # Display each car in the queue
+        for i in range(self.max_parking):
+            car = self.queue[i]
+            if car is None:
+                print("{:^7} | {:^15} | {:^15} | {:^15}".format(
+                    i + 1, 'EMPTY', '-', '-'
+                ))
+            else:
+                print("{:^7} | {:^15} | {:^15} | {:^15}".format(
+                    i + 1,
                     car['plate_number'],
                     car['arrival_number'],
-                    car['departure_number'],
-                    car['parking_slot']
+                    car['departure_number']
                 ))
 
 # MAIN PROGRAM LOOP
