@@ -43,12 +43,20 @@ class ParkingGarage:
         # If parking is empty
         if len(self.queue) == 0:
             print("Parking Garage is Empty")
-        else:
-            # Dequeue car
-            car = self.queue.pop(0)
-            car['departure_number'] = self.departure_counter
-            self.departure_counter += 1
-            print(f"Car with Plate Number {car['plate_number']} Departed Successfully!")
+            return
+    
+        # Dequeue first car
+        front_car = self.queue[0]
+        front_car['departure_number'] = self.departure_counter
+        self.departure_counter += 1
+        
+        # Shift all cars forward in the queue
+        for i in range(self.max_parking - 1):
+            self.queue[i] = self.queue[i + 1]
+            
+        self.queue[self.max_parking - 1] = None  # Empty last slot
+        
+        print(f"Car with Plate Number {front_car['plate_number']} Departed Successfully!")
 
 # OPTION 3: DISPLAY PARKING TABLE
     def display_table(self):
