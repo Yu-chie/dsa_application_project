@@ -45,6 +45,12 @@ class Tree:
 class Traversal:
     pass
 
+    # for preorder (TLR)
+    
+    # for inorder (LTR)
+    
+    # for postorder (LRT)
+
 # class for tkinter implementation
 class BTMaker:
     pass
