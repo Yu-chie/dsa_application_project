@@ -41,7 +41,7 @@ class ParkingGarage:
 # OPTION 2: DEQUEUE CAR
     def car_departs(self):
         # If parking is empty
-        if len(self.queue) == 0:
+        if all(slots is None for slots in self.queue):
             print("Parking Garage is Empty")
             return
     
@@ -62,24 +62,23 @@ class ParkingGarage:
     def display_table(self):
         # Display table header
         # : formatting starts ^ center aligned 15 width of column
-        print("\n{:^7} | {:^15} | {:^15} | {:^15} | {:^15}".format(
-            'Slot', 'Plate Number', 'Arrival No.', 'Departure No.', 'Parking Slot'))
+        print("\n{:^7} | {:^15} | {:^15} | {:^15}".format(
+            'Slot', 'Plate Number', 'Arrival No.', 'Departure No.'))
         print("-" * 55)
         
         # Display each car in the queue
         for i in range(self.max_parking):
             car = self.queue[i]
             if car is None:
-                print("{:^7} | {:^15} | {:^15} | {:^15} | {:^15}".format(
-                    i + 1, '-', '-', '-', '-'
+                print("{:^7} | {:^15} | {:^15} | {:^15}".format(
+                    i + 1, 'EMPTY', '-', '-'
                 ))
             else:
-                print("{:^7} | {:^15} | {:^15} | {:^15} | {:^15}".format(
+                print("{:^7} | {:^15} | {:^15} | {:^15}".format(
                     i + 1,
                     car['plate_number'],
                     car['arrival_number'],
-                    car['departure_number'],
-                    car['parking_slot']
+                    car['departure_number']
                 ))
 
 # MAIN PROGRAM LOOP
