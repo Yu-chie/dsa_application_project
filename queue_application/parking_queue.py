@@ -8,28 +8,35 @@ the order of entry and exit, not time
 
 # PARKING GARAGE CLASS DEFINITION
 class ParkingGarage:
-    def __init__(self, max_parking):
-        self.max_parking = max_parking  # max parking size
-        self.queue = []                 # parking queue
-        self.arrival_counter = 1        # counts arrivals
-        self.departure_counter = 1      # counts departures
+    def __init__(self, max_parking=10):
+        self.max_parking = max_parking      # max parking size
+        self.queue = [None] * max_parking   # parking queue
+        self.arrival_counter = 1            # counts arrivals
+        self.departure_counter = 1          # counts departures
 
 # OPTION 1: ENQUEUE CAR
     def car_arrives(self):
         # If parking is full
-        if len(self.queue) >= self.max_parking:
+        if None not in self.queue:
             print("Parking Garage is Full")
-        else:
-            plate_number = input("Enter Plate Number: ")
-            car = {
-                'plate_number': plate_number,
-                'arrival_number': self.arrival_counter,
-                'departure_number': "-",
-                'parking_slot': len(self.queue) + 1
-            }
-            self.queue.append(car)       # Enqueue FIFO
-            self.arrival_counter += 1
-            print("Car Parked Successfully!")
+            return
+        
+        plate_number = input("Enter Plate Number: ")
+        
+        car = {
+            'plate_number': plate_number,
+            'arrival_number': self.arrival_counter,
+            'departure_number': "-"
+        }
+        
+        # Enqueue car in first empty slot
+        for i in range(self.max_parking):
+            if self.queue[i] is None:
+                self.queue[i] = car
+                break
+        
+        self.arrival_counter += 1
+        print("Car Parked Successfully!")
 
 # OPTION 2: DEQUEUE CAR
     def car_departs(self):
