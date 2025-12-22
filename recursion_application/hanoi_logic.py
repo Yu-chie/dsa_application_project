@@ -9,3 +9,10 @@ Use class TowerofHanoi for solving the Tower of Hanoi problem.
 // Method to solve the puzzle and return all states
 // Main function to execute the solver with user input
 '''
+
+class TowerOfHanoi:
+    def __init__(self, size):
+        self.size = size
+        self.stacks = {[] for _ in range(3)}
+        self.stacks[0] = [size - i for i in range(size)]                      #largest disk at bottom
+        self.states = {[(j for j in self.stacks[i])] for i in range(3)}       #to save initial state
