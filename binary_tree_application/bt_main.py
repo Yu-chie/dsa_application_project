@@ -42,8 +42,11 @@ class Tree:
     
     # for traversing preorder
     def trav_preorder(self, root):
-        pass
-    
+        if root is not None:
+            self.trav_preorder(root.n_val)
+            print(root.n_left)
+            self.trav_preorder(root.n_right)
+        
     # for traversing inorder
     def trav_inorder(self, root):
         if root is not None:
@@ -53,7 +56,10 @@ class Tree:
     
     # for traversing postorder
     def trav_postorder(self, root):
-        pass
+        if root is not None:
+            self.trav_postorder(root.n_left)
+            print(root.n_right)
+            self.trav_preorder(root.n_val)
 
 # class for tkinter implementation
 class BTMaker:
