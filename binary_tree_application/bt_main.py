@@ -39,17 +39,21 @@ class Tree:
             self.node_child(node.n_right, value)
         
         return node
-        
-
-# class for determining tree traversals
-class Traversal:
-    pass
-
-    # for preorder (TLR)
     
-    # for inorder (LTR)
+    # for traversing preorder
+    def trav_preorder(self, root):
+        pass
     
-    # for postorder (LRT)
+    # for traversing inorder
+    def trav_inorder(self, root):
+        if root is not None:
+            self.trav_inorder(root.n_left)
+            print(root.n_val)
+            self.trav_inorder(root.n_right)
+    
+    # for traversing postorder
+    def trav_postorder(self, root):
+        pass
 
 # class for tkinter implementation
 class BTMaker:
