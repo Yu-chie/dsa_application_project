@@ -44,20 +44,41 @@ class ParkingGarage:
         if all(slots is None for slots in self.queue):
             print("Parking Garage is Empty")
             return
-    
-        # Dequeue first car
-        front_car = self.queue[0]
-        front_car['departure_number'] = self.departure_counter
-        self.departure_counter += 1
         
-        # Shift all cars forward in the queue
-        for i in range(self.max_parking - 1):
-            self.queue[i] = self.queue[i + 1]
+        target_plate = input("Enter Plate Number to Depart: ")
+        found = False
+        
+        # Rotate queue
+        for _ in range(self.max_parking):
+            front_car = self.queue[0]
             
-        self.queue[self.max_parking - 1] = None  # Empty last slot
-        
-        print(f"Car with Plate Number {front_car['plate_number']} Departed Successfully!")
+            # Shift front car to back if not target
+            for i in range(self.max_parking - 1):
+                self.queue[i] = self.queue[i + 1]
+            self.queue[self.max_parking - 1] = None  # Temporarily empty last slot
 
+            if front_car is None:
+                continue
+        
+            if front_car['plate_number'] == target_plate and not found:
+                front_car['departure_number'] = self.departure_counter
+                self.departure_counter += 1
+                found = True
+                print(f"Car with Plate Number {target_plate} Departed Successfully!.")
+                break
+            else:
+                front_car['departure_number'] = self.departure_counter
+                self.departure_counter += 1
+                
+                # Enqueue back the front car to rear
+                for i in range(self.max_parking):
+                    if self.queue[i] is None:
+                        self.queue[i] = front_car
+                        break
+                
+        if not found:
+            print(f"Car with Plate Number {target_plate} Not Found in Garage.")
+        
 # OPTION 3: DISPLAY PARKING TABLE
     def display_table(self):
         # Display table header
