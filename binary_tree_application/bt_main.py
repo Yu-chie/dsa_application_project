@@ -23,7 +23,7 @@ class Tree:
     
     def node_child(self, node, value):                                # make left and right child
         if value == ".":
-            value = None
+            return None
         
         if node == None:
             return self.create_node(value)
