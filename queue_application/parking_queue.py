@@ -85,22 +85,21 @@ class ParkingGarage:
 garage = ParkingGarage(max_parking=10)  # Set max parking size
 
 while True:
+    garage.display_table()
+    
     # Display Menu Options
     print("\n===== Parking Garage Menu =====")
     print("1. Car Arrives")
     print("2. Car Departs")
-    print("3. Display Parking Table")
-    print("4. Exit")
-    choice = input("Enter your choice (1-4): ")
+    print("3. Exit")
+    choice = input("Enter your choice (1-3): ")
     
     if choice == '1':
         garage.car_arrives()
     elif choice == '2':
         garage.car_departs()
     elif choice == '3':
-        garage.display_table()
-    elif choice == '4':
         print("Exiting Parking Garage Simulator. Goodbye!")
         break
     else:
-        print("Invalid choice. Please enter a number between 1 and 4.")
+        print("Invalid choice. Please enter a number between 1 and 3.")
