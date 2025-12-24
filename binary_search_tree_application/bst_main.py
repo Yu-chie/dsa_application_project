@@ -29,6 +29,12 @@ class BSTree:
             node.n_right = self.node_child(node.n_right, value)
         
         return node
+    
+    def inorder(self, root):
+        if root is not None:
+            self.inorder(root.n_left)
+            print(root.n_val)
+            self.inorder(root.n_right)
 
 class BSTMaker:
     pass
