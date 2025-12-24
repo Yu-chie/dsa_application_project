@@ -11,9 +11,7 @@ class ParkingGarage:
     def __init__(self, max_parking=10):
         self.max_parking = max_parking      # max parking size
         self.queue = [None] * max_parking   # parking queue
-        self.arrival_counter = 1            # counts arrivals
-        self.departure_counter = 1          # counts departures
-
+        
 # OPTION 1: ENQUEUE CAR
     def car_arrives(self):
         # If parking is full
@@ -25,8 +23,8 @@ class ParkingGarage:
         
         car = {
             'plate_number': plate_number,
-            'arrival_number': self.arrival_counter,
-            'departure_number': "-"
+            'arrival_count': 1,
+            'departure_count': "-"
         }
         
         # Enqueue car in first empty slot
