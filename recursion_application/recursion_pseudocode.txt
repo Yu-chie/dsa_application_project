@@ -1,0 +1,9 @@
+Tower of Hanoi Solver
+This script provides a solution to the Tower of Hanoi problem using recursion.
+Pseudocode:
+
+Use class TowerofHanoi for solving the Tower of Hanoi problem.
+// Construction: Initialize with number of disks
+// Recursive funtion to move disks from one stack to another
+// Method to solve the puzzle and return all states
+// Main function to execute the solver with user input
