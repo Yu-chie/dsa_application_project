@@ -1,7 +1,7 @@
 Program Goals:
 1. Allow user to enter the number of nodes (10-30)
-2. generate
-3. Provide LTR, LRT, TLR
+2. generate tree
+3. Provide LTR
 __________________________________
 
 PSEUDOCODE --- BINARY TREE
