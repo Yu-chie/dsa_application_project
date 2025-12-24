@@ -30,6 +30,7 @@ class BSTree:
         
         return node
     
+    # LTR (inorder) traversal
     def inorder(self, root):
         if root is not None:
             self.inorder(root.n_left)
