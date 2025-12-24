@@ -54,7 +54,7 @@ class Tree:
             print(root.n_val)
             self.trav_inorder(root.n_right)
     
-    # for traversing postorder ()
+    # for traversing postorder (LRT)
     def trav_postorder(self, root):
         if root is not None:
             self.trav_postorder(root.n_left)
