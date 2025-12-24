@@ -1,0 +1,28 @@
+Program Goals:
+1. Allow user to enter the number of nodes (10-30)
+2. generate
+3. Provide LTR, LRT, TLR
+__________________________________
+
+PSEUDOCODE --- BINARY TREE
+__________________________________
+
+import libraries
+Create Node Class - for constructing node 
+    store node value
+    store left and right child
+    
+Create Tree Class - for making the tree and connect nodes
+    ask user:
+        a. number of nodes (10-30)
+        b. if they want to type out the numbers or generate
+            limits: only integers dont accept other characs
+            
+    arrange bst
+    provide LTR traversal
+    
+Create BSTMaker Class - for drawing the actual tree (tkinter)
+    display of binary tree
+    display traversal results
+
+Call out class to run
