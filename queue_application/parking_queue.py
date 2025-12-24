@@ -12,7 +12,7 @@ class ParkingGarage:
         self.max_parking = max_parking      # max parking size
         self.queue = [None] * max_parking   # parking queue
         
-# OPTION 1: ENQUEUE CAR
+    # OPTION 1: ENQUEUE CAR
     def car_arrives(self):
         # If parking is full
         if None not in self.queue:
@@ -33,10 +33,9 @@ class ParkingGarage:
                 self.queue[i] = car
                 break
         
-        self.arrival_counter += 1
         print("Car Parked Successfully!")
 
-# OPTION 2: DEQUEUE CAR
+    # OPTION 2: DEQUEUE CAR
     def car_departs(self):
         # If parking is empty
         if all(slots is None for slots in self.queue):
@@ -44,39 +43,32 @@ class ParkingGarage:
             return
         
         target_plate = input("Enter Plate Number to Depart: ")
+        temp_queue = []
         found = False
         
-        # Rotate queue
-        for _ in range(self.max_parking):
-            front_car = self.queue[0]
-            
-            # Shift front car to back if not target
-            for i in range(self.max_parking - 1):
-                self.queue[i] = self.queue[i + 1]
-            self.queue[self.max_parking - 1] = None  # Temporarily empty last slot
-
-            if front_car is None:
+        for car in self.queue:
+            if car is None:
                 continue
-        
-            if front_car['plate_number'] == target_plate and not found:
-                front_car['departure_number'] = self.departure_counter
-                self.departure_counter += 1
+            
+            if car['plate_number'] == target_plate and not found:
+                # Permanent exit
+                car['departure_count'] = 1 if car['departure_count'] == "-" else car['departure_count'] + 1
                 found = True
                 print(f"Car with Plate Number {target_plate} Departed Successfully!.")
-                break
             else:
-                front_car['departure_number'] = self.departure_counter
-                self.departure_counter += 1
-                
-                # Enqueue back the front car to rear
-                for i in range(self.max_parking):
-                    if self.queue[i] is None:
-                        self.queue[i] = front_car
-                        break
+                # Temporary exit and re-entry
+                car['departure_count'] = 1 if car['departure_count'] == "-" else car['departure_count'] + 1
+                car['arrival_count'] += 1
+                temp_queue.append(car)
                 
         if not found:
             print(f"Car with Plate Number {target_plate} Not Found in Garage.")
+            return
         
+        self.queue = [None] * self.max_parking
+        for i, car in enumerate(temp_queue):
+            self.queue[i] = car
+
 # OPTION 3: DISPLAY PARKING TABLE
     def display_table(self):
         # Display table header
