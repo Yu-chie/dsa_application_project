@@ -73,23 +73,23 @@ class ParkingGarage:
     def display_table(self):
         # Display table header
         # : formatting starts ^ center aligned 15 width of column
-        print("\n{:^7} | {:^15} | {:^15} | {:^15}".format(
-            'Slot', 'Plate Number', 'Arrival No.', 'Departure No.'))
-        print("-" * 55)
+        print("\n{:^7} | {:^20} | {:^20} | {:^20}".format(
+            'Slot', 'Plate Number', '# of Arrival.', '# of Departure.'))
+        print("-" * 70)
         
         # Display each car in the queue
         for i in range(self.max_parking):
             car = self.queue[i]
             if car is None:
-                print("{:^7} | {:^15} | {:^15} | {:^15}".format(
-                    i + 1, 'EMPTY', '-', '-'
+                print("{:^7} | {:^20} | {:^20} | {:^20}".format(
+                    i + 1, '-', '-', '-'
                 ))
             else:
-                print("{:^7} | {:^15} | {:^15} | {:^15}".format(
+                print("{:^7} | {:^20} | {:^20} | {:^20}".format(
                     i + 1,
                     car['plate_number'],
-                    car['arrival_number'],
-                    car['departure_number']
+                    car['arrival_count'],
+                    car['departure_count']
                 ))
 
 # MAIN PROGRAM LOOP
