@@ -63,13 +63,13 @@ class ParkingGarage:
                 continue
             
             if car['plate_number'] == target_plate and not found:
-                # Permanent exit
-                car['departure_count'] = 1 if car['departure_count'] == "-" else car['departure_count'] + 1
+                # Exit and record
+                car['departure_count'] += 1
                 found = True
                 print(f"Car with Plate Number {target_plate} Departed Successfully!.")
             else:
                 # Temporary exit and re-entry
-                car['departure_count'] = 1 if car['departure_count'] == "-" else car['departure_count'] + 1
+                car['departure_count'] += 1
                 car['arrival_count'] += 1
                 temp_queue.append(car)
                 
