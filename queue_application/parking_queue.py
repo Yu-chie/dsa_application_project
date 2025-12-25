@@ -56,6 +56,7 @@ class ParkingGarage:
                 break
         
         print("Car Parked Successfully!")
+        self.save_records()
 
     # OPTION 2: DEQUEUE CAR
     def car_departs(self):
@@ -91,6 +92,7 @@ class ParkingGarage:
         self.queue = [None] * self.max_parking
         for i, car in enumerate(temp_queue):
             self.queue[i] = car
+        self.save_records()
 
 # OPTION 3: DISPLAY PARKING TABLE
     def display_table(self):
