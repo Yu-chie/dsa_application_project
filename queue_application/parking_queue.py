@@ -11,16 +11,7 @@ class ParkingGarage:
     def __init__(self, max_parking=10):
         self.max_parking = max_parking      # max parking size
         self.queue = [None] * max_parking   # parking queue'
-        self.records = {}                   # to track all car records
-        self.records_file = file_name    # file to save records
-        
-    # Method to save all records in a file
-    def save_records(self):
-        with open(self.records_file, 'w') as file:
-            file.write("Plate Number | Arrival Count | Departure Count\n")
-            file.write("-" * 50 + "\n")
-            for car in self.records.values():
-                file.write(f"{car['plate_number']} | {car['arrival_count']} | {car['departure_count']}\n")
+        self.records = {}               # to track all car records
         
     # OPTION 1: ENQUEUE CAR
     def car_arrives(self):
