@@ -27,6 +27,12 @@ class ParkingGarage:
             'departure_count': "-"
         }
         
+        # Prevent duplicate entries
+        for car in self.queue:
+            if car is not None and car['plate_number'] == plate_number:
+                print("Car with this Plate Number is already in the Garage.")
+                return
+        
         # Enqueue car in first empty slot
         for i in range(self.max_parking):
             if self.queue[i] is None:
