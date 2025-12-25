@@ -13,6 +13,14 @@ class ParkingGarage:
         self.queue = [None] * max_parking   # parking queue'
         self.records = {}               # to track all car records
         
+    # Method to save all records in a file
+    def save_records(self, filename='parking_records.txt'):
+        with open(filename, 'w') as file:
+            file.write("Plate Number | Arrival Count | Departure Count\n")
+            file.write("-" * 50 + "\n")
+            for car in self.records.values():
+                file.write(f"{car['plate_number']} | {car['arrival_count']} | {car['departure_count']}\n")
+        
     # OPTION 1: ENQUEUE CAR
     def car_arrives(self):
         # If parking is full
