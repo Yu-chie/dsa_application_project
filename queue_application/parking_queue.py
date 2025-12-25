@@ -28,9 +28,11 @@ class ParkingGarage:
                 print("Car with this Plate Number is already in the Garage.")
                 return
         
+        # If car already has a record, update arrival count
         if plate_number in self.records:
             car = self.records[plate_number]
             car['arrival_count'] += 1
+        # If new car, create record
         else:
             car = {
                 'plate_number': plate_number,
@@ -58,12 +60,13 @@ class ParkingGarage:
         temp_queue = []
         found = False
         
+        # FIFO
         for car in self.queue:
             if car is None:
                 continue
             
             if car['plate_number'] == target_plate and not found:
-                # Exit and record
+                # Permanent exit and record
                 car['departure_count'] += 1
                 found = True
                 print(f"Car with Plate Number {target_plate} Departed Successfully!.")
