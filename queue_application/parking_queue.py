@@ -11,7 +11,16 @@ class ParkingGarage:
     def __init__(self, max_parking=10):
         self.max_parking = max_parking      # max parking size
         self.queue = [None] * max_parking   # parking queue'
-        self.records = {}               # to track all car records
+        self.records = {}                   # to track all car records
+        self.records_file = file_name    # file to save records
+        
+    # Method to save all records in a file
+    def save_records(self):
+        with open(self.records_file, 'w') as file:
+            file.write("Plate Number | Arrival Count | Departure Count\n")
+            file.write("-" * 50 + "\n")
+            for car in self.records.values():
+                file.write(f"{car['plate_number']} | {car['arrival_count']} | {car['departure_count']}\n")
         
     # OPTION 1: ENQUEUE CAR
     def car_arrives(self):
@@ -48,6 +57,7 @@ class ParkingGarage:
                 break
         
         print("Car Parked Successfully!")
+        self.save_records()
 
     # OPTION 2: DEQUEUE CAR
     def car_departs(self):
@@ -83,6 +93,7 @@ class ParkingGarage:
         self.queue = [None] * self.max_parking
         for i, car in enumerate(temp_queue):
             self.queue[i] = car
+        self.save_records()
 
 # OPTION 3: DISPLAY PARKING TABLE
     def display_table(self):
@@ -108,7 +119,14 @@ class ParkingGarage:
                 ))
 
 # MAIN PROGRAM LOOP
-garage = ParkingGarage(max_parking=10)  # Set max parking size
+# Allow user to name file
+file_name = input("Enter filename to save parking records: ")
+if not file_name:
+    file_name = 'parking_records.txt'
+elif not file_name.endswith('.txt'):
+    file_name += '.txt'
+
+garage = ParkingGarage(max_parking=10, records_file=file_name)  # Set max parking size
 
 while True:
     garage.display_table()
