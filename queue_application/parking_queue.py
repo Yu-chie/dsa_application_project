@@ -35,7 +35,7 @@ class ParkingGarage:
             car = {
                 'plate_number': plate_number,
                 'arrival_count': 1,
-                'departure_count': "0"
+                'departure_count': 0
             }
             self.records[plate_number] = car
          
