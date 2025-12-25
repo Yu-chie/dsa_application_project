@@ -10,7 +10,8 @@ the order of entry and exit, not time
 class ParkingGarage:
     def __init__(self, max_parking=10):
         self.max_parking = max_parking      # max parking size
-        self.queue = [None] * max_parking   # parking queue
+        self.queue = [None] * max_parking   # parking queue'
+        self.records = {}               # to track all car records
         
     # OPTION 1: ENQUEUE CAR
     def car_arrives(self):
@@ -21,18 +22,23 @@ class ParkingGarage:
         
         plate_number = input("Enter Plate Number: ")
         
-        car = {
-            'plate_number': plate_number,
-            'arrival_count': 1,
-            'departure_count': "-"
-        }
-        
         # Prevent duplicate entries
         for car in self.queue:
             if car is not None and car['plate_number'] == plate_number:
                 print("Car with this Plate Number is already in the Garage.")
                 return
         
+        if plate_number in self.records:
+            car = self.records[plate_number]
+            car['arrival_count'] += 1
+        else:
+            car = {
+                'plate_number': plate_number,
+                'arrival_count': 1,
+                'departure_count': "0"
+            }
+            self.records[plate_number] = car
+         
         # Enqueue car in first empty slot
         for i in range(self.max_parking):
             if self.queue[i] is None:
