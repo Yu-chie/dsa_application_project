@@ -206,3 +206,9 @@ class ParkingGarage:
                 break
             else:
                 print("Invalid choice. Please enter a number between 1 and 3.")
+
+if __name__ == "__main__":
+    records_file_path = setup_records_file() # Setup records file
+    garage = ParkingGarage(records_file=records_file_path) # Create ParkingGarage instance
+    garage.load_records()
+    garage.run()
