@@ -185,27 +185,24 @@ class ParkingGarage:
         except FileNotFoundError:
             pass  # No existing records file
 
-# MAIN PROGRAM LOOP
-records_file_path = setup_records_file()
-garage = ParkingGarage(max_parking=10, records_file=records_file_path)  # Set max parking size
-garage.load_records()  # Load existing records if any
-
-while True:
-    garage.display_table()
-    
-    # Display Menu Options
-    print("\n===== Parking Garage Menu =====")
-    print("1. Car Arrives")
-    print("2. Car Departs")
-    print("3. Exit")
-    choice = input("Enter your choice (1-3): ")
-    
-    if choice == '1':
-        garage.car_arrives()
-    elif choice == '2':
-        garage.car_departs()
-    elif choice == '3':
-        print("Exiting Parking Garage Simulator. Goodbye!")
-        break
-    else:
-        print("Invalid choice. Please enter a number between 1 and 3.")
+    # MAIN PROGRAM LOOP
+    def run(self):
+        while True:
+            self.display_table()
+            
+            # Display Menu Options
+            print("\n===== Parking Garage Menu =====")
+            print("1. Car Arrives")
+            print("2. Car Departs")
+            print("3. Exit")
+            choice = input("Enter your choice (1-3): ")
+            
+            if choice == '1':
+                garage.car_arrives()
+            elif choice == '2':
+                garage.car_departs()
+            elif choice == '3':
+                print("Exiting Parking Garage Simulator. Goodbye!")
+                break
+            else:
+                print("Invalid choice. Please enter a number between 1 and 3.")
