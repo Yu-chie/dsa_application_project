@@ -198,9 +198,9 @@ class ParkingGarage:
             choice = input("Enter your choice (1-3): ")
             
             if choice == '1':
-                garage.car_arrives()
+                self.car_arrives()
             elif choice == '2':
-                garage.car_departs()
+                self.car_departs()
             elif choice == '3':
                 print("Exiting Parking Garage Simulator. Goodbye!")
                 break
