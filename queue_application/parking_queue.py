@@ -8,7 +8,7 @@ the order of entry and exit, not time
 
 # PARKING GARAGE CLASS DEFINITION
 class ParkingGarage:
-    def __init__(self, max_parking=10):
+    def __init__(self, max_parking=10, records_file='parking_records.txt'):
         self.max_parking = max_parking      # max parking size
         self.queue = [None] * max_parking   # parking queue'
         self.records = {}                   # to track all car records
