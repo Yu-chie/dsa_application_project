@@ -13,7 +13,7 @@ The program should:
 5. The number of departures == # of times the car exited the queue 
 6. All cars wil leave a record whether or not it left or stayed in the queue (Plate #, # of arrivals, and # of departures)
 7. Be able to name the file to record the cars entry and exit. If not stick to default
-8. 
+8. File be stored in queue_application folder and user can choose to open which existing file to store new records
 9. Comments to describe some code
 
 # ------------------------------
