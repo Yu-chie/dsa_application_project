@@ -23,7 +23,7 @@ class Tree:
     
     def node_child(self, node, value):                                # make left and right child
         if value == ".":
-            value = None
+            return None
         
         if node == None:
             return self.create_node(value)
@@ -39,11 +39,27 @@ class Tree:
             self.node_child(node.n_right, value)
         
         return node
+    
+    # for traversing preorder (TLR)
+    def trav_preorder(self, root):
+        if root is not None:
+            print(root.n_val)
+            self.trav_preorder(root.n_left)
+            self.trav_preorder(root.n_right)
         
-
-# class for determining tree traversals
-class Traversal:
-    pass
+    # for traversing inorder (LTR)
+    def trav_inorder(self, root):
+        if root is not None:
+            self.trav_inorder(root.n_left)
+            print(root.n_val)
+            self.trav_inorder(root.n_right)
+    
+    # for traversing postorder (LRT)
+    def trav_postorder(self, root):
+        if root is not None:
+            self.trav_postorder(root.n_left)
+            self.trav_postorder(root.n_right)
+            print(root.n_val)
 
 # class for tkinter implementation
 class BTMaker:

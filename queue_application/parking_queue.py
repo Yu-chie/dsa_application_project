@@ -10,11 +10,19 @@ the order of entry and exit, not time
 class ParkingGarage:
     def __init__(self, max_parking=10):
         self.max_parking = max_parking      # max parking size
-        self.queue = [None] * max_parking   # parking queue
-        self.arrival_counter = 1            # counts arrivals
-        self.departure_counter = 1          # counts departures
-
-# OPTION 1: ENQUEUE CAR
+        self.queue = [None] * max_parking   # parking queue'
+        self.records = {}                   # to track all car records
+        self.records_file = file_name    # file to save records
+        
+    # Method to save all records in a file
+    def save_records(self):
+        with open(self.records_file, 'w') as file:
+            file.write("Plate Number | Arrival Count | Departure Count\n")
+            file.write("-" * 50 + "\n")
+            for car in self.records.values():
+                file.write(f"{car['plate_number']} | {car['arrival_count']} | {car['departure_count']}\n")
+        
+    # OPTION 1: ENQUEUE CAR
     def car_arrives(self):
         # If parking is full
         if None not in self.queue:
@@ -23,84 +31,119 @@ class ParkingGarage:
         
         plate_number = input("Enter Plate Number: ")
         
-        car = {
-            'plate_number': plate_number,
-            'arrival_number': self.arrival_counter,
-            'departure_number': "-"
-        }
+        # Prevent duplicate entries
+        for car in self.queue:
+            if car is not None and car['plate_number'] == plate_number:
+                print("Car with this Plate Number is already in the Garage.")
+                return
         
+        # If car already has a record, update arrival count
+        if plate_number in self.records:
+            car = self.records[plate_number]
+            car['arrival_count'] += 1
+        # If new car, create record
+        else:
+            car = {
+                'plate_number': plate_number,
+                'arrival_count': 1,
+                'departure_count': 0
+            }
+            self.records[plate_number] = car
+         
         # Enqueue car in first empty slot
         for i in range(self.max_parking):
             if self.queue[i] is None:
                 self.queue[i] = car
                 break
         
-        self.arrival_counter += 1
         print("Car Parked Successfully!")
+        self.save_records()
 
-# OPTION 2: DEQUEUE CAR
+    # OPTION 2: DEQUEUE CAR
     def car_departs(self):
         # If parking is empty
         if all(slots is None for slots in self.queue):
             print("Parking Garage is Empty")
             return
-    
-        # Dequeue first car
-        front_car = self.queue[0]
-        front_car['departure_number'] = self.departure_counter
-        self.departure_counter += 1
         
-        # Shift all cars forward in the queue
-        for i in range(self.max_parking - 1):
-            self.queue[i] = self.queue[i + 1]
+        target_plate = input("Enter Plate Number to Depart: ")
+        temp_queue = []
+        found = False
+        
+        # FIFO
+        for car in self.queue:
+            if car is None:
+                continue
             
-        self.queue[self.max_parking - 1] = None  # Empty last slot
+            if car['plate_number'] == target_plate and not found:
+                # Permanent exit and record
+                car['departure_count'] += 1
+                found = True
+                print(f"Car with Plate Number {target_plate} Departed Successfully!.")
+            else:
+                # Temporary exit and re-entry
+                car['departure_count'] += 1
+                car['arrival_count'] += 1
+                temp_queue.append(car)
+                
+        if not found:
+            print(f"Car with Plate Number {target_plate} Not Found in Garage.")
+            return
         
-        print(f"Car with Plate Number {front_car['plate_number']} Departed Successfully!")
+        self.queue = [None] * self.max_parking
+        for i, car in enumerate(temp_queue):
+            self.queue[i] = car
+        self.save_records()
 
 # OPTION 3: DISPLAY PARKING TABLE
     def display_table(self):
         # Display table header
         # : formatting starts ^ center aligned 15 width of column
-        print("\n{:^7} | {:^15} | {:^15} | {:^15}".format(
-            'Slot', 'Plate Number', 'Arrival No.', 'Departure No.'))
-        print("-" * 55)
+        print("\n{:^7} | {:^20} | {:^20} | {:^20}".format(
+            'Slot', 'Plate Number', '# of Arrival.', '# of Departure.'))
+        print("-" * 70)
         
         # Display each car in the queue
         for i in range(self.max_parking):
             car = self.queue[i]
             if car is None:
-                print("{:^7} | {:^15} | {:^15} | {:^15}".format(
-                    i + 1, 'EMPTY', '-', '-'
+                print("{:^7} | {:^20} | {:^20} | {:^20}".format(
+                    i + 1, '-', '-', '-'
                 ))
             else:
-                print("{:^7} | {:^15} | {:^15} | {:^15}".format(
+                print("{:^7} | {:^20} | {:^20} | {:^20}".format(
                     i + 1,
                     car['plate_number'],
-                    car['arrival_number'],
-                    car['departure_number']
+                    car['arrival_count'],
+                    car['departure_count']
                 ))
 
 # MAIN PROGRAM LOOP
-garage = ParkingGarage(max_parking=10)  # Set max parking size
+# Allow user to name file
+file_name = input("Enter filename to save parking records: ")
+if not file_name:
+    file_name = 'parking_records.txt'
+elif not file_name.endswith('.txt'):
+    file_name += '.txt'
+
+garage = ParkingGarage(max_parking=10, records_file=file_name)  # Set max parking size
 
 while True:
+    garage.display_table()
+    
     # Display Menu Options
     print("\n===== Parking Garage Menu =====")
     print("1. Car Arrives")
     print("2. Car Departs")
-    print("3. Display Parking Table")
-    print("4. Exit")
-    choice = input("Enter your choice (1-4): ")
+    print("3. Exit")
+    choice = input("Enter your choice (1-3): ")
     
     if choice == '1':
         garage.car_arrives()
     elif choice == '2':
         garage.car_departs()
     elif choice == '3':
-        garage.display_table()
-    elif choice == '4':
         print("Exiting Parking Garage Simulator. Goodbye!")
         break
     else:
-        print("Invalid choice. Please enter a number between 1 and 4.")
+        print("Invalid choice. Please enter a number between 1 and 3.")
