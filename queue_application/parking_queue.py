@@ -8,6 +8,47 @@ the order of entry and exit, not time
 
 import os
 
+# Choose to create a new file or use an existing file
+def setup_records_file(folder = 'queue_application'):
+    os.makedirs(folder, exist_ok=True) # Ensure folder exists
+    
+    print("Choose Records File Option:")
+    print("1. Create New File")
+    print("2. Use an existing file")
+    
+    choice = input("Enter your choice (1 or 2): ").strip()
+    
+    if choice == '1':
+        file_name = input("Enter new filename: ").strip()
+        if not file_name:
+            file_name = "parking_records.txt"
+        elif not file_name.endswith(".txt"):
+            file_name += ".txt"
+        file_path = os.path.join(folder, file_name)
+        with open(file_path, 'w') as f:
+            f.write("Plate Number | Arrival Count | Departure Count\n")
+            f.write("-" * 50 + "\n")
+            
+    elif choice == '2':
+        file_name = input("Enter existing filename (with or without .txt): ").strip()
+        if not file_name.endswith(".txt"):
+            file_name += ".txt"
+        file_path = os.path.join(folder, file_name)
+        if not os.path.exists(file_path):
+            print(f"File '{file_name}' does not exist. Creating a new file.")
+            with open(file_path, 'w') as f:
+                f.write("Plate Number | Arrival Count | Departure Count\n")
+                f.write("-" * 50 + "\n")
+    else:
+        print("Invalid choice. Using default file.")
+        file_path = os.path.join(folder, "parking_records.txt")
+        if not os.path.exists(file_path):
+            with open(file_path, 'w') as f:
+                f.write("Plate Number | Arrival Count | Departure Count\n")
+                f.write("-" * 50 + "\n")
+    
+    return file_path
+
 # PARKING GARAGE CLASS DEFINITION
 class ParkingGarage:
     def __init__(self, max_parking=10, records_file='parking_records.txt'):
@@ -145,20 +186,6 @@ class ParkingGarage:
             pass  # No existing records file
 
 # MAIN PROGRAM LOOP
-# Allow user to name file
-file_name = input("Enter filename to save parking records: ")
-if not file_name:
-    file_name = 'parking_records.txt'
-elif not file_name.endswith('.txt'):
-    file_name += '.txt'
-
-# Ensure folder exists
-folder = 'queue_application'
-os.makedirs(folder, exist_ok=True)
-
-# Full path for records file
-records_file_path = os.path.join(folder, file_name)
-
 garage = ParkingGarage(max_parking=10, records_file=file_name)  # Set max parking size
 garage.load_records()  # Load existing records if any
 
