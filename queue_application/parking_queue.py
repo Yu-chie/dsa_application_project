@@ -6,6 +6,10 @@ Arrival and Departure values represent
 the order of entry and exit, not time
 """
 
+import os
+folder = 'queue_application'
+self.records_file = os.path.join(folder, records_file)
+
 # PARKING GARAGE CLASS DEFINITION
 class ParkingGarage:
     def __init__(self, max_parking=10, records_file='parking_records.txt'):
@@ -103,7 +107,7 @@ class ParkingGarage:
         self.queue = new_queue
         self.save_records()
 
-# OPTION 3: DISPLAY PARKING TABLE
+    # OPTION 3: DISPLAY PARKING TABLE
     def display_table(self):
         # Display table header
         # : formatting starts ^ center aligned 15 width of column
@@ -125,6 +129,22 @@ class ParkingGarage:
                     car['arrival_count'],
                     car['departure_count']
                 ))
+                
+    # Load existing records from file
+    def load_records(self):
+        try:
+            with open(self.records_file, 'r') as file:
+                next(file)  # Skip header
+                next(file)  # Skip separator
+                for line in file:
+                    plate_number, arrival_count, departure_count = line.strip().split(' | ')
+                    self.records[plate_number] = {
+                        'plate_number': plate_number,
+                        'arrival_count': int(arrival_count),
+                        'departure_count': int(departure_count)
+                    }
+        except FileNotFoundError:
+            pass  # No existing records file
 
 # MAIN PROGRAM LOOP
 # Allow user to name file
