@@ -48,13 +48,23 @@ class FileManager:
                 
         return self.file_path
 
-# PARKING GARAGE CLASS DEFINITION
-class ParkingGarage:
-    def __init__(self, max_parking=10, records_file='parking_records.txt'):
-        self.max_parking = max_parking      # max parking size
-        self.queue = [None] * max_parking   # parking queue'
-        self.records = {}                   # to track all car records
-        self.records_file = records_file    # file to save records
+    # Load existing records from file
+    def load_records(self):
+        records = {}
+        try:
+            with open(self.records_file, 'r') as file:
+                next(file)  # Skip header
+                next(file)  # Skip separator
+                for line in file:
+                    plate_number, arrival_count, departure_count = line.strip().split(' | ')
+                    self.records[plate_number] = {
+                        'plate_number': plate_number,
+                        'arrival_count': int(arrival_count),
+                        'departure_count': int(departure_count)
+                    }
+        except FileNotFoundError:
+            pass  # No existing records file
+        return records
         
     # Method to save all records in a file
     def save_records(self):
@@ -63,6 +73,14 @@ class ParkingGarage:
             file.write("-" * 50 + "\n")
             for car in self.records.values():
                 file.write(f"{car['plate_number']} | {car['arrival_count']} | {car['departure_count']}\n")
+        
+# PARKING GARAGE CLASS DEFINITION
+class ParkingGarage:
+    def __init__(self, max_parking=10, records_file='parking_records.txt'):
+        self.max_parking = max_parking      # max parking size
+        self.queue = [None] * max_parking   # parking queue'
+        self.records = {}                   # to track all car records
+        self.records_file = records_file    # file to save records
         
     # OPTION 1: ENQUEUE CAR
     def car_arrives(self):
@@ -167,22 +185,6 @@ class ParkingGarage:
                     car['arrival_count'],
                     car['departure_count']
                 ))
-                
-    # Load existing records from file
-    def load_records(self):
-        try:
-            with open(self.records_file, 'r') as file:
-                next(file)  # Skip header
-                next(file)  # Skip separator
-                for line in file:
-                    plate_number, arrival_count, departure_count = line.strip().split(' | ')
-                    self.records[plate_number] = {
-                        'plate_number': plate_number,
-                        'arrival_count': int(arrival_count),
-                        'departure_count': int(departure_count)
-                    }
-        except FileNotFoundError:
-            pass  # No existing records file
 
     # MAIN PROGRAM LOOP
     def run(self):
