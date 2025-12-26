@@ -1,27 +1,20 @@
-"""
-QUEUE: Parking Garage Simulator
-Vertical Parking using FIFO Queue
-
-Arrival and Departure values represent
-the order of entry and exit, not time
-"""
+from file_manager import FileManager
 
 # PARKING GARAGE CLASS DEFINITION
 class ParkingGarage:
-    def __init__(self, max_parking=10):
+    def __init__(self, max_parking=10, file_manager=None):
         self.max_parking = max_parking      # max parking size
         self.queue = [None] * max_parking   # parking queue'
         self.records = {}                   # to track all car records
-        self.records_file = file_name    # file to save records
+        self.file_manager = file_manager    
+        if file_manager:
+            self.records = file_manager.load_records()
         
-    # Method to save all records in a file
+    # Save current records to file
     def save_records(self):
-        with open(self.records_file, 'w') as file:
-            file.write("Plate Number | Arrival Count | Departure Count\n")
-            file.write("-" * 50 + "\n")
-            for car in self.records.values():
-                file.write(f"{car['plate_number']} | {car['arrival_count']} | {car['departure_count']}\n")
-        
+        if self.file_manager:
+            self.file_manager.save_records(self.records)
+            
     # OPTION 1: ENQUEUE CAR
     def car_arrives(self):
         # If parking is full
@@ -67,35 +60,43 @@ class ParkingGarage:
             return
         
         target_plate = input("Enter Plate Number to Depart: ")
-        temp_queue = []
         found = False
         
-        # FIFO
-        for car in self.queue:
-            if car is None:
-                continue
+        # Find target car index
+        target_index = None
+        for i, car in enumerate(self.queue):
+            if car is not None and car['plate_number'] == target_plate:
+                target_index = i
+                break
             
-            if car['plate_number'] == target_plate and not found:
-                # Permanent exit and record
-                car['departure_count'] += 1
-                found = True
-                print(f"Car with Plate Number {target_plate} Departed Successfully!.")
-            else:
+        if target_index is None:
+            print(f"Car with Plate Number {target_plate} Not Found in Garage.")
+            return
+        
+        # Cars in front temporarily leave
+        temp_queue = []
+        for i in range(target_index):
+            car = self.queue[i]
+            if car is not None:
                 # Temporary exit and re-entry
                 car['departure_count'] += 1
                 car['arrival_count'] += 1
                 temp_queue.append(car)
+            
+        # target car leaves permanently
+        target_car = self.queue[target_index]
+        target_car['departure_count'] += 1
+        print(f"Car with Plate Number {target_plate} Departed Successfully!")
                 
-        if not found:
-            print(f"Car with Plate Number {target_plate} Not Found in Garage.")
-            return
-        
-        self.queue = [None] * self.max_parking
-        for i, car in enumerate(temp_queue):
-            self.queue[i] = car
+        # Shift cars behind forward
+        new_queue = self.queue[target_index + 1:self.max_parking]   # cars after target
+        new_queue = [c for c in new_queue if c is not None]         # remove None values
+        new_queue.extend(temp_queue)                                # add temporarily exited cars
+        new_queue += [None] * (self.max_parking - len(new_queue))   # fill remaining with None
+        self.queue = new_queue
         self.save_records()
 
-# OPTION 3: DISPLAY PARKING TABLE
+    # OPTION 3: DISPLAY PARKING TABLE
     def display_table(self):
         # Display table header
         # : formatting starts ^ center aligned 15 width of column
@@ -118,32 +119,30 @@ class ParkingGarage:
                     car['departure_count']
                 ))
 
-# MAIN PROGRAM LOOP
-# Allow user to name file
-file_name = input("Enter filename to save parking records: ")
-if not file_name:
-    file_name = 'parking_records.txt'
-elif not file_name.endswith('.txt'):
-    file_name += '.txt'
+    # MAIN PROGRAM LOOP
+    def run(self):
+        while True:
+            self.display_table()
+            
+            # Display Menu Options
+            print("\n===== Parking Garage Menu =====")
+            print("1. Car Arrives")
+            print("2. Car Departs")
+            print("3. Exit")
+            choice = input("Enter your choice (1-3): ")
+            
+            if choice == '1':
+                self.car_arrives()
+            elif choice == '2':
+                self.car_departs()
+            elif choice == '3':
+                print("Exiting Parking Garage Simulator. Goodbye!")
+                break
+            else:
+                print("Invalid choice. Please enter a number between 1 and 3.")
 
-garage = ParkingGarage(max_parking=10, records_file=file_name)  # Set max parking size
-
-while True:
-    garage.display_table()
-    
-    # Display Menu Options
-    print("\n===== Parking Garage Menu =====")
-    print("1. Car Arrives")
-    print("2. Car Departs")
-    print("3. Exit")
-    choice = input("Enter your choice (1-3): ")
-    
-    if choice == '1':
-        garage.car_arrives()
-    elif choice == '2':
-        garage.car_departs()
-    elif choice == '3':
-        print("Exiting Parking Garage Simulator. Goodbye!")
-        break
-    else:
-        print("Invalid choice. Please enter a number between 1 and 3.")
+if __name__ == "__main__":
+    file_manager = FileManager()
+    records_file_path = file_manager.setup_records_file()  # Setup records file
+    garage = ParkingGarage(file_manager=file_manager) # Create ParkingGarage instance
+    garage.run()
