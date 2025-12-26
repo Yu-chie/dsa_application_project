@@ -35,7 +35,7 @@ class FileManager:
         
         self.file_path = os.path.join(self.folder, file_name)
         
-        # Create File if it doesnt exist
+        # Create File if it doesn't exist
         if not os.path.exists(self.file_path):
             with open(self.file_path, 'w') as file:
                 file.write("Plate Number | Arrival Count | Departure Count\n")
@@ -47,12 +47,12 @@ class FileManager:
     def load_records(self):
         records = {}
         try:
-            with open(self.records_file, 'r') as file:
+            with open(self.file_path, 'r') as file:
                 next(file)  # Skip header
                 next(file)  # Skip separator
                 for line in file:
                     plate_number, arrival_count, departure_count = line.strip().split(' | ')
-                    self.records[plate_number] = {
+                    records[plate_number] = {
                         'plate_number': plate_number,
                         'arrival_count': int(arrival_count),
                         'departure_count': int(departure_count)
@@ -62,10 +62,10 @@ class FileManager:
         return records
         
     # Method to save all records in a file
-    def save_records(self):
-        with open(self.records_file, 'w') as file:
+    def save_records(self, records):
+        with open(self.file_path, 'w') as file:
             file.write("Plate Number | Arrival Count | Departure Count\n")
             file.write("-" * 50 + "\n")
-            for car in self.records.values():
+            for car in records.values():
                 file.write(f"{car['plate_number']} | {car['arrival_count']} | {car['departure_count']}\n")
      
