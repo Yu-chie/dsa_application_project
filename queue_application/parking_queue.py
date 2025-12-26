@@ -1,86 +1,13 @@
-"""
-QUEUE: Parking Garage Simulator
-Vertical Parking using FIFO Queue
 
-Arrival and Departure values represent
-the order of entry and exit, not time
-"""
-
-import os
-
-class FileManager:
-    def __init__(self, folder='queue_application', default_file='parking_records.txt'):
-        self.folder = folder
-        self.default_file = default_file
-        os.makedirs(self.folder, exist_ok=True) # Ensure folder exists
-        
-    # Choose to create a new file or use an existing file
-    def setup_records_file(self):
-        print("Choose Records File Option:")
-        print("1. Create New File")
-        print("2. Use an existing file")
-        choice = input("Enter your choice (1 or 2): ").strip()
-        
-        if choice == '1':
-            file_name = input("Enter new filename: ").strip()
-            if not file_name:
-                file_name = self.default_file
-            elif not file_name.endswith(".txt"):
-                file_name += ".txt"
-                
-        elif choice == '2':
-            file_name = input("Enter existing filename: ").strip()
-            if not file_name.endswith(".txt"):
-                file_name += ".txt"
-            if not os.path.exists(os.path.join(self.folder, file_name)):
-                print("File does not exist. Using default file instead.")
-        else:
-            print("Invalid choice. Using default file.")
-            file_name = self.default_file
-        
-        self.file_path = os.path.join(self.folder, file_name)
-        
-        # Create File if it doesnt exist
-        if not os.path.exists(self.file_path):
-            with open(self.file_path, 'w') as file:
-                file.write("Plate Number | Arrival Count | Departure Count\n")
-                file.write("-" * 50 + "\n")
-                
-        return self.file_path
-
-    # Load existing records from file
-    def load_records(self):
-        records = {}
-        try:
-            with open(self.records_file, 'r') as file:
-                next(file)  # Skip header
-                next(file)  # Skip separator
-                for line in file:
-                    plate_number, arrival_count, departure_count = line.strip().split(' | ')
-                    self.records[plate_number] = {
-                        'plate_number': plate_number,
-                        'arrival_count': int(arrival_count),
-                        'departure_count': int(departure_count)
-                    }
-        except FileNotFoundError:
-            pass  # No existing records file
-        return records
-        
-    # Method to save all records in a file
-    def save_records(self):
-        with open(self.records_file, 'w') as file:
-            file.write("Plate Number | Arrival Count | Departure Count\n")
-            file.write("-" * 50 + "\n")
-            for car in self.records.values():
-                file.write(f"{car['plate_number']} | {car['arrival_count']} | {car['departure_count']}\n")
-        
 # PARKING GARAGE CLASS DEFINITION
 class ParkingGarage:
-    def __init__(self, max_parking=10, records_file='parking_records.txt'):
+    def __init__(self, max_parking=10, file_manager=None):
         self.max_parking = max_parking      # max parking size
         self.queue = [None] * max_parking   # parking queue'
         self.records = {}                   # to track all car records
-        self.records_file = records_file    # file to save records
+        self.file_manager = file_manager    
+        if file_manager:
+            self.records = file_manager.load_records()
         
     # OPTION 1: ENQUEUE CAR
     def car_arrives(self):
@@ -209,7 +136,7 @@ class ParkingGarage:
                 print("Invalid choice. Please enter a number between 1 and 3.")
 
 if __name__ == "__main__":
-    records_file_path = setup_records_file() # Setup records file
+    file_manager = FileManager()
+    records_file_path = file_manager.setup_records_file()  # Setup records file
     garage = ParkingGarage(records_file=records_file_path) # Create ParkingGarage instance
-    garage.load_records()
     garage.run()
