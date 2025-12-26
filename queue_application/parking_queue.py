@@ -12,7 +12,7 @@ class ParkingGarage:
         self.max_parking = max_parking      # max parking size
         self.queue = [None] * max_parking   # parking queue'
         self.records = {}                   # to track all car records
-        self.records_file = file_name    # file to save records
+        self.records_file = records_file    # file to save records
         
     # Method to save all records in a file
     def save_records(self):
