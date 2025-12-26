@@ -67,32 +67,40 @@ class ParkingGarage:
             return
         
         target_plate = input("Enter Plate Number to Depart: ")
-        temp_queue = []
         found = False
         
-        # FIFO
-        for car in self.queue:
-            if car is None:
-                continue
+        # Find target car index
+        target_index = None
+        for i, car in enumerate(self.queue):
+            if car is not None and car['plate_number'] == target_plate:
+                target_index = i
+                break
             
-            if car['plate_number'] == target_plate and not found:
-                # Permanent exit and record
-                car['departure_count'] += 1
-                found = True
-                print(f"Car with Plate Number {target_plate} Departed Successfully!.")
-            else:
+        if target_index is None:
+            print(f"Car with Plate Number {target_plate} Not Found in Garage.")
+            return
+        
+        # Cars in front temporarily leave
+        temp_queue = []
+        for i in range(target_index):
+            car = self.queue[i]
+            if car is not None:
                 # Temporary exit and re-entry
                 car['departure_count'] += 1
                 car['arrival_count'] += 1
                 temp_queue.append(car)
+            
+        # target car leaves permanently
+        target_car = self.queue[target_index]
+        target_car['departure_count'] += 1
+        print(f"Car with Plate Number {target_plate} Departed Successfully!")
                 
-        if not found:
-            print(f"Car with Plate Number {target_plate} Not Found in Garage.")
-            return
-        
-        self.queue = [None] * self.max_parking
-        for i, car in enumerate(temp_queue):
-            self.queue[i] = car
+        # Shift cars behind forward
+        new_queue = self.queue[target_index + 1:self.max_parking]   # cars after target
+        new_queue = [c for c in new_queue if c is not None]         # remove None values
+        new_queue.extend(temp_queue)                                # add temporarily exited cars
+        new_queue += [None] * (self.max_parking - len(new_queue))   # fill remaining with None
+        self.queue = new_queue
         self.save_records()
 
 # OPTION 3: DISPLAY PARKING TABLE

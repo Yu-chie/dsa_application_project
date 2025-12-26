@@ -1,0 +1,6 @@
+Plate Number | Arrival Count | Departure Count
+--------------------------------------------------
+ABCD | 4 | 3
+BCDE | 3 | 3
+CDEF | 4 | 3
+DEFG | 4 | 3
