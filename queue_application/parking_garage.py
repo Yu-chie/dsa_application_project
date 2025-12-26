@@ -144,5 +144,5 @@ class ParkingGarage:
 if __name__ == "__main__":
     file_manager = FileManager()
     records_file_path = file_manager.setup_records_file()  # Setup records file
-    garage = ParkingGarage(records_file=records_file_path) # Create ParkingGarage instance
+    garage = ParkingGarage(file_manager=file_manager) # Create ParkingGarage instance
     garage.run()
