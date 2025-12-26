@@ -7,8 +7,6 @@ the order of entry and exit, not time
 """
 
 import os
-folder = 'queue_application'
-self.records_file = os.path.join(folder, records_file)
 
 # PARKING GARAGE CLASS DEFINITION
 class ParkingGarage:
@@ -154,7 +152,15 @@ if not file_name:
 elif not file_name.endswith('.txt'):
     file_name += '.txt'
 
+# Ensure folder exists
+folder = 'queue_application'
+os.makedirs(folder, exist_ok=True)
+
+# Full path for records file
+records_file_path = os.path.join(folder, file_name)
+
 garage = ParkingGarage(max_parking=10, records_file=file_name)  # Set max parking size
+garage.load_records()  # Load existing records if any
 
 while True:
     garage.display_table()
