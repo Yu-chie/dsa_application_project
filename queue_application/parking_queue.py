@@ -186,7 +186,8 @@ class ParkingGarage:
             pass  # No existing records file
 
 # MAIN PROGRAM LOOP
-garage = ParkingGarage(max_parking=10, records_file=file_name)  # Set max parking size
+records_file_path = setup_records_file()
+garage = ParkingGarage(max_parking=10, records_file=records_file_path)  # Set max parking size
 garage.load_records()  # Load existing records if any
 
 while True:
