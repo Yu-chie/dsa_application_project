@@ -1,0 +1,49 @@
+Recursion: Tower of Hanoi (GUI)
+
+Pseudocode:
+// Constructor: Set up GUI window, options, and initial state 
+// Define constants for appearance and behavior
+// Create main window
+// Create a tool bar frame at the top
+// Create a canvas for drawing (white background)
+// Add a label for the disk input field
+// Add an entry field for user input (default to max_disks)
+// Add buttons to the toolbar
+// Initialize state variables
+// Generate and draw the initial puzzle state
+
+// Method: Generate puzzle states and draw the starting state
+// Get number of disks from user input (clamp to max_disks, handle errors)
+// Reset state to 0
+// Generate all states using the TowerOfHanoi class (imported function)
+// Draw the current (initial) state on the canvas
+
+// Method: Go to the previous state (wrap if at start)
+
+// Method: Go to the next state (wrap around if at end)
+
+// Helper: Calculate the x-coordinate for a stack's center
+// Divide canvas width into thirds, with equal spacing
+// Formula: (width / 3) * stack_num + (width / 6)
+
+// Method: Draw the base (bottom rectangle and empty stack posts)
+// Draw the bottom base rectangle across the full canvas width
+// Draw three vertical stack posts (rods)
+
+// Method: Draw disks on specific stack
+// Find the center x of the stack post
+// Calculating starting y (from bottom of stack, accounting for disk height)
+// Draw each disk from bottom to top
+
+// Method: Draw the entire current state on the canvas
+
+// Method: Perform one auto-step with delay (recursive for animation)
+// Stop if at the final state or auto is disabled
+// Advance to the next state
+// Schedule the next auto-step after delay
+
+// Method: Start auto-playing the solution
+
+// Method: Stop auto-playing
+
+// Main program execution

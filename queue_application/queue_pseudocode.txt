@@ -3,6 +3,19 @@
 # VERTICAL PARKING (FIFO)
 # ==============================
 
+The program should:
+1. Show the application of Queue
+2. Be able to enqueue car and dequeue a car user choose
+    2.1. If the target car to dequeue is in the front of the queue. Shift all remaining car forward
+    2.2. If the target car to dequeue has cars in front of it, temporarily exit the cars in front and re-entry to the rear. Then shift the cars forward
+3. The number of arrival and departures must display
+4. the number of arrivals == # of times car entered the queue 
+5. The number of departures == # of times the car exited the queue 
+6. All cars wil leave a record whether or not it left or stayed in the queue (Plate #, # of arrivals, and # of departures)
+7. Be able to name the file to record the cars entry and exit. If not stick to default
+8. File be stored in queue_application folder and user can choose to open which existing file to store new records
+9. Comments to describe some code
+
 # ------------------------------
 # DATA TO STORE FOR EACH CAR
 # ------------------------------
