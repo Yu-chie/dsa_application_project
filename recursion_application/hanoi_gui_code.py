@@ -89,19 +89,30 @@ class TowerOfHanoiGUI:
         self.move(size, 0, 2)  # Now calls the renamed self.move
         return self.states
 
-    def generate(self):  # The proper GUI reset method (no longer conflicting)
+        def generate(self):  # The proper GUI reset method (no longer conflicting)
         '''
         Generate the states and draw the first state.
         '''
         try:
-            self.num_disks = min(int(self.enter_disks.get()), self.max_disks)
-        except:
-            self.num_disks = self.max_disks
+            entered = int(self.enter_disks.get())
+            if entered < 5 or entered > 7:
+                messagebox.showerror("Invalid Input", "Number of disks must be between 5 and 7.")
+                self.num_disks = self.max_disks  # Reset to default (7)
+                self.enter_disks.delete(0, END)  # Clear the entry field
+                self.enter_disks.insert(0, str(self.max_disks))  # Re-insert default
+                return  # Do not proceed with generation
+            self.num_disks = entered
+        except ValueError:
+            messagebox.showerror("Invalid Input", "Please enter a valid number between 5 and 7.")
+            self.num_disks = self.max_disks  # Reset to default
+            self.enter_disks.delete(0, END)
+            self.enter_disks.insert(0, str(self.max_disks))
+            return  # Do not proceed
 
         self.state = 0
         self.states = self.hanoi(self.num_disks)  # Call the embedded logic
         self.draw_current_state()
-
+        
     def previous_step(self):
         '''
         Go back to previous state.
