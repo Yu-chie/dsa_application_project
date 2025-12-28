@@ -78,7 +78,7 @@ class StartPage(tk.Frame):
         
     def resize_bg(self, event):
         resized = self.bg_img.resize((event.width, event.height))
-        self.select_bg = ImageTk.PhotoImage(resized)
+        self.start_bg = ImageTk.PhotoImage(resized)
         
         self.canvas.itemconfig(self.canvas_bg, image=self.start_bg)
     
