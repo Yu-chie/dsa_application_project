@@ -47,6 +47,32 @@ class StartPage(tk.Frame):
         self.canvas.bind("<Configure>", self.resize_bg)
         
         ''' FOR BUTTONS AND LABELS '''
+        # play button to direct to select page
+        play_button = tk.Button(
+            self,
+            text="PLAY",                     # text display
+            font=("VT323", 20),              # font name, size 
+            bg = "#ecb1ff",                # bg color 
+            fg = "#330084",                # font color
+            activebackground="#330084",    # bg color upon click
+            activeforeground="#ffffff",    # font color upon click
+            padx=85,                         # width of button alone 
+            command=lambda: controller.show_frame("SelectPage")            # will direct to select page upon click
+        )
+        
+        # dev button to direct to dev page
+        dev_button = tk.Button(
+            self,
+            text="MEET THE DEVS",
+            font=("VT323", 20),
+            bg = "#ecb1ff",
+            fg = "#330084",
+            activebackground="#330084",
+            activeforeground="#ffffff",
+            padx=36,
+            command=lambda: controller.show_frame("DevPage")             # will direct to dev page upon click
+        )
+        self.canvas.create_window(450, 570, window=dev_button)
         
     def resize_bg(self, event):
         resized = self.bg_img.resize((event.width, event.height))
