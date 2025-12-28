@@ -210,7 +210,45 @@ class BSTPage(tk.Frame):
     pass
 
 class DevPage(tk.Frame):
-    pass
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        
+        ''' FOR BACKGROUND SETUP '''
+        # canvas for storing the background of start page
+        self.canvas = tk.Canvas(self)
+        self.canvas.pack(fill="both", expand=True)
+        
+        # load the background image in canvas
+        self.bg_img = Image.open("assets/test_dev_bg.png")
+        self.dev_bg = ImageTk.PhotoImage(self.bg_img)
+        
+        # draw bg 
+        self.canvas_bg = self.canvas.create_image(0, 0, image=self.dev_bg, anchor="nw")
+        
+        # auto resize of background
+        self.canvas.bind("<Configure>", self.resize_bg)   
+        
+        '''FOR BUTTONS AND LABELS'''
+        # home button to go back to home
+        home_button = tk.Button(
+            self,
+            text="HOME",
+            font=("VT323", 12),
+            bg = "#594faf",
+            fg = "#ffffff",
+            activebackground="#330084",
+            activeforeground="#ffffff",
+            padx=65,
+            command=lambda: controller.show_frame("StartPage")
+        )
+        
+        self.canvas.create_window(103, 38, window=home_button)
+        
+    def resize_bg(self, event):
+        resized = self.bg_img.resize((event.width, event.height))
+        self.dev_bg = ImageTk.PhotoImage(resized)
+        
+        self.canvas.itemconfig(self.canvas_bg, image=self.dev_bg)
 
 
 if __name__ == "__main__":
