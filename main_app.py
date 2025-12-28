@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 
 class MainApp(tk.Tk):
     def __init__(self):
-        super().__init()       # initialize tk and set this as parent class
+        super().__init()       # initialize tk
         
         # general window title, dimension, and allow fullscreen
         self.title("DSA App")
@@ -27,7 +27,33 @@ class MainApp(tk.Tk):
         self.frames[page_name].tkraise()
 
 class StartPage(tk.Frame):
-    pass
+    def __init__(self, parent, controller):
+        super().__init__(parent)                # start page is the parent class
+        self.controller = controller
+        
+        ''' FOR BACKGROUND SETUP '''
+        # canvas for storing the background of start page
+        self.canvas = tk.Canvas(self)
+        self.canvas.pack(fill="both", expand=True)
+        
+        # load the background image in canvas
+        self.bg_img = Image.open("assets/test_main_bg.png")
+        self.start_bg = ImageTk.PhotoImage(self.bg_img)
+        
+        # draw bg
+        self.canvas_bg = self.canvas.create_image(0, 0, image=self.start_bg, anchor="nw")
+        
+        # auto resize of background
+        self.canvas.bind("<Configure>", self.resize_bg)
+        
+        ''' FOR BUTTONS AND LABELS '''
+        
+    def resize_bg(self, event):
+        resized = self.bg_img.resize((event.width, event.height))
+        self.start_bg = ImageTk.PhotoImage(resized)
+        
+        self.canvas.itemconfig(self.canvas_bg, image=self.start_bg)
+    
 
 class SelectPage(tk.Frame):
     pass
