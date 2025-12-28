@@ -60,6 +60,8 @@ class StartPage(tk.Frame):
             command=lambda: controller.show_frame("SelectPage")            # will direct to select page upon click
         )
         
+        self.canvas.create_window(450, 500, window=play_button)     # will create the button window (450, 500) is x and y position
+        
         # dev button to direct to dev page
         dev_button = tk.Button(
             self,
