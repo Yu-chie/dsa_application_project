@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 
 class MainApp(tk.Tk):
     def __init__(self):
-        super().__init()       # initialize tk
+        super().__init__()       # initialize tk
         
         # general window title, dimension, and allow fullscreen
         self.title("DSA App")
