@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import simpledialog, messagebox
 from PIL import Image, ImageTk
 
 class QueueGUI:
@@ -10,7 +11,7 @@ class QueueGUI:
         self.root.geometry("800x500")
         self.root.resizable(False, False)
         
-        # Load and set background image
+        # Background image
         self.bg_image = Image.open("queue_application/queue_gui/queue_bg.png")
         self.bg_image = self.bg_image.resize((800, 500))
         self.bg_photo = ImageTk.PhotoImage(self.bg_image)
@@ -25,7 +26,7 @@ class QueueGUI:
             text="Car Arrives",
             font=("VT323", 16),
             width=15,
-            command=self.car.arrives
+            command=self.car_arrives
         )
         
         self.depart_btn = tk.Button(
@@ -33,7 +34,7 @@ class QueueGUI:
             text="Car Departs",
             font=("VT323", 16),
             width=15,
-            command=self.car.departs
+            command=self.car_departs
         )
         
         self.exit_btn = tk.Button(
@@ -49,11 +50,17 @@ class QueueGUI:
         self.canvas.create_window(600, 400, window=self.exit_btn)
         
     def car_arrives(self):
-        self.garage.car_arrives()
+        plate = simpledialog.askstring("Car Arrives", "Enter the car's plate number:")
+        if not plate:
+            return
+        self.garage.car_arrives(plate)
         self.draw_table()
     
     def car_departs(self):
-        self.garage.car_departs()
+        plate = simpledialog.askstring("Car Departs", "Enter the car's plate number:")
+        if not plate:
+            return
+        self.garage.car_departs(plate)
         self.draw_table()
 
     def draw_table(self):
@@ -65,8 +72,10 @@ class QueueGUI:
         
         for i, header in enumerate(headers):
             self.canvas.create_text(
-                150 + i*150, y, text=header, 
-                font=("VT323", 14, "bold"), tags="table"
+                150 + i*150, y, 
+                text=header, 
+                font=("VT323", 14, "bold"), 
+                tags="table"
             )
             
         y += 30
@@ -82,15 +91,15 @@ class QueueGUI:
                     car['departure_count']
                 ]
             
-        for j, value in enumerate(values):
-                self.canvas.create_text(
-                    150 + j*150, y, 
-                    text=value, 
-                    font=("VT323", 12), 
-                    tags="table"
-                )
-        
-        y += 25
+            for j, value in enumerate(values):
+                    self.canvas.create_text(
+                        150 + j*150, y, 
+                        text=value, 
+                        font=("VT323", 12), 
+                        tags="table"
+                    )
+            
+            y += 25
     
     def run(self):
         self.root.mainloop()
