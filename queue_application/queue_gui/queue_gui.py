@@ -50,9 +50,47 @@ class QueueGUI:
         
     def car_arrives(self):
         self.garage.car_arrives()
+        self.draw_table()
     
     def car_departs(self):
         self.garage.car_departs()
+        self.draw_table()
 
+    def draw_table(self):
+        # Clears previous table
+        self.canvas.delete("table")
+        
+        y = 80
+        headers = ["Slot", "Plate Number", "# of Arrivals", "# of Departures"]
+        
+        for i, header in enumerate(headers):
+            self.canvas.create_text(
+                150 + i*150, y, text=header, 
+                font=("VT323", 14, "bold"), tags="table"
+            )
+            
+        y += 30
+        
+        for i, car in enumerate(self.garage.queue):
+            if car is None:
+                values = [i+1, "-", "-", "-"]
+            else:
+                values = [
+                    i + 1,
+                    car['plate_number'],
+                    car['arrival_count'],
+                    car['departure_count']
+                ]
+            
+        for j, value in enumerate(values):
+                self.canvas.create_text(
+                    150 + j*150, y, 
+                    text=value, 
+                    font=("VT323", 12), 
+                    tags="table"
+                )
+        
+        y += 25
+    
     def run(self):
         self.root.mainloop()
