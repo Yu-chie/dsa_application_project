@@ -53,18 +53,19 @@ class QueueGUI:
         plate = simpledialog.askstring("Car Arrives", "Enter the car's plate number:")
         if not plate:
             return
-        self.garage.car_arrives(plate)
+        result = self.garage.car_arrives(plate)
+        messagebox.showinfo("Car Arrives", result)
         self.draw_table()
     
     def car_departs(self):
         plate = simpledialog.askstring("Car Departs", "Enter the car's plate number:")
         if not plate:
             return
-        self.garage.car_departs(plate)
+        result = self.garage.car_departs(plate)
+        messagebox.showinfo("Car Departs", result)
         self.draw_table()
 
     def draw_table(self):
-        # Clears previous table
         self.canvas.delete("table")
         
         y = 80
@@ -92,14 +93,15 @@ class QueueGUI:
                 ]
             
             for j, value in enumerate(values):
-                    self.canvas.create_text(
-                        150 + j*150, y, 
-                        text=value, 
-                        font=("VT323", 12), 
-                        tags="table"
-                    )
+                self.canvas.create_text(
+                    150 + j*150, y, 
+                    text=value, 
+                    font=("VT323", 12), 
+                    tags="table"
+                )
             
             y += 25
     
     def run(self):
+        self.draw_table()  # Draw table on GUI start
         self.root.mainloop()
