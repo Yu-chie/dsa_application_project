@@ -16,19 +16,15 @@ class ParkingGarage:
             self.file_manager.save_records(self.records)
             
     # OPTION 1: ENQUEUE CAR
-    def car_arrives(self):
+    def car_arrives(self, plate_number):
         # If parking is full
         if None not in self.queue:
-            print("Parking Garage is Full")
-            return
-        
-        plate_number = input("Enter Plate Number: ")
+            return "Parking Garage is Full"
         
         # Prevent duplicate entries
         for car in self.queue:
             if car is not None and car['plate_number'] == plate_number:
-                print("Car with this Plate Number is already in the Garage.")
-                return
+                return "Car with this Plate Number is already in the Garage."
         
         # If car already has a record, update arrival count
         if plate_number in self.records:
@@ -49,18 +45,14 @@ class ParkingGarage:
                 self.queue[i] = car
                 break
         
-        print("Car Parked Successfully!")
         self.save_records()
+        return "Car Parked Successfully!"
 
     # OPTION 2: DEQUEUE CAR
-    def car_departs(self):
+    def car_departs(self, target_plate):
         # If parking is empty
         if all(slots is None for slots in self.queue):
-            print("Parking Garage is Empty")
-            return
-        
-        target_plate = input("Enter Plate Number to Depart: ")
-        found = False
+            return "Parking Garage is Empty"
         
         # Find target car index
         target_index = None
@@ -70,8 +62,7 @@ class ParkingGarage:
                 break
             
         if target_index is None:
-            print(f"Car with Plate Number {target_plate} Not Found in Garage.")
-            return
+            return "Car Not Found"
         
         # Cars in front temporarily leave
         temp_queue = []
@@ -84,9 +75,7 @@ class ParkingGarage:
                 temp_queue.append(car)
             
         # target car leaves permanently
-        target_car = self.queue[target_index]
-        target_car['departure_count'] += 1
-        print(f"Car with Plate Number {target_plate} Departed Successfully!")
+        self.queue[target_index]['departure_count'] += 1
                 
         # Shift cars behind forward
         new_queue = self.queue[target_index + 1:self.max_parking]   # cars after target
@@ -95,6 +84,7 @@ class ParkingGarage:
         new_queue += [None] * (self.max_parking - len(new_queue))   # fill remaining with None
         self.queue = new_queue
         self.save_records()
+        return "Car Departed Successfully!"
 
     # OPTION 3: DISPLAY PARKING TABLE
     def display_table(self):
@@ -132,9 +122,11 @@ class ParkingGarage:
             choice = input("Enter your choice (1-3): ")
             
             if choice == '1':
-                self.car_arrives()
+                plate = input("Enter Plate number: ")
+                self.car_arrives(plate)
             elif choice == '2':
-                self.car_departs()
+                plate = input("Enter Plate number: ")
+                self.car_departs(plate)
             elif choice == '3':
                 print("Exiting Parking Garage Simulator. Goodbye!")
                 break
