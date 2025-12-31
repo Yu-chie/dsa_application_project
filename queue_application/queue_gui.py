@@ -10,10 +10,10 @@ class QueueGUI(tk.Frame):
         
         # Background image
         self.bg_image = Image.open("queue_application/queue_gui/queue_bg.png")
-        self.bg_image = self.bg_image.resize((800, 500))
+        self.bg_image = self.bg_image.resize((1920, 1080))
         self.bg_photo = ImageTk.PhotoImage(self.bg_image)
         
-        self.canvas = tk.Canvas(self, width=800, height=500)
+        self.canvas = tk.Canvas(self, width=1920, height=1080)
         self.canvas.pack(fill="both", expand=True)
         self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
         
@@ -42,9 +42,9 @@ class QueueGUI(tk.Frame):
             command=self.destroy
         )
         
-        self.canvas.create_window(200, 400, window=self.arrive_btn)
-        self.canvas.create_window(400, 400, window=self.depart_btn)
-        self.canvas.create_window(600, 400, window=self.exit_btn)
+        self.canvas.create_window(1550, 250, window=self.arrive_btn)
+        self.canvas.create_window(1550, 350, window=self.depart_btn)
+        self.canvas.create_window(1550, 450, window=self.exit_btn)
         
     def car_arrives(self):
         plate = simpledialog.askstring("Car Arrives", "Enter the car's plate number:")
