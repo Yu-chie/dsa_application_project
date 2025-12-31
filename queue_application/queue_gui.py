@@ -10,12 +10,13 @@ class QueueGUI(tk.Frame):
         
         # Background image
         self.bg_image = Image.open("queue_application/queue_gui/queue_bg.png")
-        self.bg_image = self.bg_image.resize((1920, 1080))
-        self.bg_photo = ImageTk.PhotoImage(self.bg_image)
+        self.bg_photo = ImageTk.PhotoImage(self.bg_image.resize((1920, 1080)))
+        self.bg_image_id = self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
         
-        self.canvas = tk.Canvas(self, width=1920, height=1080)
+        # Canvas setup
+        self.canvas = tk.Canvas(self)
         self.canvas.pack(fill="both", expand=True)
-        self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
+        self.canvas.bind("<Configure>", self.resize_bg)
         
         # Buttons
         self.arrive_btn = tk.Button(
@@ -42,9 +43,11 @@ class QueueGUI(tk.Frame):
             command=self.destroy
         )
         
-        self.canvas.create_window(1550, 250, window=self.arrive_btn)
-        self.canvas.create_window(1550, 350, window=self.depart_btn)
-        self.canvas.create_window(1550, 450, window=self.exit_btn)
+        # Place buttons initially (will be repositioned on resize)
+        self.arrive_btn_window = self.canvas.create_window(1550, 250, window=self.arrive_btn)
+        self.depart_btn_window = self.canvas.create_window(1550, 350, window=self.depart_btn)
+        self.exit_btn_window = self.canvas.create_window(1550, 450, window=self.exit_btn)
+
         
     def car_arrives(self):
         plate = simpledialog.askstring("Car Arrives", "Enter the car's plate number:")
@@ -98,3 +101,14 @@ class QueueGUI(tk.Frame):
                 )
             
             y += 25
+        
+    def resize_bg(self, event):
+        # Resize background
+        resized_bg = self.bg_image.resize((event.width, event.height))
+        self.bg_photo = ImageTk.PhotoImage(resized_bg)
+        self.canvas.itemconfig(self.bg_image_id, image=self.bg_photo)
+        
+        # Reposition buttons in upper-right box
+        self.canvas.coords(self.arrive_btn_window, event.width - 400, 250)
+        self.canvas.coords(self.depart_btn_window, event.width - 400, 350)
+        self.canvas.coords(self.exit_btn_window, event.width - 400, 450)
