@@ -21,7 +21,7 @@ class MainApp(tk.Tk):
         
         self.frames = {}
         # list of pages included (so if may dinedevelop na page i-add ung class dito para magpakita pag ni-run)
-        for page in (StartPage, SelectPage, DevPage, StackPage, QueuePage, BTPage, BSTPage):  
+        for page in (StartPage, SelectPage, DevPage, QueuePage):  
             frame = page(container, self)
             self.frames[page.__name__] = frame
             frame.place(relwidth=1, relheight=1)

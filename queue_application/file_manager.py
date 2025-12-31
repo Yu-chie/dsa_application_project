@@ -5,9 +5,9 @@ class FileManager:
         self.folder = folder
         self.default_file = default_file
         os.makedirs(self.folder, exist_ok=True) # Ensure folder exists
-        self.file_path = None
+        self.file_path = os.path.join(self.folder, self.default_file)
         # Create default file if it doesn't exist
-        if not os.path.exists(self.default_file):
+        if not os.path.exists(self.file_path):
             with open(self.file_path, 'w') as file:
                 file.write("Plate Number | Arrival Count | Departure Count\n")
                 file.write("-" * 50 + "\n")
