@@ -1,6 +1,11 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 
+# QUEUE
+from queue_application.parking_garage import ParkingGarage
+from queue_application.file_manager import FileManager
+from queue_application.queue_gui import QueueGUI
+
 class MainApp(tk.Tk):
     def __init__(self):
         super().__init__()       # initialize tk
