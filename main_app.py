@@ -208,7 +208,31 @@ class StackPage(tk.Frame):
     pass
 
 class QueuePage(tk.Frame):
-    pass
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        
+        # File Manager setup
+        file_manager = FileManager()
+        file_manager.setup_records_file()
+        
+        # Parking Garage Logic
+        garage = ParkingGarage(file_manager)
+        
+        # GUI setup
+        queue_gui = QueueGUI(self, garage)
+        queue_gui.pack(fill="both", expand=True)
+        
+        # Home Button
+        home_button = tk.Button(
+            self,
+            text="HOME",
+            font=("VT323", 12),
+            bg = "#594faf",
+            fg = "#ffffff",
+            padx=65,
+            command=lambda: controller.show_frame("StartPage")
+        )
+        home_button.place(x=30, y=30)
 
 class BTPage(tk.Frame):
     pass
