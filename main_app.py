@@ -213,7 +213,6 @@ class QueuePage(tk.Frame):
         
         # File Manager setup
         file_manager = FileManager()
-        file_manager.setup_records_file()
         
         # Parking Garage Logic
         garage = ParkingGarage(file_manager=file_manager)
