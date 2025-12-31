@@ -1,28 +1,26 @@
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 from PIL import Image, ImageTk
+from queue_application.parking_garage import ParkingGarage
 
-class QueueGUI:
-    def __init__(self, garage):
+class QueueGUI(tk.Frame):
+    def __init__(self, parent, garage):
+        super().__init__(parent)
         self.garage = garage
         
-        self.root = tk.Tk()
-        self.root.title("Queue Parking Garage Simulator")
-        self.root.geometry("800x500")
-        self.root.resizable(False, False)
+        # Canvas setup
+        self.canvas = tk.Canvas(self)
+        self.canvas.pack(fill="both", expand=True)
+        self.canvas.bind("<Configure>", self.resize_bg)
         
         # Background image
         self.bg_image = Image.open("queue_application/queue_gui/queue_bg.png")
-        self.bg_image = self.bg_image.resize((800, 500))
-        self.bg_photo = ImageTk.PhotoImage(self.bg_image)
-        
-        self.canvas = tk.Canvas(self.root, width=800, height=500)
-        self.canvas.pack(fill="both", expand=True)
-        self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
+        self.bg_photo = ImageTk.PhotoImage(self.bg_image.resize((1920, 1080)))
+        self.bg_image_id = self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
         
         # Buttons
         self.arrive_btn = tk.Button(
-            self.root,
+            self,
             text="Car Arrives",
             font=("VT323", 16),
             width=15,
@@ -30,7 +28,7 @@ class QueueGUI:
         )
         
         self.depart_btn = tk.Button(
-            self.root,
+            self,
             text="Car Departs",
             font=("VT323", 16),
             width=15,
@@ -38,16 +36,18 @@ class QueueGUI:
         )
         
         self.exit_btn = tk.Button(
-            self.root,
+            self,
             text="Exit",
             font=("VT323", 16),
             width=15,
-            command=self.root.quit
+            command=self.destroy
         )
         
-        self.canvas.create_window(200, 400, window=self.arrive_btn)
-        self.canvas.create_window(400, 400, window=self.depart_btn)
-        self.canvas.create_window(600, 400, window=self.exit_btn)
+        # Place buttons initially (will be repositioned on resize)
+        self.arrive_btn_window = self.canvas.create_window(1550, 250, window=self.arrive_btn)
+        self.depart_btn_window = self.canvas.create_window(1550, 350, window=self.depart_btn)
+        self.exit_btn_window = self.canvas.create_window(1550, 450, window=self.exit_btn)
+
         
     def car_arrives(self):
         plate = simpledialog.askstring("Car Arrives", "Enter the car's plate number:")
@@ -101,7 +101,14 @@ class QueueGUI:
                 )
             
             y += 25
-    
-    def run(self):
-        self.draw_table()  # Draw table on GUI start
-        self.root.mainloop()
+        
+    def resize_bg(self, event):
+        # Resize background
+        resized_bg = self.bg_image.resize((event.width, event.height))
+        self.bg_photo = ImageTk.PhotoImage(resized_bg)
+        self.canvas.itemconfig(self.bg_image_id, image=self.bg_photo)
+        
+        # Reposition buttons in upper-right box
+        self.canvas.coords(self.arrive_btn_window, event.width - 400, 250)
+        self.canvas.coords(self.depart_btn_window, event.width - 400, 350)
+        self.canvas.coords(self.exit_btn_window, event.width - 400, 450)

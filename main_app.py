@@ -1,6 +1,11 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 
+# QUEUE
+from queue_application.parking_garage import ParkingGarage
+from queue_application.file_manager import FileManager
+from queue_application.queue_gui import QueueGUI
+
 class MainApp(tk.Tk):
     def __init__(self):
         super().__init__()       # initialize tk
@@ -16,7 +21,7 @@ class MainApp(tk.Tk):
         
         self.frames = {}
         # list of pages included (so if may dinedevelop na page i-add ung class dito para magpakita pag ni-run)
-        for page in (StartPage, SelectPage, DevPage):  
+        for page in (StartPage, SelectPage, DevPage, QueuePage):  
             frame = page(container, self)
             self.frames[page.__name__] = frame
             frame.place(relwidth=1, relheight=1)
@@ -203,7 +208,30 @@ class StackPage(tk.Frame):
     pass
 
 class QueuePage(tk.Frame):
-    pass
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        
+        # File Manager setup
+        file_manager = FileManager()
+        
+        # Parking Garage Logic
+        garage = ParkingGarage(file_manager=file_manager)
+        
+        # GUI setup
+        queue_gui = QueueGUI(self, garage)
+        queue_gui.pack(fill="both", expand=True)
+        
+        # Home Button
+        home_button = tk.Button(
+            self,
+            text="HOME",
+            font=("VT323", 12),
+            bg = "#594faf",
+            fg = "#ffffff",
+            padx=65,
+            command=lambda: controller.show_frame("StartPage")
+        )
+        home_button.place(x=30, y=30)
 
 class BTPage(tk.Frame):
     pass
