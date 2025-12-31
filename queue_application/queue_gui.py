@@ -8,15 +8,15 @@ class QueueGUI(tk.Frame):
         super().__init__(parent)
         self.garage = garage
         
-        # Background image
-        self.bg_image = Image.open("queue_application/queue_gui/queue_bg.png")
-        self.bg_photo = ImageTk.PhotoImage(self.bg_image.resize((1920, 1080)))
-        self.bg_image_id = self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
-        
         # Canvas setup
         self.canvas = tk.Canvas(self)
         self.canvas.pack(fill="both", expand=True)
         self.canvas.bind("<Configure>", self.resize_bg)
+        
+        # Background image
+        self.bg_image = Image.open("queue_application/queue_gui/queue_bg.png")
+        self.bg_photo = ImageTk.PhotoImage(self.bg_image.resize((1920, 1080)))
+        self.bg_image_id = self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
         
         # Buttons
         self.arrive_btn = tk.Button(
