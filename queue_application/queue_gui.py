@@ -2,27 +2,23 @@ import tkinter as tk
 from tkinter import simpledialog, messagebox
 from PIL import Image, ImageTk
 
-class QueueGUI:
-    def __init__(self, garage):
+class QueueGUI(tk.Frame):
+    def __init__(self, parent, garage):
+        super().__init__(parent)
         self.garage = garage
-        
-        self.root = tk.Tk()
-        self.root.title("Queue Parking Garage Simulator")
-        self.root.geometry("800x500")
-        self.root.resizable(False, False)
         
         # Background image
         self.bg_image = Image.open("queue_application/queue_gui/queue_bg.png")
         self.bg_image = self.bg_image.resize((800, 500))
         self.bg_photo = ImageTk.PhotoImage(self.bg_image)
         
-        self.canvas = tk.Canvas(self.root, width=800, height=500)
+        self.canvas = tk.Canvas(self, width=800, height=500)
         self.canvas.pack(fill="both", expand=True)
         self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
         
         # Buttons
         self.arrive_btn = tk.Button(
-            self.root,
+            self,
             text="Car Arrives",
             font=("VT323", 16),
             width=15,
@@ -30,7 +26,7 @@ class QueueGUI:
         )
         
         self.depart_btn = tk.Button(
-            self.root,
+            self,
             text="Car Departs",
             font=("VT323", 16),
             width=15,
@@ -38,11 +34,11 @@ class QueueGUI:
         )
         
         self.exit_btn = tk.Button(
-            self.root,
+            self,
             text="Exit",
             font=("VT323", 16),
             width=15,
-            command=self.root.quit
+            command=self.destroy
         )
         
         self.canvas.create_window(200, 400, window=self.arrive_btn)
@@ -101,7 +97,3 @@ class QueueGUI:
                 )
             
             y += 25
-    
-    def run(self):
-        self.draw_table()  # Draw table on GUI start
-        self.root.mainloop()
