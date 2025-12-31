@@ -1,4 +1,4 @@
-from file_manager import FileManager
+from queue_application.file_manager import FileManager
 
 # PARKING GARAGE CLASS DEFINITION
 class ParkingGarage:

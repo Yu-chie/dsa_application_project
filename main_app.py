@@ -216,7 +216,7 @@ class QueuePage(tk.Frame):
         file_manager.setup_records_file()
         
         # Parking Garage Logic
-        garage = ParkingGarage(file_manager)
+        garage = ParkingGarage(file_manager=file_manager)
         
         # GUI setup
         queue_gui = QueueGUI(self, garage)

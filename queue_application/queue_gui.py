@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 from PIL import Image, ImageTk
+from queue_application.parking_garage import ParkingGarage
 
 class QueueGUI(tk.Frame):
     def __init__(self, parent, garage):
