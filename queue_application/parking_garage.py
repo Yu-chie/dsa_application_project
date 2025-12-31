@@ -108,33 +108,3 @@ class ParkingGarage:
                     car['arrival_count'],
                     car['departure_count']
                 ))
-
-    # MAIN PROGRAM LOOP
-    def run(self):
-        while True:
-            self.display_table()
-            
-            # Display Menu Options
-            print("\n===== Parking Garage Menu =====")
-            print("1. Car Arrives")
-            print("2. Car Departs")
-            print("3. Exit")
-            choice = input("Enter your choice (1-3): ")
-            
-            if choice == '1':
-                plate = input("Enter Plate number: ")
-                self.car_arrives(plate)
-            elif choice == '2':
-                plate = input("Enter Plate number: ")
-                self.car_departs(plate)
-            elif choice == '3':
-                print("Exiting Parking Garage Simulator. Goodbye!")
-                break
-            else:
-                print("Invalid choice. Please enter a number between 1 and 3.")
-
-if __name__ == "__main__":
-    file_manager = FileManager()
-    records_file_path = file_manager.setup_records_file()  # Setup records file
-    garage = ParkingGarage(file_manager=file_manager) # Create ParkingGarage instance
-    garage.run()
