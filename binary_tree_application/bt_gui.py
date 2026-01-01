@@ -117,3 +117,34 @@ class BTPage(tk.Frame):
         self.treelvl_button.destroy()
         
         self.value_input()
+    
+    def value_input(self):
+        self.value_label = tk.Label(
+            self.canvas,
+            text="Enter your node values:",
+            font=("VT323", 19),
+            bg = "#b8a8f1"
+        )
+        
+        self.value_entry = tk.Entry(
+            self.canvas,
+            text="Confrim Tree Level",
+            font=("VT323", 20),
+            justify="center"
+        )
+        
+        self.value_button = tk.Button(
+            self.canvas,
+            text="Submit",
+            font=("VT323", 15),
+            bg = "#ecb1ff",
+            fg = "#330084",
+            activebackground="#330084",
+            activeforeground="#ffffff",
+            command=self.add_nvalue
+        )
+        
+        self.canvas.create_window(1298, 108, window=self.value_label)
+        self.canvas.create_window(1296, 170, window=self.value_entry)
+        self.canvas.create_window(1295, 230, window=self.value_button)
+    
