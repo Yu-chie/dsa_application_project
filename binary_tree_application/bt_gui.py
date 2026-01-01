@@ -81,3 +81,39 @@ class BTPage(tk.Frame):
         self.canvas.create_window(1298, 108, window=self.inputlvl_label)
         self.canvas.create_window(1296, 170, window=self.treelvl_entry)
         self.canvas.create_window(1295, 230, window=self.treelvl_button)
+    
+    ''' TREE LEVEL CONFIRMATION - with error handling'''
+    def confirm_treelvl(self):
+        try:
+            levels = int(self.treelvl_entry.get())
+            
+            if not isinstance(levels, int):
+                raise TypeError
+            if levels < 1 or levels > 5:
+                raise ValueError
+            
+            self.tree = Tree(levels)
+            
+        except TypeError:
+            messagebox.showerror(
+                "Invalid",
+                "Tree level must be between 1-5 only"  
+            )
+            
+            return
+        
+        except ValueError:
+            messagebox.showerror(
+                "Invalid", 
+                "Tree level must be between 1-5 only"
+            )
+            
+            return
+        
+        self.tree = Tree(levels)
+        
+        self.inputlvl_label.destroy()
+        self.treelvl_entry.destroy()
+        self.treelvl_button.destroy()
+        
+        self.value_input()
