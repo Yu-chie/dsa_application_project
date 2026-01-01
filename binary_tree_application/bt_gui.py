@@ -149,6 +149,27 @@ class BTPage(tk.Frame):
         self.canvas.create_window(1296, 170, window=self.value_entry)
         self.canvas.create_window(1295, 230, window=self.value_button)
         
+    ''' FOR ADDING NODE VALUES '''
+    def add_nvalue(self):
+        value = self.value_entry.get()
+             
+        if self.tree.n_count >= self.tree.max_node:
+            messagebox.showerror(
+                "Binary Tree Full!", 
+                "You have reached the end of your Binary Tree"
+            )
+
+            return
+        
+        if self.n_root is None:
+            self.n_root = self.tree.create_node(value)
+            
+        else:   
+            self.tree.node_child(self.n_root, value)
+            
+        self.tree.n_count += 1
+        self.generate_tree()
+        
     def generate_tree(self):
         self.canvas.delete("tree")
         
