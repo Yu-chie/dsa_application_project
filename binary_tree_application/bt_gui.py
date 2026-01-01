@@ -50,3 +50,34 @@ class BTPage(tk.Frame):
         self.btree_bg = ImageTk.PhotoImage(resized)
         
         self.canvas.itemconfig(self.canvas_bg, image=self.btree_bg)
+    
+    ''' FOR TREE LEVEL INPUT '''
+    def treelvl_input(self):
+        self.inputlvl_label = tk.Label(
+            self.canvas,
+            text="Enter your Binary Tree Level:",
+            font=("VT323", 19),
+            bg = "#b8a8f1"
+        )
+        
+        self.treelvl_entry = tk.Entry(
+            self.canvas,
+            text="Confirm Tree Level",
+            font=("VT323", 20),
+            justify="center"
+        ) 
+        
+        self.treelvl_button = tk.Button(
+            self.canvas,
+            text="Confirm Tree Level",
+            font=("VT323", 15),
+            bg = "#ecb1ff",
+            fg = "#330084",
+            activebackground="#330084",
+            activeforeground="#ffffff",
+            command=self.confirm_treelvl
+        )
+        
+        self.canvas.create_window(1298, 108, window=self.inputlvl_label)
+        self.canvas.create_window(1296, 170, window=self.treelvl_entry)
+        self.canvas.create_window(1295, 230, window=self.treelvl_button)
