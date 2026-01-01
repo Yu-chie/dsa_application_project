@@ -118,6 +118,7 @@ class BTPage(tk.Frame):
         
         self.value_input()
     
+    ''' FOR VALUE ENTRIES IN TREE '''
     def value_input(self):
         self.value_label = tk.Label(
             self.canvas,
@@ -147,4 +148,24 @@ class BTPage(tk.Frame):
         self.canvas.create_window(1298, 108, window=self.value_label)
         self.canvas.create_window(1296, 170, window=self.value_entry)
         self.canvas.create_window(1295, 230, window=self.value_button)
+        
+    def generate_tree(self):
+        self.canvas.delete("tree")
+        
+        def draw(node, x, y, r):
+            if not node:
+                return
+            
+            self.canvas.create_oval(x-20, y-20, x+20, y+20, fill="pink", tags="tree")
+            self.canvas.create_text(x, y, text=node.n_val, tags="tree")
+            
+            if node.n_left:
+                self.canvas.create_line(x, y, x-r, y+80, tags="tree")
+                draw(node.n_left, x-r, y+80, r//2)
+            if node.n_right:
+                self.canvas.create_line(x, y, x+r, y+80, tags="tree")
+                draw(node.n_right, x+r, y+80, r//2)
+                
+        draw(self.n_root, 500, 200, 200)
+        
     
