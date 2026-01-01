@@ -11,6 +11,8 @@ class Node:
 class Tree:
     def __init__(self, levels):
         self.levels = levels                                                     # will get value if correct input
+        self.max_node = (2 ** self.levels) - 1
+        self.n_count = 0
         
     # build tree
     def create_node(self, value):                                     # create node object
