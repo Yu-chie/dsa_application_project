@@ -96,6 +96,7 @@ class BTPage(tk.Frame):
             self.tree = Tree(levels)
             
         except TypeError:
+            self.treelvl_entry.delete(0, tk.END)
             messagebox.showerror(
                 "Invalid",
                 "Tree level must be between 1-5 only"  
@@ -104,6 +105,7 @@ class BTPage(tk.Frame):
             return
         
         except ValueError:
+            self.treelvl_entry.delete(0, tk.END)
             messagebox.showerror(
                 "Invalid", 
                 "Tree level must be between 1-5 only"
@@ -274,7 +276,8 @@ class BTPage(tk.Frame):
         self.preorder_title.config(text=f"Preorder (TLR): {tlr}", bg="#9d8cf3")
         self.inorder_title.config(text=f"Inorder (LTR): {ltr}", bg="#9d8cf3")
         self.postorder_title.config(text=f"Postrder (LRT): {lrt}", bg="#9d8cf3")
-        
+    
+    ''' FOR RESETTING PROGRESS '''
     def reset_progress(self):
         # delete tree
         self.canvas.delete("tree")  
