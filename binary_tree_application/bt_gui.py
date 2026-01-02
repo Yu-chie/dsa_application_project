@@ -154,10 +154,22 @@ class BTPage(tk.Frame):
             command=self.add_nvalue
         )
         
+        self.reset_button = tk.Button(
+            self.canvas, 
+            text="Reset Progres",
+            font=("VT323", 15),
+            bg = "#ecb1ff",
+            fg = "#330084",
+            activebackground="#330084",
+            activeforeground="#ffffff",
+            command=self.reset_progress
+        )
+        
         self.canvas.create_window(1298, 108, window=self.value_label)
         self.canvas.create_window(1298, 135, window=self.note_label)
         self.canvas.create_window(1296, 170, window=self.value_entry)
         self.canvas.create_window(1295, 230, window=self.value_button)
+        self.canvas.create_window(1295, 640, window=self.reset_button)
         
     ''' FOR ADDING NODE VALUES '''
     def add_nvalue(self):
