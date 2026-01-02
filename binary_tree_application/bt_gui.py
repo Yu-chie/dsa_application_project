@@ -44,6 +44,7 @@ class BTPage(tk.Frame):
         self.values = []
         
         self.treelvl_input()
+        self.show_traversal()
         
     def resize_bg(self, event):
         resized = self.bg_img.resize((event.width, event.height))
@@ -215,4 +216,32 @@ class BTPage(tk.Frame):
                 
         draw_nodes(0, 500, 200, 200)
         
-    
+    ''' FOR TRAVERSAL TITLES '''    
+    def show_traversal(self):
+        self.preorder_title = tk.Label(
+            self.canvas, 
+            text="Preorder (TLR): ",
+            font=("VT323", 15),
+            bg = "#9d8cf3",
+            justify="left"
+        )
+        
+        self.inorder_title = tk.Label(
+            self.canvas, 
+            text="Inorder (LTR): ",
+            font=("VT323", 15),
+            bg = "#9d8cf3",
+            justify="left"
+        )
+        
+        self.postorder_title = tk.Label(
+            self.canvas, 
+            text="Postorder (LRT): ",
+            font=("VT323", 15),
+            bg = "#9d8cf3",
+            justify="left"
+        )
+        
+        self.canvas.create_window(1165, 350, window=self.preorder_title)
+        self.canvas.create_window(1162, 399, window=self.inorder_title)
+        self.canvas.create_window(1169, 448, window=self.postorder_title)
