@@ -275,3 +275,24 @@ class BTPage(tk.Frame):
         self.inorder_title.config(text=f"Inorder (LTR): {ltr}", bg="#9d8cf3")
         self.postorder_title.config(text=f"Postrder (LRT): {lrt}", bg="#9d8cf3")
         
+    def reset_progress(self):
+        # delete tree
+        self.canvas.delete("tree")  
+        
+        # reset tree data
+        self.tree = None
+        
+        # delete traversal
+        self.preorder_title.config(text=f"Preorder (TLR):", bg="#9d8cf3")
+        self.inorder_title.config(text=f"Inorder (LTR):", bg="#9d8cf3")
+        self.postorder_title.config(text=f"Postrder (LRT):", bg="#9d8cf3")
+        
+        # reset widgets
+        self.value_label.destroy()
+        self.note_label.destroy()
+        self.value_entry.destroy()
+        self.value_button.destroy()
+        self.reset_button.destroy()
+
+        # revert to tree level inputs
+        self.treelvl_input()
