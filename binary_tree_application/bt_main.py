@@ -1,7 +1,8 @@
 # class to make nodes
 class Node:
-    def __init__(self, value):
+    def __init__(self, value, empty_node=False):
         self.value = value
+        self.empty_node = empty_node
 
 # class to make the tree - connections of nodes
 class Tree:

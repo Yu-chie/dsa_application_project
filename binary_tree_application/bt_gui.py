@@ -90,6 +90,7 @@ class BTPage(tk.Frame):
             
             if not isinstance(levels, int):
                 raise TypeError
+            
             if levels < 1 or levels > 5:
                 raise ValueError
             
@@ -158,7 +159,7 @@ class BTPage(tk.Frame):
         
         self.reset_button = tk.Button(
             self.canvas, 
-            text="Reset Progres",
+            text="Reset Progress",
             font=("VT323", 15),
             bg = "#ecb1ff",
             fg = "#330084",
@@ -204,7 +205,9 @@ class BTPage(tk.Frame):
             if node is None:
                 return
             
-
+            if node.empty_node:
+                return
+            
             n_left = 2 * n_count + 1
             n_right = 2 * n_count + 2
             
