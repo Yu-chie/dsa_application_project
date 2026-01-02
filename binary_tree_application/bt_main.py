@@ -1,5 +1,3 @@
-import tkinter as tk
-                
 # class to make nodes
 class Node:
     def __init__(self, value):
@@ -91,10 +89,3 @@ class Tree:
         postorder.append(node.value)
         
         return postorder
-
-# class for tkinter implementation
-class BTMaker:
-    pass
-
-# if __name__ == "__main__":
-    
