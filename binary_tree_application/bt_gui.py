@@ -181,11 +181,11 @@ class BTPage(tk.Frame):
             self.canvas.create_text(x, y, text=node.n_val, tags="tree")
             
             if node.n_left:
-                self.canvas.create_line(x, y, x-r, y+80, tags="tree")
                 draw(node.n_left, x-r, y+80, r//2)
+                self.canvas.create_line(x, y, x-r, y+80, tags="tree")
             if node.n_right:
-                self.canvas.create_line(x, y, x+r, y+80, tags="tree")
                 draw(node.n_right, x+r, y+80, r//2)
+                self.canvas.create_line(x, y, x+r, y+80, tags="tree")
                 
         draw(self.n_root, 500, 200, 200)
         
