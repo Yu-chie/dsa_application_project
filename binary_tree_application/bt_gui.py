@@ -179,11 +179,19 @@ class BTPage(tk.Frame):
             n_left = 2 * n_count + 1
             n_right = 2 * n_count + 2
             
-            if n_left < len(self.tree.node) and self.tree.node[n_left] is not None:
+            if (
+                n_left < len(self.tree.node) 
+                and self.tree.node[n_left] is not None
+                and not self.tree.node[n_left].empty_node
+            ):
                 self.canvas.create_line(x, y, x-r, y+80-20, tags="tree")
                 draw_nodes(n_left, x-r, y+80, r//2)
 
-            if n_right < len(self.tree.node) and self.tree.node[n_right] is not None:
+            if (
+                n_right < len(self.tree.node) 
+                and self.tree.node[n_right] is not None
+                and not self.tree.node[n_right].empty_node
+            ):
                 self.canvas.create_line(x, y, x+r, y+80-20, tags="tree")
                 draw_nodes(n_right, x+r, y+80, r//2)
             

@@ -18,6 +18,14 @@ class Tree:
         if self.n_count >= self.max_node:
             raise OverflowError("Your tree is already full")
         
+        # block the insertion of child nodes for empty nodes
+        if self.n_count != 0:
+            parent = (self.n_count -1) // 2
+            if self.node[parent] and self.node[parent].empty_node:
+                self.node[self.n_count] = Node("", empty_node=True)
+                self.n_count += 1
+                return
+        
         if value == ".":
             self.node[self.n_count] = Node("", empty_node=True)
         else:
