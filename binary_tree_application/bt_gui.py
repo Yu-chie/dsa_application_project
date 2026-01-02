@@ -257,6 +257,7 @@ class BTPage(tk.Frame):
             text=tlr,
             font=("VT323", 15),
             bg = "#9d8cf3",
+            wraplength=330,
             justify="left"
         )
         
@@ -265,6 +266,7 @@ class BTPage(tk.Frame):
             text=ltr,
             font=("VT323", 15),
             bg = "#9d8cf3",
+            wraplength=330,
             justify="left"
         )  
         
@@ -273,9 +275,10 @@ class BTPage(tk.Frame):
             text=lrt,
             font=("VT323", 15),
             bg = "#9d8cf3",
+            wraplength=330,
             justify="left"
         )
         
-        self.canvas.create_window(1300, 350, window=self.preorder_data)
-        self.canvas.create_window(1300, 399, window=self.inorder_data)
-        self.canvas.create_window(1300, 448, window=self.postorder_data)
+        self.canvas.create_window(1290, 362, window=self.preorder_title)
+        self.canvas.create_window(1290, 455, window=self.inorder_title)
+        self.canvas.create_window(1290, 551, window=self.postorder_title)
