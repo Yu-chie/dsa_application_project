@@ -127,6 +127,14 @@ class BTPage(tk.Frame):
             bg = "#b8a8f1"
         )
         
+        self.note_label = tk.Label(
+            self.canvas,
+            text="Enter a period (.) for any empty nodes you want",
+            font=("VT323", 11),
+            bg = "#b8a8f1",
+            fg= "#59007a"
+        )
+        
         self.value_entry = tk.Entry(
             self.canvas,
             text="Confrim Tree Level",
@@ -146,6 +154,7 @@ class BTPage(tk.Frame):
         )
         
         self.canvas.create_window(1298, 108, window=self.value_label)
+        self.canvas.create_window(1298, 135, window=self.note_label)
         self.canvas.create_window(1296, 170, window=self.value_entry)
         self.canvas.create_window(1295, 230, window=self.value_button)
         
