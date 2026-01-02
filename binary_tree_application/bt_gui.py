@@ -1,7 +1,7 @@
 import tkinter as tk 
 from tkinter import messagebox
 from PIL import Image, ImageTk
-from bt_main import Tree
+from binary_tree_application.bt_main import Tree
 
 class BTPage(tk.Frame):
     def __init__(self, parent, controller):
