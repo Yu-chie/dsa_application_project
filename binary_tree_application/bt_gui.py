@@ -186,8 +186,13 @@ class BTPage(tk.Frame):
                 self.canvas.create_line(x, y, x+r, y+80-20, tags="tree")
                 draw_nodes(n_right, x+r, y+80, r//2)
             
-            self.canvas.create_oval(x-20, y-20, x+20, y+20, fill="pink", tags="tree")
-            self.canvas.create_text(x, y, text=node.value, tags="tree")
+            self.canvas.create_oval(
+                x-20, y-20, x+20, y+20, 
+                fill="#ecb1ff", outline="#330084", tags="tree")
+            
+            self.canvas.create_text(
+                x, y, text=node.value, 
+                font=("VT323"), tags="tree")
                 
         draw_nodes(0, 500, 200, 200)
         
