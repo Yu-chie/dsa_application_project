@@ -175,24 +175,28 @@ class BTPage(tk.Frame):
             if node is None:
                 return
             
-            n_left = 2 * n_count + 1
-            n_right = 2 * n_count + 2
+            # only draw child if node is not empty
+            if not node.empty_node:
+                n_left = 2 * n_count + 1
+                n_right = 2 * n_count + 2
             
-            if n_left < len(self.tree.node) and self.tree.node[n_left]:
-                self.canvas.create_line(x, y, x-r, y+80-20, tags="tree")
-                draw_nodes(n_left, x-r, y+80, r//2)
+                if n_left < len(self.tree.node) and self.tree.node[n_left]:
+                    self.canvas.create_line(x, y, x-r, y+80-20, tags="tree")
+                    draw_nodes(n_left, x-r, y+80, r//2)
 
-            if n_right < len(self.tree.node) and self.tree.node[n_right]:
-                self.canvas.create_line(x, y, x+r, y+80-20, tags="tree")
-                draw_nodes(n_right, x+r, y+80, r//2)
+                if n_right < len(self.tree.node) and self.tree.node[n_right]:
+                    self.canvas.create_line(x, y, x+r, y+80-20, tags="tree")
+                    draw_nodes(n_right, x+r, y+80, r//2)
             
             self.canvas.create_oval(
                 x-20, y-20, x+20, y+20, 
                 fill="#ecb1ff", outline="#330084", tags="tree")
             
-            self.canvas.create_text(
-                x, y, text=node.value, 
-                font=("VT323"), tags="tree")
+            # only put text if node is not empty
+            if not node.empty_node:
+                self.canvas.create_text(
+                    x, y, text=node.value, 
+                    font=("VT323"), tags="tree")
                 
         draw_nodes(0, 500, 200, 200)
         
