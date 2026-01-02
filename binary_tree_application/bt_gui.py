@@ -174,6 +174,9 @@ class BTPage(tk.Frame):
         
         self.generate_tree()
         
+        if not self.tree.valid_queue:
+            self.traversal_holder()
+        
     ''' FOR DRAWING THE TREE '''
     def generate_tree(self):
         self.canvas.delete("tree")
