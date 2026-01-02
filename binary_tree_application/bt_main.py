@@ -18,7 +18,11 @@ class Tree:
         if self.n_count >= self.max_node:
             raise OverflowError("Your tree is already full")
         
-        self.node[self.n_count] = Node(value)
+        if value == ".":
+            self.node[self.n_count] = Node("", empty_node=True)
+        else:
+            self.node[self.n_count] = Node(value)
+
         self.n_count += 1
     
     # for traversing preorder (TLR)
