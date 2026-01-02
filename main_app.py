@@ -236,12 +236,6 @@ class QueuePage(tk.Frame):
         )
         home_button.place(x=30, y=30)
 
-class BTPage(tk.Frame):
-    pass
-
-class BSTPage(tk.Frame):
-    pass
-
 class DevPage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
