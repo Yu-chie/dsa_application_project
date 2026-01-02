@@ -87,6 +87,7 @@ class BTPage(tk.Frame):
     def confirm_treelvl(self):
         try:
             levels = int(self.treelvl_entry.get())
+            self.treelvl_entry.delete(0, tk.END)
             
             if not isinstance(levels, int):
                 raise TypeError
@@ -133,7 +134,7 @@ class BTPage(tk.Frame):
         
         self.note_label = tk.Label(
             self.canvas,
-            text="Enter a period (.) for any empty nodes you want",
+            text="Enter a period (.) or leave it blank for empty nodes",
             font=("VT323", 11),
             bg = "#b8a8f1",
             fg= "#59007a"

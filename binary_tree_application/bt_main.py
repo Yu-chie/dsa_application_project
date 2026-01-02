@@ -23,7 +23,7 @@ class Tree:
         index = self.valid_queue.pop(0)
         
         # for empty node
-        if value == ".":
+        if value == "." or value == "":
             self.node[index] = Node("", empty_node=True)
             return
         
