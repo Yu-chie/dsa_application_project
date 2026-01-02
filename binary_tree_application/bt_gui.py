@@ -223,6 +223,7 @@ class BTPage(tk.Frame):
             text="Preorder (TLR): ",
             font=("VT323", 15),
             bg = "#9d8cf3",
+            wraplength=330,
             justify="left"
         )
         
@@ -231,48 +232,13 @@ class BTPage(tk.Frame):
             text="Inorder (LTR): ",
             font=("VT323", 15),
             bg = "#9d8cf3",
+            wraplength=330,
             justify="left"
         )
         
         self.postorder_title = tk.Label(
             self.canvas, 
             text="Postorder (LRT): ",
-            font=("VT323", 15),
-            bg = "#9d8cf3",
-            justify="left"
-        )
-        
-        self.canvas.create_window(1165, 350, window=self.preorder_title)
-        self.canvas.create_window(1162, 399, window=self.inorder_title)
-        self.canvas.create_window(1169, 448, window=self.postorder_title)
-    
-    ''' FOR PRINTING TRAVERSALS '''
-    def traversal_holder(self):
-        tlr = " ".join(self.tree.trav_preorder())
-        ltr = " ".join(self.tree.trav_inorder())  
-        lrt = " ".join(self.tree.trav_postorder())
-        
-        self.preorder_data = tk.Label(
-            self.canvas,
-            text=tlr,
-            font=("VT323", 15),
-            bg = "#9d8cf3",
-            wraplength=330,
-            justify="left"
-        )
-        
-        self.inorder_data = tk.Label(
-            self.canvas,
-            text=ltr,
-            font=("VT323", 15),
-            bg = "#9d8cf3",
-            wraplength=330,
-            justify="left"
-        )  
-        
-        self.postorder_data = tk.Label(
-            self.canvas,
-            text=lrt,
             font=("VT323", 15),
             bg = "#9d8cf3",
             wraplength=330,
@@ -282,3 +248,14 @@ class BTPage(tk.Frame):
         self.canvas.create_window(1290, 362, window=self.preorder_title)
         self.canvas.create_window(1290, 455, window=self.inorder_title)
         self.canvas.create_window(1290, 551, window=self.postorder_title)
+        
+    ''' FOR PRINTING TRAVERSALS '''
+    def traversal_holder(self):
+        tlr = " ".join(self.tree.trav_preorder())
+        ltr = " ".join(self.tree.trav_inorder())  
+        lrt = " ".join(self.tree.trav_postorder())
+        
+        self.preorder_title.config(text=f"Preorder (TLR): {tlr}", bg="#9d8cf3")
+        self.inorder_title.config(text=f"Inorder (LTR): {ltr}", bg="#9d8cf3")
+        self.postorder_title.config(text=f"Postrder (LRT): {lrt}", bg="#9d8cf3")
+        
