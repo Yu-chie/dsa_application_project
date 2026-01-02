@@ -2,40 +2,24 @@ import tkinter as tk
                 
 # class to make nodes
 class Node:
-    def __init__(self, data):
-        self.n_left = None
-        self.n_val = data
-        self.n_right = None
+    def __init__(self, value):
+        self.value = value
 
 # class to make the tree - connections of nodes
 class Tree:
     def __init__(self, levels):
         self.levels = levels                                                     # will get value if correct input
         self.max_node = (2 ** self.levels) - 1
+        self.node = [None] * self.max_node
         self.n_count = 0
         
     # build tree
-    def create_node(self, value):                                     # create node object
-        return Node(value)
-    
-    def node_child(self, node, value):                                # make left and right child
-        if value == ".":
-            return None
+    def insert_node(self, value):
+        if self.n_count >= self.max_node:
+            raise OverflowError("Your tree is already full")
         
-        if node == None:
-            return self.create_node(value)
-        
-        if node.n_left is None:
-            node.n_left = self.create_node(value)
-        
-        elif node.n_right is None:
-            node.n_right = self.create_node(value)
-            
-        else: 
-            self.node_child(node.n_left, value)
-            self.node_child(node.n_right, value)
-        
-        return node
+        self.node[self.n_count] = Node(value)
+        self.n_count += 1
     
     # for traversing preorder (TLR)
     def trav_preorder(self, root):
