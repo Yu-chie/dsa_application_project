@@ -13,25 +13,30 @@ class Tree:
         self.node = [None] * self.max_node
         self.n_count = 0
         
+        # queue for index that can accept input
+        self.valid_queue = [0]
+        
     # build tree
     def insert_node(self, value):
-        if self.n_count >= self.max_node:
+        if not self.valid_queue:
             raise OverflowError("Your tree is already full")
         
-        # block the insertion of child nodes for empty nodes
-        if self.n_count != 0:
-            parent = (self.n_count -1) // 2
-            if self.node[parent] and self.node[parent].empty_node:
-                self.node[self.n_count] = Node("", empty_node=True)
-                self.n_count += 1
-                return
+        index = self.valid_queue.pop(0)
         
+        # for empty node
         if value == ".":
-            self.node[self.n_count] = Node("", empty_node=True)
-        else:
-            self.node[self.n_count] = Node(value)
-
-        self.n_count += 1
+            self.node[index] = Node("", empty_node=True)
+            return
+        
+        self.node[index] = Node(value)
+            
+        n_left = 2 * index + 1
+        n_right = 2 * index + 2
+        
+        if n_left < self.max_node:
+            self.valid_queue.append(n_left)
+        if n_right < self.max_node:
+            self.valid_queue.append(n_right)
     
     # for traversing preorder (TLR)
     def trav_preorder(self, root):
