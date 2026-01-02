@@ -39,25 +39,58 @@ class Tree:
             self.valid_queue.append(n_right)
     
     # for traversing preorder (TLR)
-    def trav_preorder(self, root):
-        if root is not None:
-            print(root.n_val)
-            self.trav_preorder(root.n_left)
-            self.trav_preorder(root.n_right)
+    def trav_preorder(self, index=0, preorder=None):
+        if preorder is None:
+            preorder = []
+            
+        if index >= len(self.node):
+            return preorder
+        
+        node = self.node[index]
+        if node is None or node.empty_node:
+            return preorder
+        
+        preorder.append(node.value)
+        self.trav_preorder(2 * index + 1, preorder)
+        self.trav_preorder(2 * index + 2, preorder)
+        
+        return preorder
         
     # for traversing inorder (LTR)
-    def trav_inorder(self, root):
-        if root is not None:
-            self.trav_inorder(root.n_left)
-            print(root.n_val)
-            self.trav_inorder(root.n_right)
+    def trav_inorder(self, index=0, inorder=None):
+        if inorder is None:
+            inorder = []
+            
+        if index >= len(self.node):
+            return inorder
+        
+        node = self.node[index]
+        if node is None or node.empty_node:
+            return inorder
+        
+        self.trav_preorder(2 * index + 1, inorder)
+        inorder.append(node.value)
+        self.trav_preorder(2 * index + 2, inorder)
+        
+        return inorder
     
     # for traversing postorder (LRT)
-    def trav_postorder(self, root):
-        if root is not None:
-            self.trav_postorder(root.n_left)
-            self.trav_postorder(root.n_right)
-            print(root.n_val)
+    def trav_postorder(self, index=0, postorder=None):
+        if postorder is None:
+            postorder = []
+            
+        if index >= len(self.node):
+            return postorder
+        
+        node = self.node[index]
+        if node is None or node.empty_node:
+            return postorder
+        
+        self.trav_postorder(2 * index + 1, postorder)
+        self.trav_postorder(2 * index + 2, postorder)
+        postorder.append(node.value)
+        
+        return postorder
 
 # class for tkinter implementation
 class BTMaker:
