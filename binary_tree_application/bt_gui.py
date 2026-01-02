@@ -13,7 +13,7 @@ class BTPage(tk.Frame):
         self.canvas.pack(fill="both", expand=True)
         
         # load bg image
-        self.bg_img = Image.open("pics/bt_bg.png")
+        self.bg_img = Image.open("assets/bt_bg.png")
         self.btree_bg = ImageTk.PhotoImage(self.bg_img)
         
         # draw bg 
