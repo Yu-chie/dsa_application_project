@@ -175,20 +175,19 @@ class BTPage(tk.Frame):
             if node is None:
                 return
             
+            n_left = 2 * n_count + 1
+            n_right = 2 * n_count + 2
+            
+            if n_left < len(self.tree.node) and self.tree.node[n_left]:
+                self.canvas.create_line(x, y, x-r, y+80-20, tags="tree")
+                draw_nodes(n_left, x-r, y+80, r//2)
+
+            if n_right < len(self.tree.node) and self.tree.node[n_right]:
+                self.canvas.create_line(x, y, x+r, y+80-20, tags="tree")
+                draw_nodes(n_right, x+r, y+80, r//2)
             
             self.canvas.create_oval(x-20, y-20, x+20, y+20, fill="pink", tags="tree")
             self.canvas.create_text(x, y, text=node.value, tags="tree")
-            
-            n_left = 2 * n_count + 1
-            n_right = 2 * n_count + 2
-               
-            if n_left < len(self.tree.node):
-                self.canvas.create_line(x, y, x-r, y+80, tags="tree")
-                draw_nodes(n_left, x-r, y+80, r//2)
-
-            if n_right < len(self.tree.node):
-                self.canvas.create_line(x, y, x+r, y+80, tags="tree")
-                draw_nodes(n_right, x+r, y+80, r//2)
                 
         draw_nodes(0, 500, 200, 200)
         
