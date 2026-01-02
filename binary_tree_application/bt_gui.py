@@ -162,6 +162,7 @@ class BTPage(tk.Frame):
     ''' FOR ADDING NODE VALUES '''
     def add_nvalue(self):
         value = self.value_entry.get()
+        self.value_entry.delete(0, tk.END)
              
         try: 
             self.tree.insert_node(value)
