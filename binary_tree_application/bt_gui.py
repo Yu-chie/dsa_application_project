@@ -245,3 +245,37 @@ class BTPage(tk.Frame):
         self.canvas.create_window(1165, 350, window=self.preorder_title)
         self.canvas.create_window(1162, 399, window=self.inorder_title)
         self.canvas.create_window(1169, 448, window=self.postorder_title)
+    
+    ''' FOR PRINTING TRAVERSALS '''
+    def traversal_holder(self):
+        tlr = " ".join(self.tree.trav_preorder())
+        ltr = " ".join(self.tree.trav_inorder())  
+        lrt = " ".join(self.tree.trav_postorder())
+        
+        self.preorder_data = tk.Label(
+            self.canvas,
+            text=tlr,
+            font=("VT323", 15),
+            bg = "#9d8cf3",
+            justify="center"
+        )
+        
+        self.inorder_data = tk.Label(
+            self.canvas,
+            text=ltr,
+            font=("VT323", 15),
+            bg = "#9d8cf3",
+            justify="center"
+        )  
+        
+        self.postorder_data = tk.Label(
+            self.canvas,
+            text=lrt,
+            font=("VT323", 15),
+            bg = "#9d8cf3",
+            justify="center"
+        )
+        
+        self.canvas.create_window(1180, 350, window=self.preorder_title)
+        self.canvas.create_window(1180, 399, window=self.inorder_title)
+        self.canvas.create_window(1180, 448, window=self.postorder_title)
