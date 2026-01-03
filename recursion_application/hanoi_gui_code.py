@@ -1,11 +1,13 @@
 from tkinter import *
+import tkinter as tk
 import tkinter.messagebox as messagebox
 from PIL import Image, ImageTk
 import tkinter.font as tkfont
 import os
 
-class TowerOfHanoiGUI:
-    def __init__(self, master):
+class TowerOfHanoiGUI(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
         # -----------------------------
         # Window settings
         # -----------------------------
@@ -26,10 +28,10 @@ class TowerOfHanoiGUI:
         self.colors = ["#ef476f", "#f78c6b", "#ffd166",
                        "#06d6a0", "#118ab2", "#073b4c"]
 
-        master.title(self.title)
-        master.geometry(f"{self.canvas_width}x{self.canvas_height}")
-        master.resizable(False, False)
-        self.root = master
+        parent.title(self.title)
+        parent.geometry(f"{self.canvas_width}x{self.canvas_height}")
+        parent.resizable(False, False)
+        self.root = parent
 
         # -----------------------------
         # Fonts
@@ -40,7 +42,7 @@ class TowerOfHanoiGUI:
         # Canvas
         # -----------------------------
         self.canvas = Canvas(
-            master,
+            parent,
             width=self.canvas_width,
             height=self.canvas_height,
             highlightthickness=0
@@ -65,7 +67,7 @@ class TowerOfHanoiGUI:
         # Controls Frame (full width, colored background)
         # -----------------------------
         controls_height = 50
-        controls_frame = Frame(master, width=1242, height=controls_height, bg="#3b2f9a")
+        controls_frame = Frame(parent, width=1242, height=controls_height, bg="#3b2f9a")
         controls_frame.place(x=19, y=60)  # below title area
         controls_frame.pack_propagate(False)  # fix height
 
