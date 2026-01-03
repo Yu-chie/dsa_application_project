@@ -11,6 +11,12 @@ class TowerOfHanoiGUI(tk.Frame):
         # -----------------------------
         # Window settings
         # -----------------------------
+
+        if isinstance(parent, (tk.Tk, tk.Toplevel)):
+            parent.title("Tower of Hanoi")
+            parent.geometry("1280x720")
+            parent.resizable(False, False)
+
         self.title = "Tower of Hanoi"
         self.delay = 500
         self.max_disks = 7
@@ -28,10 +34,11 @@ class TowerOfHanoiGUI(tk.Frame):
         self.colors = ["#ef476f", "#f78c6b", "#ffd166",
                        "#06d6a0", "#118ab2", "#073b4c"]
 
-        parent.title(self.title)
-        parent.geometry(f"{self.canvas_width}x{self.canvas_height}")
-        parent.resizable(False, False)
-        self.root = parent
+        if isinstance(parent, (tk.Tk, tk.Toplevel)):
+            parent.title(self.title)
+            parent.geometry(f"{self.canvas_width}x{self.canvas_height}")
+            parent.resizable(False, False)
+            self.root = parent
 
         # -----------------------------
         # Fonts
