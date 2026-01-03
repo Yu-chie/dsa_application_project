@@ -6,6 +6,9 @@ from queue_application.parking_garage import ParkingGarage
 from queue_application.file_manager import FileManager
 from queue_application.queue_gui import QueueGUI
 
+# BINARY TREE
+from binary_tree_application.bt_gui import BTPage
+
 class MainApp(tk.Tk):
     def __init__(self):
         super().__init__()       # initialize tk
@@ -21,7 +24,7 @@ class MainApp(tk.Tk):
         
         self.frames = {}
         # list of pages included (so if may dinedevelop na page i-add ung class dito para magpakita pag ni-run)
-        for page in (StartPage, SelectPage, DevPage, QueuePage):  
+        for page in (StartPage, SelectPage, DevPage, QueuePage, BTPage):  
             frame = page(container, self)
             self.frames[page.__name__] = frame
             frame.place(relwidth=1, relheight=1)
@@ -232,12 +235,6 @@ class QueuePage(tk.Frame):
             command=lambda: controller.show_frame("StartPage")
         )
         home_button.place(x=30, y=30)
-
-class BTPage(tk.Frame):
-    pass
-
-class BSTPage(tk.Frame):
-    pass
 
 class DevPage(tk.Frame):
     def __init__(self, parent, controller):
