@@ -9,6 +9,9 @@ from queue_application.queue_gui import QueueGUI
 # BINARY TREE
 from binary_tree_application.bt_gui import BTPage
 
+# RECURSION
+from recursion_application.hanoi_gui_code import TowerOfHanoiGUI
+
 class MainApp(tk.Tk):
     def __init__(self):
         super().__init__()       # initialize tk
@@ -24,7 +27,7 @@ class MainApp(tk.Tk):
         
         self.frames = {}
         # list of pages included (so if may dinedevelop na page i-add ung class dito para magpakita pag ni-run)
-        for page in (StartPage, SelectPage, DevPage, QueuePage, BTPage):  
+        for page in (StartPage, SelectPage, DevPage, QueuePage, BTPage, HanoiPage):  
             frame = page(container, self)
             self.frames[page.__name__] = frame
             frame.place(relwidth=1, relheight=1)
@@ -224,6 +227,26 @@ class QueuePage(tk.Frame):
         queue_gui = QueueGUI(self, garage)
         queue_gui.pack(fill="both", expand=True)
         
+        # Home Button
+        home_button = tk.Button(
+            self,
+            text="HOME",
+            font=("VT323", 12),
+            bg = "#594faf",
+            fg = "#ffffff",
+            padx=65,
+            command=lambda: controller.show_frame("StartPage")
+        )
+        home_button.place(x=30, y=30)
+
+class HanoiPage(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+
+        # Recursion GUI setup
+        hanoi_gui = TowerOfHanoiGUI(self)
+        hanoi_gui.pack(fill="both", expand=True)
+
         # Home Button
         home_button = tk.Button(
             self,
