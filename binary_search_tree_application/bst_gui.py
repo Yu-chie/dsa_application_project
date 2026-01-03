@@ -38,6 +38,14 @@ class BSTPage(tk.Frame):
         )
         
         self.canvas.create_window(103, 45, window=home_button)
+        
+        ''' LOGIC HOLDERS '''
+        self.tree = None
+        self.n_root = None
+        self.values = []
+        
+        self.user_decision()
+        self.traversal_title()
     
     def resize_bg(self, event):
         resized = self.bg_img.resize((event.width, event.height))
