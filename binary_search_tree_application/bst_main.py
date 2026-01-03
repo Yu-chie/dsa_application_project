@@ -1,6 +1,3 @@
-import tkinter as tk
-import random
-
 class Node:
     def __init__(self, data):
         self.n_left = None
@@ -36,8 +33,3 @@ class BSTree:
             self.inorder(root.n_left)
             print(root.n_val)
             self.inorder(root.n_right)
-
-class BSTMaker:
-    pass
-
-# if __name__ == "__main__":
