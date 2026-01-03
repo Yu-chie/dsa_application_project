@@ -32,18 +32,12 @@ class TowerOfHanoiGUI:
         self.root = master
 
         # -----------------------------
-        # Load custom font (VT323)
+        # Fonts
         # -----------------------------
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        font_path = os.path.join(base_dir, "VT323-Regular.ttf")
-
-        tk_font_name = "VT323"
-        self.root.tk.call('font', 'create', tk_font_name, '-family', tk_font_name, '-size', 20)
-        self.ui_font = tkfont.Font(family=tk_font_name, size=22)
-        self.title_font = tkfont.Font(family=tk_font_name, size=42)
+        self.ui_font = tkfont.Font(family="VT323", size=20)
 
         # -----------------------------
-        # Canvas for Hanoi drawing
+        # Canvas
         # -----------------------------
         self.canvas = Canvas(
             master,
@@ -54,33 +48,59 @@ class TowerOfHanoiGUI:
         self.canvas.pack()
 
         # -----------------------------
-        # Load background image
+        # Background image
         # -----------------------------
+        base_dir = os.path.dirname(os.path.abspath(__file__))
         bg_path = os.path.join(base_dir, "hanoi_bg.png")
-        bg_image = Image.open(bg_path).resize(
-            (self.canvas_width, self.canvas_height),
-            Image.NEAREST
-        )
-        self.bg_img = ImageTk.PhotoImage(bg_image)
+        try:
+            bg_image = Image.open(bg_path).resize(
+                (self.canvas_width, self.canvas_height),
+                Image.NEAREST
+            )
+            self.bg_img = ImageTk.PhotoImage(bg_image)
+        except FileNotFoundError:
+            self.bg_img = None
 
         # -----------------------------
-        # Frame for controls (won't be deleted)
+        # Controls Frame (full width, colored background)
         # -----------------------------
-        self.control_frame = Frame(master, bg="#7b6cf6")
-        self.control_frame.place(x=19, y=60, width=1242, height=50)
+        controls_height = 50
+        controls_frame = Frame(master, width=1242, height=controls_height, bg="#3b2f9a")
+        controls_frame.place(x=19, y=60)  # below title area
+        controls_frame.pack_propagate(False)  # fix height
 
-        # Entry for number of disks
-        Label(self.control_frame, text="DISKS (5–7)", font=self.ui_font, bg="#7b6cf6", fg="white").pack(side=LEFT, padx=5)
-        self.enter_disks = Entry(self.control_frame, font=self.ui_font, width=5, justify="center")
+        # Inner frame for centering contents
+        inner_frame = Frame(controls_frame, bg="#3b2f9a")
+        inner_frame.pack(expand=True)
+
+        # Label + Entry
+        Label(inner_frame, text="DISKS (5–7):", font=self.ui_font, bg="#3b2f9a", fg="white").pack(side=LEFT, padx=5)
+        self.enter_disks = Entry(inner_frame, font=self.ui_font,
+                                 width=5, justify="center")
         self.enter_disks.insert(0, str(self.max_disks))
-        self.enter_disks.pack(side=LEFT, padx=10)
+        self.enter_disks.pack(side=LEFT, padx=5)
 
-        # Buttons
-        self.make_control_button("START", self.auto)
-        self.make_control_button("STOP", self.stop)
-        self.make_control_button("PREV", self.previous_step)
-        self.make_control_button("NEXT", self.next_step)
-        self.make_control_button("RESET", self.generate)
+        # Buttons (slightly smaller than control bar)
+        buttons = [
+            ("START", self.auto),
+            ("STOP", self.stop),
+            ("PREV", self.previous_step),
+            ("NEXT", self.next_step),
+            ("RESET", self.generate)
+        ]
+
+        for text, cmd in buttons:
+            Button(
+                inner_frame,
+                text=text,
+                font=self.ui_font,
+                bg="#9b8cff",
+                fg="white",
+                relief="flat",
+                padx=5,   
+                pady=3,    
+                command=cmd
+            ).pack(side=LEFT, padx=5)
 
         # -----------------------------
         # Hanoi state
@@ -91,23 +111,6 @@ class TowerOfHanoiGUI:
         self.auto_running = False
 
         self.generate()
-
-    # -----------------------------
-    # Helper to create buttons in control frame
-    # -----------------------------
-    def make_control_button(self, text, command):
-        btn = Button(
-            self.control_frame,
-            text=text,
-            font=self.ui_font,
-            bg="#9b8cff",
-            fg="white",
-            relief="flat",
-            padx=15,
-            pady=5,
-            command=command
-        )
-        btn.pack(side=LEFT, padx=5)
 
     # -----------------------------
     # Hanoi logic
@@ -168,6 +171,7 @@ class TowerOfHanoiGUI:
             0, y, self.canvas_width, self.canvas_height,
             fill=self.base_color, outline=""
         )
+
         for i in range(3):
             x = self.get_stack_x(i)
             self.canvas.create_rectangle(
@@ -178,7 +182,8 @@ class TowerOfHanoiGUI:
 
     def draw_stack(self, i, stacks):
         center = self.get_stack_x(i) + self.stack_width // 2
-        y = self.canvas_height - self.base_height - self.disk_height * len(stacks[i])
+        y = self.canvas_height - self.base_height - \
+            self.disk_height * len(stacks[i])
 
         for disk in reversed(stacks[i]):
             width = disk * self.disk_width_increment + 30
@@ -191,16 +196,16 @@ class TowerOfHanoiGUI:
             y += self.disk_height
 
     def draw_current_state(self):
-        # Clear canvas items but keep background separate
         self.canvas.delete("all")
-        self.canvas.create_image(0, 0, image=self.bg_img, anchor="nw")
-        
+        if self.bg_img:
+            self.canvas.create_image(0, 0, image=self.bg_img, anchor="nw")
+
         self.draw_base()
         state = self.states[self.state]
+
         for i in range(3):
             self.draw_stack(i, state)
 
-        # Moves counter
         self.canvas.create_text(
             self.canvas_width // 2,
             self.canvas_height - 40,
@@ -226,6 +231,7 @@ class TowerOfHanoiGUI:
 
     def stop(self):
         self.auto_running = False
+
 
 # -----------------------------
 # Run program
