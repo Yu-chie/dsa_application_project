@@ -130,7 +130,7 @@ class QueueGUI(tk.Frame):
             return
 
         plate = f"CAR-{random.randint(100,999)}"
-        self.garage.car_arrives(plate)
+        self.garage.add_to_waiting(plate)
         self.draw_table()
 
         self.after(3000, self.auto_arrival)  # every 3 seconds
