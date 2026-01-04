@@ -2,11 +2,15 @@ import tkinter as tk
 from tkinter import simpledialog, messagebox
 from PIL import Image, ImageTk
 from queue_application.parking_garage import ParkingGarage
+import random 
 
 class QueueGUI(tk.Frame):
     def __init__(self, parent, garage):
         super().__init__(parent)
         self.garage = garage
+        self.running = True
+        if self.garage.mode in ["MANUAL", "AUTO"]:
+            self.auto_arrival()
         
         # Canvas setup
         self.canvas = tk.Canvas(self)
@@ -112,3 +116,13 @@ class QueueGUI(tk.Frame):
         self.canvas.coords(self.arrive_btn_window, event.width - 400, 250)
         self.canvas.coords(self.depart_btn_window, event.width - 400, 350)
         self.canvas.coords(self.exit_btn_window, event.width - 400, 450)
+    
+    def auto_arrival(self):
+        if not self.running:
+            return
+
+        plate = f"CAR-{random.randint(100,999)}"
+        self.garage.car_arrives(plate)
+        self.draw_table()
+
+        self.after(3000, self.auto_arrival)  # every 3 seconds
