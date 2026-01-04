@@ -55,11 +55,12 @@ class QueueGUI(tk.Frame):
             self.depart_btn.config(state="disabled")
         
         # Game loop
-        if self.garage.mode in ["MANUAL", "AUTO"]:
-            self.auto_arrival()
         if self.garage.mode == "AUTO":
+            self.auto_arrival()
             self.auto_depart()
-            
+        elif self.garage.mode == "MANUAL":
+            self.after(5000, self.auto_arrival)  # slower arrivals
+                        
         self.update_waiting_timers()
 
         
