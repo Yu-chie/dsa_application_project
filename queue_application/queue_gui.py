@@ -11,6 +11,8 @@ class QueueGUI(tk.Frame):
         self.running = True
         if self.garage.mode in ["MANUAL", "AUTO"]:
             self.auto_arrival()
+        if self.garage.mode == "AUTO":
+            self.auto_depart()
         
         # Canvas setup
         self.canvas = tk.Canvas(self)
@@ -126,3 +128,15 @@ class QueueGUI(tk.Frame):
         self.draw_table()
 
         self.after(3000, self.auto_arrival)  # every 3 seconds
+
+    def auto_depart(self):
+        if not self.running or self.garage.mode != "AUTO":
+            return
+
+        for car in self.garage.queue:
+            if car:
+                self.garage.car_departs(car['plate_number'])
+                break
+
+        self.draw_table()
+        self.after(5000, self.auto_depart)
