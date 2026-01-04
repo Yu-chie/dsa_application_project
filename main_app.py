@@ -234,6 +234,10 @@ class QueueModePage(tk.Frame):
             command=lambda: controller.start_queue("AUTO")
         ).pack(pady=20)
 
+def start_queue(self, mode):
+    self.queue_mode = mode
+    self.show_frame("QueuePage")
+
 class QueuePage(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -242,7 +246,10 @@ class QueuePage(tk.Frame):
         file_manager = FileManager()
         
         # Parking Garage Logic
-        garage = ParkingGarage(file_manager=file_manager)
+        garage = ParkingGarage(
+            file_manager=file_manager,
+            mode=controller.queue_mode
+        )
         
         # GUI setup
         queue_gui = QueueGUI(self, garage)
