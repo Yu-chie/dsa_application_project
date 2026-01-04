@@ -53,14 +53,6 @@ class BSTPage(tk.Frame):
         
         self.canvas.itemconfig(self.canvas_bg, image=self.btree_bg)
     
-    ''' BST METHOD CHOICE '''
-    def user_decision(self):
-        pass
-    
-    ''' BST METHOD CONFIRMATION '''
-    def confirm_udecision(self):
-        pass
-    
     ''' NODE COUNT INPUT '''
     def nodecount_input(self):
         pass
@@ -68,6 +60,43 @@ class BSTPage(tk.Frame):
     ''' NODE COUNT CONFIRMATION '''
     def confirm_nodecount(self):
         pass
+    
+    ''' BST METHOD CHOICE '''
+    def user_decision(self):
+        self.askuser_label = tk.Label(
+            self.canvas, 
+            text="Generate your Binary Search Tree (BST) using:",
+            font=("VT323", 19),
+            bg = "#b8a8f1",
+            justify="center",
+            wraplength=430
+        )
+        
+        self.userinput_button = tk.Button(
+            self.canvas,
+            text="Self-input values",
+            font=("VT323", 15),
+            bg = "#ecb1ff",
+            fg = "#330084",
+            activebackground="#330084",
+            activeforeground="#ffffff",
+            command=self.generate_user_bst
+        )
+        
+        self.randombst_button = tk.Button(
+            self.canvas,
+            text="Randomized values",
+            font=("VT323", 15),
+            bg = "#ecb1ff",
+            fg = "#330084",
+            activebackground="#330084",
+            activeforeground="#ffffff",
+            command=self.generate_random_bst
+        )
+        
+        self.canvas.create_window(1293, 120, window=self.askuser_label)
+        self.canvas.create_window(1293, 185, window=self.userinput_button)
+        self.canvas.create_window(1293, 235, window=self.randombst_button)
     
     ''' USER PROVIDED VALUES FOR BST BUTTONS '''
     def node_user(self):
