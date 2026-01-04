@@ -9,10 +9,6 @@ class QueueGUI(tk.Frame):
         super().__init__(parent)
         self.garage = garage
         self.running = True
-        if self.garage.mode in ["MANUAL", "AUTO"]:
-            self.auto_arrival()
-        if self.garage.mode == "AUTO":
-            self.auto_depart()
         
         # Canvas setup
         self.canvas = tk.Canvas(self)
@@ -57,6 +53,12 @@ class QueueGUI(tk.Frame):
         if self.garage.mode == "AUTO":
             self.arrive_btn.config(state="disabled")
             self.depart_btn.config(state="disabled")
+        
+        # Game loop
+        if self.garage.mode in ["MANUAL", "AUTO"]:
+            self.auto_arrival()
+        if self.garage.mode == "AUTO":
+            self.auto_depart()
 
         
     def car_arrives(self):

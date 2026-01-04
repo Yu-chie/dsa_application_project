@@ -36,6 +36,10 @@ class MainApp(tk.Tk):
     
     def show_frame(self, page_name):
         self.frames[page_name].tkraise()
+        
+    def start_queue(self, mode):
+        self.queue_mode = mode
+        self.show_frame("QueuePage")
 
 class StartPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -233,10 +237,6 @@ class QueueModePage(tk.Frame):
             font=("VT323", 20),
             command=lambda: controller.start_queue("AUTO")
         ).pack(pady=20)
-
-def start_queue(self, mode):
-    self.queue_mode = mode
-    self.show_frame("QueuePage")
 
 class QueuePage(tk.Frame):
     def __init__(self, parent, controller):
