@@ -16,6 +16,22 @@ The program should:
 8. File be stored in queue_application folder and user can choose to open which existing file to store new records
 9. Comments to describe some code
 
+
+1️⃣ Manual Mode (Player Mode) FULLY MANUAL
+- Player manages the queue
+- Player decides arrival and departures (car has waiting time to be placed in the queue)
+- Player decisions
+- Time pressure
+- Limited resources
+- Risk / failure
+- Goal / score
+
+2️⃣ Auto Mode (Simulation Mode)
+- System manages everything
+- Player just watches
+- This is for demonstration / explanation
+
+
 # ------------------------------
 # DATA TO STORE FOR EACH CAR
 # ------------------------------
