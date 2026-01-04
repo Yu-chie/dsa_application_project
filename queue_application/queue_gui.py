@@ -137,7 +137,10 @@ class QueueGUI(tk.Frame):
             return
 
         plate = f"CAR-{random.randint(100,999)}"
-        self.garage.add_to_waiting(plate)
+        result = self.garage.add_to_waiting(plate)
+        if result == "Waiting Area Full":
+            messagebox.showwarning("Waiting Area", "Waiting Area is Full!")
+
         self.draw_table()
 
         self.after(3000, self.auto_arrival)  # every 3 seconds
@@ -167,7 +170,7 @@ class QueueGUI(tk.Frame):
         )
 
         y += 30
-        for car in self.garage.waiting_area:
+        for car in self.garage.waiting:
             self.canvas.create_text(
                 300, y,
                 text=f"{car['plate_number']} | Time left: {car['time_left']}",
@@ -185,7 +188,7 @@ class QueueGUI(tk.Frame):
                 expired.append(car)
 
         for car in expired:
-            self.garage.waiting_area.remove(car)
+            self.garage.waiting.remove(car)
             messagebox.showwarning(
                 "Game Warning",
                 f"Car {car['plate_number']} waited too long!"
