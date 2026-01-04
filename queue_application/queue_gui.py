@@ -194,6 +194,7 @@ class QueueGUI(tk.Frame):
                 "Game Warning",
                 f"Car {car['plate_number']} waited too long!"
             )
+            self.garage.failed_cars += 1
 
         self.draw_waiting_area()
         self.after(1000, self.update_waiting_timers)
