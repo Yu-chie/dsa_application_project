@@ -64,12 +64,15 @@ class QueueGUI(tk.Frame):
 
         
     def car_arrives(self):
-        plate = simpledialog.askstring("Car Arrives", "Enter the car's plate number:")
-        if not plate:
+        if not self.garage.waiting:
+            messagebox.showinfo("Info", "No cars waiting")
             return
-        result = self.garage.car_arrives(plate)
+        
+        car = self.garage.waiting.pop(0)
+        result = self.garage.car_arrives(car["plate_number"])
         messagebox.showinfo("Car Arrives", result)
         self.draw_table()
+        self.draw_waiting_area()
     
     def car_departs(self):
         plate = simpledialog.askstring("Car Departs", "Enter the car's plate number:")
@@ -126,7 +129,9 @@ class QueueGUI(tk.Frame):
         self.canvas.coords(self.arrive_btn_window, event.width - 400, 250)
         self.canvas.coords(self.depart_btn_window, event.width - 400, 350)
         self.canvas.coords(self.exit_btn_window, event.width - 400, 450)
-    
+
+        self.draw_waiting_area()
+        
     def auto_arrival(self):
         if not self.running:
             return
@@ -136,6 +141,7 @@ class QueueGUI(tk.Frame):
         self.draw_table()
 
         self.after(3000, self.auto_arrival)  # every 3 seconds
+        self.draw_waiting_area()
 
     def auto_depart(self):
         if not self.running or self.garage.mode != "AUTO":
