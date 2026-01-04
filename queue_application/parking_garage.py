@@ -2,13 +2,14 @@ from queue_application.file_manager import FileManager
 
 # PARKING GARAGE CLASS DEFINITION
 class ParkingGarage:
-    def __init__(self, max_parking=10, file_manager=None):
+    def __init__(self, max_parking=10, file_manager=None, mode="MANUAL"):
         self.max_parking = max_parking      # max parking size
         self.queue = [None] * max_parking   # parking queue'
         self.records = {}                   # to track all car records
         self.file_manager = file_manager    
         if file_manager:
             self.records = file_manager.load_records()
+        self.mode = mode                    # manual or auto
         
     # Save current records to file
     def save_records(self):
