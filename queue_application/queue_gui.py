@@ -60,7 +60,9 @@ class QueueGUI(tk.Frame):
             self.auto_depart()
         elif self.garage.mode == "MANUAL":
             self.after(5000, self.auto_arrival)  # slower arrivals
-                        
+        
+        self.draw_table()
+        self.draw_waiting_area()                
         self.update_waiting_timers()
 
         
