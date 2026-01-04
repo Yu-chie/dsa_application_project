@@ -59,6 +59,8 @@ class QueueGUI(tk.Frame):
             self.auto_arrival()
         if self.garage.mode == "AUTO":
             self.auto_depart()
+            
+        self.update_waiting_timers()
 
         
     def car_arrives(self):
@@ -167,4 +169,21 @@ class QueueGUI(tk.Frame):
                 tags="waiting"
             )
             y += 25 
-        
+            
+    def update_waiting_timers(self):
+        expired = []
+
+        for car in self.garage.waiting_area:
+            car["time_left"] -= 1
+            if car["time_left"] <= 0:
+                expired.append(car)
+
+        for car in expired:
+            self.garage.waiting_area.remove(car)
+            messagebox.showwarning(
+                "Game Warning",
+                f"Car {car['plate_number']} waited too long!"
+            )
+
+        self.draw_waiting_area()
+        self.after(1000, self.update_waiting_timers)
