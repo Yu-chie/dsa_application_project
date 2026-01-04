@@ -53,6 +53,10 @@ class QueueGUI(tk.Frame):
         self.arrive_btn_window = self.canvas.create_window(1550, 250, window=self.arrive_btn)
         self.depart_btn_window = self.canvas.create_window(1550, 350, window=self.depart_btn)
         self.exit_btn_window = self.canvas.create_window(1550, 450, window=self.exit_btn)
+        
+        if self.garage.mode == "AUTO":
+            self.arrive_btn.config(state="disabled")
+            self.depart_btn.config(state="disabled")
 
         
     def car_arrives(self):
