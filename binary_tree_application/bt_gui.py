@@ -63,7 +63,6 @@ class BTPage(tk.Frame):
         
         self.treelvl_entry = tk.Entry(
             self.canvas,
-            text="Confirm Tree Level",
             font=("VT323", 20),
             justify="center"
         ) 
