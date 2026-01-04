@@ -61,11 +61,11 @@ class BSTPage(tk.Frame):
     def confirm_udecision(self):
         pass
     
-    ''' FOR NODE COUNT INPUT '''
-    def nodecount_input(self):
+    ''' FOR USER BST: NODE COUNT INPUT '''
+    def user_nodecount_input(self):
         pass
     
-    ''' NODE COUNT CONFIRMATION '''
+    ''' FOR USER BST: NODE COUNT CONFIRMATION '''
     def confirm_nodecount(self):
         pass
     
