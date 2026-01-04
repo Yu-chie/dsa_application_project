@@ -10,6 +10,8 @@ class ParkingGarage:
         if file_manager:
             self.records = file_manager.load_records()
         self.mode = mode                    # manual or auto
+        self.waiting = []                   # Cars waiting to be parked
+        self.max_waiting = 5                # limit
         
     # Save current records to file
     def save_records(self):
@@ -109,3 +111,13 @@ class ParkingGarage:
                     car['arrival_count'],
                     car['departure_count']
                 ))
+                
+    def add_to_waiting(self, plate_number):
+        if len(self.waiting) >= self.max_waiting:
+            return "Waiting Area Full"
+        
+        self.waiting.append({
+            "plate_number": plate_number,
+            "time_left": 5      # seconds
+        })
+        return "Car added to waiting area"
