@@ -141,7 +141,6 @@ class BTPage(tk.Frame):
         
         self.value_entry = tk.Entry(
             self.canvas,
-            text="Confrim Tree Level",
             font=("VT323", 20),
             justify="center"
         )
