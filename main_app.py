@@ -27,7 +27,7 @@ class MainApp(tk.Tk):
         
         self.frames = {}
         # list of pages included (so if may dinedevelop na page i-add ung class dito para magpakita pag ni-run)
-        for page in (StartPage, SelectPage, DevPage, QueuePage, BTPage, HanoiPage):  
+        for page in (StartPage, SelectPage, DevPage, QueueModePage, QueuePage, BTPage, HanoiPage):  
             frame = page(container, self)
             self.frames[page.__name__] = frame
             frame.place(relwidth=1, relheight=1)
@@ -154,7 +154,7 @@ class SelectPage(tk.Frame):
             activebackground="#330084",
             activeforeground="#ffffff",
             padx=70,
-            command=lambda: controller.show_frame("QueuePage")
+            command=lambda: controller.show_frame("QueueModePage")
         )
         
         self.canvas.create_window(1250, 400, window=queue_button)
@@ -212,6 +212,27 @@ class SelectPage(tk.Frame):
 
 class StackPage(tk.Frame):
     pass
+
+class QueueModePage(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.controller = controller
+
+        tk.Label(self, text="QUEUE MODE", font=("VT323", 32)).pack(pady=40)
+
+        tk.Button(
+            self,
+            text="MANUAL MODE",
+            font=("VT323", 20),
+            command=lambda: controller.start_queue("MANUAL")
+        ).pack(pady=20)
+
+        tk.Button(
+            self,
+            text="AUTO MODE",
+            font=("VT323", 20),
+            command=lambda: controller.start_queue("AUTO")
+        ).pack(pady=20)
 
 class QueuePage(tk.Frame):
     def __init__(self, parent, controller):
