@@ -146,3 +146,25 @@ class QueueGUI(tk.Frame):
 
         self.draw_table()
         self.after(5000, self.auto_depart)
+
+    def draw_waiting_area(self):
+        self.canvas.delete("waiting")
+        
+        y = 600
+        self.canvas.create_text(
+            300, y,
+            text="WAITING AREA",
+            font=("VT323", 18, "bold"),
+            tags="waiting"
+        )
+
+        y += 30
+        for car in self.garage.waiting_area:
+            self.canvas.create_text(
+                300, y,
+                text=f"{car['plate_number']} | Time left: {car['time_left']}",
+                font=("VT323", 14),
+                tags="waiting"
+            )
+            y += 25 
+        
