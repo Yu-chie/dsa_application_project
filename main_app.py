@@ -263,7 +263,7 @@ class QueuePage(tk.Frame):
             bg = "#594faf",
             fg = "#ffffff",
             padx=65,
-            command=lambda: controller.show_frame("StartPage")
+            command=lambda: [queue_gui.stop(), controller.show_frame("StartPage")]
         )
         home_button.place(x=30, y=30)
 

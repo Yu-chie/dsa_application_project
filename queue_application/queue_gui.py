@@ -196,3 +196,6 @@ class QueueGUI(tk.Frame):
 
         self.draw_waiting_area()
         self.after(1000, self.update_waiting_timers)
+
+    def stop(self):
+        self.running = False
