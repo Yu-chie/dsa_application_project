@@ -5,14 +5,21 @@ class ParkingGarage:
     def __init__(self, max_parking=10, file_manager=None, mode="MANUAL"):
         self.max_parking = max_parking      # max parking size
         self.queue = [None] * max_parking   # parking queue'
+        
+        # File Handling
         self.records = {}                   # to track all car records
         self.file_manager = file_manager    
         if file_manager:
             self.records = file_manager.load_records()
-        self.mode = mode                    # manual or auto
-        self.waiting = []                   # Cars waiting to be parked
-        self.max_waiting = 5                # limit
+        
+        # Game-related attributes
+        self.mode = mode           # manual or auto
+        self.waiting = []          # Cars waiting to be parked
+        self.max_waiting = 5       # limit
         self.failed_cars= 0
+        self.score = 0
+        self.max_failed = 5        # game over condition
+        self.game_over = False
         
     # Save current records to file
     def save_records(self):
@@ -50,6 +57,7 @@ class ParkingGarage:
                 break
         
         self.save_records()
+        self.score += 10
         return "Car Parked Successfully!"
 
     # OPTION 2: DEQUEUE CAR
@@ -88,6 +96,8 @@ class ParkingGarage:
         new_queue += [None] * (self.max_parking - len(new_queue))   # fill remaining with None
         self.queue = new_queue
         self.save_records()
+        
+        self.score += 2
         return "Car Departed Successfully!"
 
     # OPTION 3: DISPLAY PARKING TABLE
@@ -133,6 +143,10 @@ class ParkingGarage:
         for car in expired:
             self.waiting.remove(car)
             self.failed_cars += 1
+            self.score -= 5     # penalty
+            
+            if self.failed_cars >= self.max_failed:
+                self.game_over = True
 
         return expired
     
@@ -143,5 +157,7 @@ class ParkingGarage:
         return {
             "total_arrivals": total_arrivals,
             "total_departures": total_departures,
-            "failed_cars": self.failed_cars
+            "failed_cars": self.failed_cars,
+            "score": self.score,
+            "game over": self.game_over
         }
