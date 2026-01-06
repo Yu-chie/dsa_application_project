@@ -181,6 +181,15 @@ class QueueGUI(tk.Frame):
                 tags="waiting"
             )
             y += 25 
+            
+        y += 30
+        self.canvas.create_text(
+            300, y,
+            text=f"FAILED CARS: {self.garage.failed_cars}",
+            font=("VT323", 16, "bold"),
+            fill="red",
+            tags="waiting"
+        )
 
     def stop(self):
         self.running = False
