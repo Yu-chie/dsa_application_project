@@ -59,7 +59,7 @@ class QueueGUI(tk.Frame):
             self.auto_arrival()
             self.auto_depart()
         elif self.garage.mode == "MANUAL":
-            self.after(5000, self.auto_arrival)  # slower arrivals
+            pass  # slower arrivals
         
         self.draw_table()
         self.draw_waiting_area()                
@@ -185,7 +185,7 @@ class QueueGUI(tk.Frame):
     def update_waiting_timers(self):
         expired = []
 
-        for car in self.garage.waiting_area:
+        for car in self.garage.waiting:
             car["time_left"] -= 1
             if car["time_left"] <= 0:
                 expired.append(car)
@@ -203,3 +203,4 @@ class QueueGUI(tk.Frame):
 
     def stop(self):
         self.running = False
+        self.destroy()

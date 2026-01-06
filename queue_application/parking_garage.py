@@ -12,7 +12,7 @@ class ParkingGarage:
         self.mode = mode                    # manual or auto
         self.waiting = []                   # Cars waiting to be parked
         self.max_waiting = 5                # limit
-        self.failed_car = 0
+        self.failed_cars= 0
         
     # Save current records to file
     def save_records(self):
