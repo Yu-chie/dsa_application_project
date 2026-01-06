@@ -62,7 +62,8 @@ class QueueGUI(tk.Frame):
             pass  # slower arrivals
         
         self.draw_table()
-        self.draw_waiting_area()                
+        self.draw_waiting_area()
+        self.tick()                
 
         
     def car_arrives(self):
@@ -184,3 +185,18 @@ class QueueGUI(tk.Frame):
     def stop(self):
         self.running = False
         self.destroy()
+        
+    def tick(self):
+        if not self.running:
+            return
+
+        expired = self.garage.update_waiting()
+
+        for car in expired:
+            messagebox.showwarning(
+                "Waiting Timeout",
+                f"Car {car['plate_number']} waited too long and left!"
+            )
+
+        self.draw_waiting_area()
+        self.after(1000, self.tick)
