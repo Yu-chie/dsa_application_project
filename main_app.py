@@ -16,6 +16,8 @@ class MainApp(tk.Tk):
     def __init__(self):
         super().__init__()       # initialize tk
         
+        self.queue_mode = "MANUAL"  # default value
+        
         # general window title, dimension, and allow fullscreen
         self.title("DSA App")
         self.geometry("1920x1080")
