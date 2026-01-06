@@ -177,10 +177,13 @@ class QueueGUI(tk.Frame):
 
         y += 30
         for car in self.garage.waiting:
+            color = "red" if car["time_left"] <= 2 else "white"
+            
             self.canvas.create_text(
                 300, y,
                 text=f"{car['plate_number']} | Time left: {car['time_left']}",
                 font=("VT323", 14),
+                fill = color
                 tags="waiting"
             )
             y += 25 
