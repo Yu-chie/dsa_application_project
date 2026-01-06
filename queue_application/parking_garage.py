@@ -159,5 +159,5 @@ class ParkingGarage:
             "total_departures": total_departures,
             "failed_cars": self.failed_cars,
             "score": self.score,
-            "game over": self.game_over
+            "game_over": self.game_over
         }
