@@ -122,3 +122,16 @@ class ParkingGarage:
             "time_left": 5      # seconds
         })
         return "Car added to waiting area"
+    
+    def update_waiting(self):
+        expired = []
+        for car in self.waiting:
+            car["time_left"] -= 1
+            if car["time_left"] <= 0:
+                expired.append(car)
+
+        for car in expired:
+            self.waiting.remove(car)
+            self.failed_cars += 1
+
+        return expired

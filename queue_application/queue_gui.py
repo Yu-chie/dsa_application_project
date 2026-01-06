@@ -63,7 +63,6 @@ class QueueGUI(tk.Frame):
         
         self.draw_table()
         self.draw_waiting_area()                
-        self.update_waiting_timers()
 
         
     def car_arrives(self):
@@ -181,25 +180,6 @@ class QueueGUI(tk.Frame):
                 tags="waiting"
             )
             y += 25 
-            
-    def update_waiting_timers(self):
-        expired = []
-
-        for car in self.garage.waiting:
-            car["time_left"] -= 1
-            if car["time_left"] <= 0:
-                expired.append(car)
-
-        for car in expired:
-            self.garage.waiting.remove(car)
-            messagebox.showwarning(
-                "Game Warning",
-                f"Car {car['plate_number']} waited too long!"
-            )
-            self.garage.failed_cars += 1
-
-        self.draw_waiting_area()
-        self.after(1000, self.update_waiting_timers)
 
     def stop(self):
         self.running = False
