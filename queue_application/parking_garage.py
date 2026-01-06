@@ -135,3 +135,13 @@ class ParkingGarage:
             self.failed_cars += 1
 
         return expired
+    
+    def get_stats(self):
+        total_arrivals = sum(car["arrival_count"] for car in self.records.values())
+        total_departures = sum(car["departure_count"] for car in self.records.values())
+
+        return {
+            "total_arrivals": total_arrivals,
+            "total_departures": total_departures,
+            "failed_cars": self.failed_cars
+        }

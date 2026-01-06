@@ -76,6 +76,7 @@ class QueueGUI(tk.Frame):
         messagebox.showinfo("Car Arrives", result)
         self.draw_table()
         self.draw_waiting_area()
+        self.draw_stats()
     
     def car_departs(self):
         plate = simpledialog.askstring("Car Departs", "Enter the car's plate number:")
@@ -84,6 +85,7 @@ class QueueGUI(tk.Frame):
         result = self.garage.car_departs(plate)
         messagebox.showinfo("Car Departs", result)
         self.draw_table()
+        self.draw_stats()
 
     def draw_table(self):
         self.canvas.delete("table")
@@ -147,6 +149,7 @@ class QueueGUI(tk.Frame):
 
         self.draw_waiting_area()
         self.after(3000, self.auto_arrival)  # every 3 seconds
+        self.draw_stats()
 
     def auto_depart(self):
         if not self.running or self.garage.mode != "AUTO":
@@ -158,6 +161,7 @@ class QueueGUI(tk.Frame):
                 break
 
         self.draw_table()
+        self.draw_stats()
         self.after(5000, self.auto_depart)
 
     def draw_waiting_area(self):
@@ -208,3 +212,23 @@ class QueueGUI(tk.Frame):
 
         self.draw_waiting_area()
         self.after(1000, self.tick)
+
+    def draw_stats(self):
+        self.canvas.delete("stats")
+
+        stats = self.garage.get_stats()
+
+        y = 900
+        self.canvas.create_text(
+            300, y,
+            text=f"TOTAL ARRIVALS: {stats['total_arrivals']}",
+            font=("VT323", 14),
+            tags="stats"
+        )
+
+        self.canvas.create_text(
+            300, y + 25,
+            text=f"TOTAL DEPARTURES: {stats['total_departures']}",
+            font=("VT323", 14),
+            tags="stats"
+        )
