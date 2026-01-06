@@ -240,3 +240,19 @@ class QueueGUI(tk.Frame):
             font=("VT323", 14),
             tags="stats"
         )
+        
+        self.canvas.create_text(
+            300, y + 50,
+            text=f"SCORE: {stats['score']}",
+            font=("VT323", 16, "bold"),
+            fill="yellow",
+            tags="stats"
+        )
+
+        self.canvas.create_text(
+            300, y + 75,
+            text=f"FAILED CARS: {stats['failed_cars']} / {self.garage.max_failed}",
+            font=("VT323", 14),
+            fill="red",
+            tags="stats"
+        )
