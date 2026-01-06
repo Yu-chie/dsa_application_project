@@ -67,6 +67,9 @@ class QueueGUI(tk.Frame):
 
         
     def car_arrives(self):
+        if self.garage.game_over:
+            return
+        
         if not self.garage.waiting:
             messagebox.showinfo("Info", "No cars waiting")
             return
@@ -79,6 +82,9 @@ class QueueGUI(tk.Frame):
         self.draw_stats()
     
     def car_departs(self):
+        if self.garage.game_over:
+            return
+        
         plate = simpledialog.askstring("Car Departs", "Enter the car's plate number:")
         if not plate:
             return
@@ -183,7 +189,7 @@ class QueueGUI(tk.Frame):
                 300, y,
                 text=f"{car['plate_number']} | Time left: {car['time_left']}",
                 font=("VT323", 14),
-                fill = color
+                fill = color,
                 tags="waiting"
             )
             y += 25 
