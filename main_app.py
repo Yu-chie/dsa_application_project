@@ -247,10 +247,12 @@ class QueuePage(tk.Frame):
         # File Manager setup
         file_manager = FileManager()
         
+        mode = getattr(controller, "queue_mode", "MANUAL")
+        
         # Parking Garage Logic
         garage = ParkingGarage(
             file_manager=file_manager,
-            mode=controller.queue_mode
+            mode=mode
         )
         
         # GUI setup
