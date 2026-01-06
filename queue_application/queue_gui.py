@@ -201,6 +201,14 @@ class QueueGUI(tk.Frame):
     def tick(self):
         if not self.running:
             return
+        
+        if self.garage.game_over:
+            messagebox.showerror(
+                "GAME OVER",
+                f"Too many cars failed!\nFinal Score: {self.garage.score}"
+            )
+            self.stop()
+            return
 
         expired = self.garage.update_waiting()
 
