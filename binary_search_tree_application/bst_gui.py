@@ -44,7 +44,7 @@ class BSTPage(tk.Frame):
         self.n_root = None
         self.values = []
         
-        self.user_decision()
+        self.nodecount_input()
         self.traversal_title()
     
     def resize_bg(self, event):
@@ -55,7 +55,33 @@ class BSTPage(tk.Frame):
     
     ''' NODE COUNT INPUT '''
     def nodecount_input(self):
-        pass
+        self.asknodes_label = tk.Label(
+            self.canvas,
+            text="How many nodes would you like? (10-30)",
+            font=("VT323", 19),
+            bg = "#b8a8f1"
+        )
+        
+        self.ncount_entry = tk.Entry(
+            self.canvas,
+            font=("VT323", 20),
+            justify="center"
+        ) 
+        
+        self.ncount_button = tk.Button(
+            self.canvas,
+            text="Confirm Node Count",
+            font=("VT323", 15),
+            bg = "#ecb1ff",
+            fg = "#330084",
+            activebackground="#330084",
+            activeforeground="#ffffff",
+            command=self.user_decision
+        )
+        
+        self.canvas.create_window(1298, 108, window=self.asknodes_label)
+        self.canvas.create_window(1296, 170, window=self.ncount_entry)
+        self.canvas.create_window(1295, 230, window=self.ncount_button)
     
     ''' NODE COUNT CONFIRMATION '''
     def confirm_nodecount(self):
