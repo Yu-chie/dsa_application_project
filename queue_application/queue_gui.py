@@ -228,18 +228,16 @@ class QueueGUI(tk.Frame):
         self.draw_waiting_area()
         
     def auto_arrival(self):
-        if not self.running:
+        if not self.running or not self.auto_arrival_running:
             return
 
         plate = f"CAR-{random.randint(100,999)}"
-        result = self.garage.add_to_waiting(plate)
-        
-        if result == "Waiting Area Full" and self.garage.mode == "MANUAL":
-            messagebox.showwarning("Waiting Area", "Waiting Area is Full!")
+        self.garage.add_to_waiting(plate)
 
         self.draw_waiting_area()
-        self.after(3000, self.auto_arrival)  # every 3 seconds
         self.draw_stats()
+
+        self.after(3000, self.auto_arrival)
 
     def auto_depart(self):
         if not self.running or self.garage.mode != "AUTO":
