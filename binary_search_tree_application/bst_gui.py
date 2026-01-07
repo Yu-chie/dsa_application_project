@@ -150,7 +150,7 @@ class BSTPage(tk.Frame):
             fg = "#330084",
             activebackground="#330084",
             activeforeground="#ffffff",
-            command=self.generate_random_bst
+            command=self.generate_rbst
         )
         
         self.canvas.create_window(1293, 120, window=self.askuser_label)
@@ -247,8 +247,12 @@ class BSTPage(tk.Frame):
         
         self.generate_ubst
     
-    ''' DRAWING BSTREE '''
-    def generate_bstree(self):
+    ''' USER: DRAWING BSTREE '''
+    def generate_ubst(self):
+        pass
+    
+    ''' RANDOMIZED: DRAWING BSTREE '''
+    def generate_rbst(self):
         pass
     
     ''' FOR TRAVERSAL TITLE'''
