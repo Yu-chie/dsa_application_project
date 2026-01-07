@@ -236,6 +236,18 @@ class QueuePage(tk.Frame):
         # GUI setup
         queue_gui = QueueGUI(self, self.garage, controller)
         queue_gui.pack(fill="both", expand=True)
+        
+        # Home Button
+        home_button = tk.Button(
+            self,
+            text="HOME",
+            font=("VT323", 12),
+            bg="#594faf",
+            fg="#ffffff",
+            padx=65,
+            command=lambda: controller.show_frame("StartPage")
+        )
+        home_button.place(x=30, y=30)
 
 class HanoiPage(tk.Frame):
     def __init__(self, parent, controller):
