@@ -151,6 +151,13 @@ class QueueGUI(tk.Frame):
             return
         self.car_departs()
 
+    def set_mode(self, mode):
+        self.garage.mode = mode
+
+        if mode == "AUTO":
+            self.auto_arrival()
+            self.auto_depart()
+
     def draw_table(self):
         self.canvas.delete("table")
         
