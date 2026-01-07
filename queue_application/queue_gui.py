@@ -299,8 +299,8 @@ class QueueGUI(tk.Frame):
             
             self.canvas.create_text(
                 x,
-                WAITING_Y_IMAGE,
-                text=f {car['time_left']},
+                WAITING_Y_TEXT,
+                text=f"Time Left: {car['time_left']}s",
                 font=("VT323", 12),
                 fill=color,
                 tags="waiting"
