@@ -153,21 +153,22 @@ class QueueGUI(tk.Frame):
         if plate:
             result = self.garage.car_arrives(plate)
             messagebox.showinfo("Car Arrives", result)
-            self.draw_table()
-            self.draw_stats()
-            return
-        
-        # Otherwise, process next waiting car (auto arrival)
-        if not self.garage.waiting:
-            messagebox.showinfo("Info", "No cars waiting")
-            return
-        
-        car = self.garage.waiting.pop(0)
-        result = self.garage.car_arrives(car["plate_number"])
-        messagebox.showinfo("Car Arrives", result)
-        self.draw_table()
-        self.draw_waiting_area()
-        self.draw_stats()
+-            self.draw_table()
++            # background already shows table, keep only stats update
+             self.draw_stats()
+             return
+         
+         # Otherwise, process next waiting car (auto arrival)
+         if not self.garage.waiting:
+             messagebox.showinfo("Info", "No cars waiting")
+             return
+         
+         car = self.garage.waiting.pop(0)
+         result = self.garage.car_arrives(car["plate_number"])
+         messagebox.showinfo("Car Arrives", result)
+-        self.draw_table()
+         self.draw_waiting_area()
+         self.draw_stats()
 
     def handle_arrive_click(self):
         if self.garage.mode != "MANUAL":
@@ -211,8 +212,8 @@ class QueueGUI(tk.Frame):
             return
         result = self.garage.car_departs(plate)
         messagebox.showinfo("Car Departs", result)
-        self.draw_table()
-        self.draw_stats()
+-        self.draw_table()
+         self.draw_stats()
 
     def handle_depart_click(self):
         if self.garage.mode != "MANUAL":
