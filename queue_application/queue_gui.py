@@ -4,6 +4,13 @@ from PIL import Image, ImageTk
 from queue_application.parking_garage import ParkingGarage
 import random 
 
+# Control Panel Layout (Upper Left Box)
+PANEL_X_LEFT = 140
+PANEL_X_RIGHT = 300
+PANEL_Y_MODE = 190
+PANEL_Y_QUEUE = 290
+BTN_WIDTH = 14
+
 class QueueGUI(tk.Frame):
     def __init__(self, parent, garage):
         super().__init__(parent)
