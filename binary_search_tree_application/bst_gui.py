@@ -245,11 +245,34 @@ class BSTPage(tk.Frame):
             )
             return
         
-        self.generate_ubst
+        self.generate_ubst()
     
     ''' USER: DRAWING BSTREE '''
     def generate_ubst(self):
-        pass
+        self.canvas.delete("tree")
+        
+        def draw_nodes(node, x, y ,r):
+            if node is None:
+                return
+            
+            if node.left:
+                self.canvas.create_line(x, y, x-r, y+80-20, tags="tree")
+                draw_nodes(node.left, x-r, y+80, r//2)
+                
+            if node.right:
+                self.canvas.create_line(x, y, x+r, y+80-20, tags="tree")
+                draw_nodes(node.right, x+r, y+80, r//2)
+                
+            self.canvas.create_oval(
+                x-20, y-20, x+20, y+20, 
+                fill="#ecb1ff", outline="#330084", tags="tree")
+            
+            self.canvas.create_text(
+                    x, y, text=node.value, 
+                    font=("VT323"), tags="tree")
+            
+        if self.tree and self.tree.root:
+            draw_nodes(self.tree.root, 500, 200, 200)
     
     ''' RANDOMIZED: DRAWING BSTREE '''
     def generate_rbst(self):
