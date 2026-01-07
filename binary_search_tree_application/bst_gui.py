@@ -288,7 +288,7 @@ class BSTPage(tk.Frame):
         if self.tree and self.tree.root:
             draw_nodes(self.tree.root, 500, 25, 200)
             
-        # for scroll
+        ''' for scrollbar in tree frame '''
         self.tree_canvas.update_idletasks()
         
         bstbox = self.tree_canvas.bbox("tree")
