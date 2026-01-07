@@ -41,8 +41,6 @@ class BSTPage(tk.Frame):
         
         ''' LOGIC HOLDERS '''
         self.tree = None
-        self.n_root = None
-        self.values = []
         
         self.nodecount_input()
         self.traversal_title()
