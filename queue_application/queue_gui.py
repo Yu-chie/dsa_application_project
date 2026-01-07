@@ -28,6 +28,33 @@ class QueueGUI(tk.Frame):
         self.bg_image_id = self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
         
         # Buttons
+        self.mode_label = tk.Label(
+            self,
+            text="MODE",
+            font=("VT323", 18),
+            bg="#b6a7f2"
+        )
+        self.canvas.create_window(220, PANEL_Y_MODE - 40, window=self.mode_label)
+
+        self.manual_btn = tk.Button(
+            self,
+            text="MANUAL",
+            font=("VT323", 14),
+            width=BTN_WIDTH,
+            command=lambda: self.set_mode("MANUAL")
+        )
+        self.canvas.create_window(PANEL_X_LEFT, PANEL_Y_MODE, window=self.manual_btn)
+
+        self.auto_btn = tk.Button(
+            self,
+            text="AUTO",
+            font=("VT323", 14),
+            width=BTN_WIDTH,
+            command=lambda: self.set_mode("AUTO")
+        )
+        self.canvas.create_window(PANEL_X_RIGHT, PANEL_Y_MODE, window=self.auto_btn)
+
+        
         self.arrive_btn = tk.Button(
             self,
             text="Car Arrives",
