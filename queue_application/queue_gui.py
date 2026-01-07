@@ -88,7 +88,7 @@ class QueueGUI(tk.Frame):
             text="Exit",
             font=("VT323", 16),
             width=15,
-            command=self.stop
+            command=self.exit_to_menu
         )
         
         # Place buttons initially (will be repositioned on resize)
