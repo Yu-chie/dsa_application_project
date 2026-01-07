@@ -221,8 +221,10 @@ class StackPage(tk.Frame):
 
 class QueuePage(tk.Frame):
     def __init__(self, parent, garage, controller):
-        self.controller = controller
         super().__init__(parent)
+        self.controller = controller        # store controller reference
+        self.garage = garage
+        self.running = True
         
         # File Manager setup
         file_manager = FileManager()
