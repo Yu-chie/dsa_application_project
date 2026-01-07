@@ -223,7 +223,6 @@ class QueuePage(tk.Frame):
     def __init__(self, parent, garage, controller):
         super().__init__(parent)
         self.controller = controller        # store controller reference
-        self.garage = garage
         self.running = True
         
         # File Manager setup
@@ -232,7 +231,7 @@ class QueuePage(tk.Frame):
         mode = getattr(controller, "queue_mode", "MANUAL")
         
         # Parking Garage Logic
-        garage = ParkingGarage(
+        self.garage = ParkingGarage(
             file_manager=file_manager,
             mode=mode
         )
