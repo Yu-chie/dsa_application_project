@@ -331,6 +331,7 @@ class QueueGUI(tk.Frame):
             )
 
         self.draw_waiting_area()
+        self.draw_stats()
         self.after(1000, self.tick)
 
     def draw_stats(self):
