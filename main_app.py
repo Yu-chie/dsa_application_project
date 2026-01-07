@@ -16,6 +16,8 @@ class MainApp(tk.Tk):
     def __init__(self):
         super().__init__()       # initialize tk
         
+        self.queue_mode = "MANUAL"  # default value
+        
         # general window title, dimension, and allow fullscreen
         self.title("DSA App")
         self.geometry("1920x1080")
@@ -36,6 +38,10 @@ class MainApp(tk.Tk):
     
     def show_frame(self, page_name):
         self.frames[page_name].tkraise()
+        
+    def start_queue(self, mode):
+        self.queue_mode = mode
+        self.show_frame("QueuePage")
 
 class StartPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -214,17 +220,25 @@ class StackPage(tk.Frame):
     pass
 
 class QueuePage(tk.Frame):
-    def __init__(self, parent, controller):
+    def __init__(self, parent, garage, controller):
         super().__init__(parent)
+        self.controller = controller        # store controller reference
+        self.garage = garage
+        self.running = True
         
         # File Manager setup
         file_manager = FileManager()
         
+        mode = getattr(controller, "queue_mode", "MANUAL")
+        
         # Parking Garage Logic
-        garage = ParkingGarage(file_manager=file_manager)
+        garage = ParkingGarage(
+            file_manager=file_manager,
+            mode=mode
+        )
         
         # GUI setup
-        queue_gui = QueueGUI(self, garage)
+        queue_gui = QueueGUI(self, garage, controller)
         queue_gui.pack(fill="both", expand=True)
         
         # Home Button
@@ -232,10 +246,10 @@ class QueuePage(tk.Frame):
             self,
             text="HOME",
             font=("VT323", 12),
-            bg = "#594faf",
-            fg = "#ffffff",
+            bg="#594faf",
+            fg="#ffffff",
             padx=65,
-            command=lambda: controller.show_frame("StartPage")
+            command=queue_gui.exit_to_menu
         )
         home_button.place(x=30, y=30)
 
