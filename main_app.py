@@ -271,7 +271,7 @@ class HanoiPage(tk.Frame):
             padx=65,
             command=lambda: controller.show_frame("StartPage")
         )
-        home_button.place(x=30, y=30)
+        home_button.place(x=25, y=21)
 
 class DevPage(tk.Frame):
     def __init__(self, parent, controller):
