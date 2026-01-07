@@ -161,6 +161,18 @@ class QueueGUI(tk.Frame):
         if not plate:
             return
         self.car_arrives(plate)
+        
+    def auto_arrival(self):
+        if not self.running or not self.auto_arrival_running:
+            return
+
+        plate = f"CAR-{random.randint(100,999)}"
+        self.garage.add_to_waiting(plate)
+
+        self.draw_waiting_area()
+        self.draw_stats()
+
+        self.after(3000, self.auto_arrival)
 
     def car_departs(self):
         if self.garage.game_over:
@@ -182,7 +194,20 @@ class QueueGUI(tk.Frame):
             )
             return
         self.car_departs()
-        
+    
+    def auto_depart(self):
+        if not self.running or not self.auto_depart_running:
+            return
+
+        for car in self.garage.queue:
+            if car:
+                self.garage.car_departs(car['plate_number'])
+                break
+
+        self.draw_table()
+        self.draw_stats()
+        self.after(5000, self.auto_depart)
+    
     def set_mode(self, mode):
         if self.garage.mode == mode:
             return
@@ -255,31 +280,6 @@ class QueueGUI(tk.Frame):
         self.canvas.coords(self.depart_btn_window, right_x, PANEL_Y_QUEUE + 40)
 
         self.draw_waiting_area()
-        
-    def auto_arrival(self):
-        if not self.running or not self.auto_arrival_running:
-            return
-
-        plate = f"CAR-{random.randint(100,999)}"
-        self.garage.add_to_waiting(plate)
-
-        self.draw_waiting_area()
-        self.draw_stats()
-
-        self.after(3000, self.auto_arrival)
-
-    def auto_depart(self):
-        if not self.running or not self.auto_depart_running:
-            return
-
-        for car in self.garage.queue:
-            if car:
-                self.garage.car_departs(car['plate_number'])
-                break
-
-        self.draw_table()
-        self.draw_stats()
-        self.after(5000, self.auto_depart)
 
     def draw_waiting_area(self):
         self.canvas.delete("waiting")
