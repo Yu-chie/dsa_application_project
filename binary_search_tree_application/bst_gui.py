@@ -172,7 +172,7 @@ class BSTPage(tk.Frame):
         
         self.value_entry = tk.Entry(
             self.canvas,
-            text="Confrim Tree Level",
+            text="Confirm Tree Level",
             font=("VT323", 20),
             justify="center"
         )
@@ -206,7 +206,46 @@ class BSTPage(tk.Frame):
     
     ''' USER: ADD NODE VALUES MANUALLY LOGIC '''
     def add_nvalue(self):
-        pass
+        val = self.value_entry.get().strip()
+        self.value_entry.delete(0, tk.END)
+        
+        # for empty inputs
+        if val == "":
+            messagebox.showerror(
+                "Invalid Input",
+                "Only enter integer values"
+            )
+            return
+        
+        # no empty nodes
+        if val == ".":
+            messagebox.showerror(
+                "Invalid Input",
+                "Empty node are not allowed this time. Only enter integer values"
+            )
+            return
+        
+        # integer only
+        try:
+            value  = int(val)
+        except ValueError:
+            messagebox.showerror(
+                "Invalid Input",
+                "Only whole numbers (integers) are allowed."
+            )
+            return
+        
+        # insert to BST
+        try:
+            self.tree.ctrl_insert(value)
+        except OverflowError:
+            messagebox.showerror(
+                "Your Binary Search Tree is Full!",
+                "You have reached the maximum nodes for your Binary Tree."
+            )
+            return
+        
+        self.generate_ubst
     
     ''' DRAWING BSTREE '''
     def generate_bstree(self):
