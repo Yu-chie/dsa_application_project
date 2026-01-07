@@ -54,22 +54,31 @@ class QueueGUI(tk.Frame):
         )
         self.canvas.create_window(PANEL_X_RIGHT, PANEL_Y_MODE, window=self.auto_btn)
 
-        
+        self.queue_label = tk.Label(
+            self,
+            text="QUEUE CONTROLS",
+            font=("VT323", 16),
+            bg="#b6a7f2"
+        )
+        self.canvas.create_window(220, PANEL_Y_QUEUE - 40, window=self.queue_label)
+
         self.arrive_btn = tk.Button(
             self,
-            text="Car Arrives",
-            font=("VT323", 16),
-            width=15,
-            command=self.car_arrives
+            text="CAR ARRIVES",
+            font=("VT323", 14),
+            width=BTN_WIDTH,
+            command=self.handle_arrive_click
         )
-        
+        self.canvas.create_window(PANEL_X_LEFT, PANEL_Y_QUEUE, window=self.arrive_btn)
+
         self.depart_btn = tk.Button(
             self,
-            text="Car Departs",
-            font=("VT323", 16),
-            width=15,
-            command=self.car_departs
+            text="CAR DEPARTS",
+            font=("VT323", 14),
+            width=BTN_WIDTH,
+            command=self.handle_depart_click
         )
+        self.canvas.create_window(PANEL_X_RIGHT, PANEL_Y_QUEUE, window=self.depart_btn)
         
         self.exit_btn = tk.Button(
             self,
@@ -80,8 +89,6 @@ class QueueGUI(tk.Frame):
         )
         
         # Place buttons initially (will be repositioned on resize)
-        self.arrive_btn_window = self.canvas.create_window(1550, 250, window=self.arrive_btn)
-        self.depart_btn_window = self.canvas.create_window(1550, 350, window=self.depart_btn)
         self.exit_btn_window = self.canvas.create_window(1550, 450, window=self.exit_btn)
         
         if self.garage.mode == "AUTO":
