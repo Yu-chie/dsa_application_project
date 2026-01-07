@@ -120,11 +120,10 @@ class QueueGUI(tk.Frame):
             self.auto_depart()
         elif self.garage.mode == "MANUAL":
             pass  # slower arrivals
-+
-+        # Table is part of the background image; do not draw an overlay.
-         self.draw_stats()
-         self.draw_waiting_area()
-         self.tick()                
+        
+        self.draw_stats()
+        self.draw_waiting_area()
+        self.tick()                
         
     def car_arrives(self, plate=None):
         if self.garage.game_over:
@@ -133,22 +132,21 @@ class QueueGUI(tk.Frame):
         if plate:
             result = self.garage.car_arrives(plate)
             messagebox.showinfo("Car Arrives", result)
--            self.draw_table()
-+            # background already shows table, keep only stats update
-             self.draw_stats()
-             return
-         
-         # Otherwise, process next waiting car (auto arrival)
-         if not self.garage.waiting:
-             messagebox.showinfo("Info", "No cars waiting")
-             return
-         
-         car = self.garage.waiting.pop(0)
-         result = self.garage.car_arrives(car["plate_number"])
-         messagebox.showinfo("Car Arrives", result)
--        self.draw_table()
-         self.draw_waiting_area()
-         self.draw_stats()
+            self.draw_table()
+            self.draw_stats()
+            return
+        
+        # Otherwise, process next waiting car (auto arrival)
+        if not self.garage.waiting:
+            messagebox.showinfo("Info", "No cars waiting")
+            return
+        
+        car = self.garage.waiting.pop(0)
+        result = self.garage.car_arrives(car["plate_number"])
+        messagebox.showinfo("Car Arrives", result)
+        self.draw_table()
+        self.draw_waiting_area()
+        self.draw_stats()
 
     def handle_arrive_click(self):
         if self.garage.mode != "MANUAL":
@@ -171,8 +169,8 @@ class QueueGUI(tk.Frame):
             return
         result = self.garage.car_departs(plate)
         messagebox.showinfo("Car Departs", result)
--        self.draw_table()
-         self.draw_stats()
+        self.draw_table()
+        self.draw_stats()
 
     def handle_depart_click(self):
         if self.garage.mode != "MANUAL":
@@ -208,6 +206,57 @@ class QueueGUI(tk.Frame):
             self.auto_arrival_running = False
             self.auto_depart_running = False
 
+    def draw_table(self):
+        """
+        Simplified overlay: the background image already contains the table grid.
+        This method only draws the table data (slot / plate / arrivals / departures)
+        aligned over the background (no headers/grid lines).
+        """
+        self.canvas.delete("table")
+
+        # Adjust coordinates to match the background layout
+        start_x = 160     # leftmost column (slot number)
+        col_gap = 180     # horizontal gap between columns
+        start_y = 140     # top of first row
+        row_gap = 80      # vertical spacing between rows
+
+        for i, car in enumerate(self.garage.queue):
+            y = start_y + i * row_gap
+            slot_text = i + 1
+            plate_text = "-" if car is None else car['plate_number']
+            arrivals_text = "-" if car is None else str(car['arrival_count'])
+            departures_text = "-" if car is None else str(car['departure_count'])
+
+            values = [slot_text, plate_text, arrivals_text, departures_text]
+            for j, value in enumerate(values):
+                self.canvas.create_text(
+                    start_x + j * col_gap, y,
+                    text=value,
+                    font=("VT323", 14),
+                    tags="table"
+                )
+        
+    def resize_bg(self, event):
+        # Resize background
+        resized_bg = self.bg_image.resize((event.width, event.height))
+        self.bg_photo = ImageTk.PhotoImage(resized_bg)
+        self.canvas.itemconfig(self.bg_image_id, image=self.bg_photo)
+        
+        # Reposition control buttons to upper-right
+        right_x = event.width - 40
+        self.canvas.coords(self.mode_label_window, right_x, PANEL_Y_MODE - 40)
+        self.canvas.coords(self.manual_btn_window, right_x, PANEL_Y_MODE)
+        self.canvas.coords(self.auto_btn_window, right_x, PANEL_Y_MODE + 40)
+
+        self.canvas.coords(self.queue_label_window, right_x, PANEL_Y_QUEUE - 40)
+        self.canvas.coords(self.arrive_btn_window, right_x, PANEL_Y_QUEUE)
+        self.canvas.coords(self.depart_btn_window, right_x, PANEL_Y_QUEUE + 40)
+
+        # Exit button sits slightly further down
+        self.canvas.coords(self.exit_btn_window, right_x, 450)
+
+        self.draw_waiting_area()
+        
     def auto_arrival(self):
         if not self.running or not self.auto_arrival_running:
             return
@@ -223,15 +272,15 @@ class QueueGUI(tk.Frame):
     def auto_depart(self):
         if not self.running or not self.auto_depart_running:
             return
- 
+
         for car in self.garage.queue:
             if car:
                 self.garage.car_departs(car['plate_number'])
                 break
--
--        self.draw_table()
-         self.draw_stats()
-         self.after(5000, self.auto_depart)
+
+        self.draw_table()
+        self.draw_stats()
+        self.after(5000, self.auto_depart)
 
     def draw_waiting_area(self):
         self.canvas.delete("waiting")
