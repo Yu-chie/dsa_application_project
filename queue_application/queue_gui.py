@@ -105,7 +105,6 @@ class QueueGUI(tk.Frame):
         self.draw_table()
         self.draw_waiting_area()
         self.tick()                
-
         
     def car_arrives(self):
         if self.garage.game_over:
@@ -121,7 +120,16 @@ class QueueGUI(tk.Frame):
         self.draw_table()
         self.draw_waiting_area()
         self.draw_stats()
-    
+
+    def handle_arrive_click(self):
+        if self.garage.mode != "MANUAL":
+            messagebox.showwarning(
+                "Invalid Action",
+                "Please switch to MANUAL mode to control the queue."
+            )
+            return
+        self.car_arrives()
+
     def car_departs(self):
         if self.garage.game_over:
             return
@@ -133,6 +141,15 @@ class QueueGUI(tk.Frame):
         messagebox.showinfo("Car Departs", result)
         self.draw_table()
         self.draw_stats()
+
+    def handle_depart_click(self):
+        if self.garage.mode != "MANUAL":
+            messagebox.showwarning(
+                "Invalid Action",
+                "Please switch to MANUAL mode to control the queue."
+            )
+            return
+        self.car_departs()
 
     def draw_table(self):
         self.canvas.delete("table")
