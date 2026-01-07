@@ -153,18 +153,31 @@ class QueueGUI(tk.Frame):
             )
             return
         self.car_departs()
-
+        
     def set_mode(self, mode):
+        if self.garage.mode == mode:
+            return
+
         self.garage.mode = mode
 
         if mode == "AUTO":
             self.arrive_btn.config(state="disabled")
             self.depart_btn.config(state="disabled")
-            self.auto_arrival()
-            self.auto_depart()
-        else:
+
+            if not self.auto_arrival_running:
+                self.auto_arrival_running = True
+                self.auto_arrival()
+
+            if not self.auto_depart_running:
+                self.auto_depart_running = True
+                self.auto_depart()
+
+        else:  # MANUAL
             self.arrive_btn.config(state="normal")
             self.depart_btn.config(state="normal")
+
+            self.auto_arrival_running = False
+            self.auto_depart_running = False
 
     def draw_table(self):
         self.canvas.delete("table")
