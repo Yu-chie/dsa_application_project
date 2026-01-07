@@ -12,9 +12,10 @@ PANEL_Y_QUEUE = 290
 BTN_WIDTH = 14
 
 class QueueGUI(tk.Frame):
-    def __init__(self, parent, garage):
+    def __init__(self, parent, garage, controller):
         super().__init__(parent)
         self.garage = garage
+        self.controller = controller
         self.running = True
         
         self.auto_arrival_running = False
@@ -100,12 +101,15 @@ class QueueGUI(tk.Frame):
         
         # Game loop
         if self.garage.mode == "AUTO":
+            self.auto_arrival_running = True
+            self.auto_depart_running = True
             self.auto_arrival()
             self.auto_depart()
         elif self.garage.mode == "MANUAL":
             pass  # slower arrivals
         
         self.draw_table()
+        self.draw_stats()
         self.draw_waiting_area()
         self.tick()                
         

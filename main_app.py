@@ -29,7 +29,7 @@ class MainApp(tk.Tk):
         
         self.frames = {}
         # list of pages included (so if may dinedevelop na page i-add ung class dito para magpakita pag ni-run)
-        for page in (StartPage, SelectPage, DevPage, QueuePage, BTPage, HanoiPage):  
+        for page in (StartPage, SelectPage, DevPage, QueuePage, BTPage, HanoiPage):
             frame = page(container, self)
             self.frames[page.__name__] = frame
             frame.place(relwidth=1, relheight=1)
@@ -231,13 +231,10 @@ class QueuePage(tk.Frame):
         mode = getattr(controller, "queue_mode", "MANUAL")
         
         # Parking Garage Logic
-        self.garage = ParkingGarage(
-            file_manager=file_manager,
-            mode=mode
-        )
+        self.garage = ParkingGarage(file_manager=file_manager, mode=mode)
         
         # GUI setup
-        queue_gui = QueueGUI(self, garage, controller)
+        queue_gui = QueueGUI(self, self.garage, controller)
         queue_gui.pack(fill="both", expand=True)
         
         # Home Button
