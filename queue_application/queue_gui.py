@@ -31,7 +31,7 @@ class QueueGUI(tk.Frame):
         # Background image: prefer user-supplied custom background, fallback to existing
         bg_path_candidates = [
             "queue_application/queue_gui/queue_bg_custom.png",
-            "queue_application/queue_gui/queue_bg3.png"
+            "queue_application/queue_gui/queue_bg4.png"
         ]
         self.bg_image = None
         for p in bg_path_candidates:
@@ -41,7 +41,7 @@ class QueueGUI(tk.Frame):
             except FileNotFoundError:
                 continue
         if self.bg_image is None:
-            raise FileNotFoundError("Background image not found. Place queue_bg_custom.png or queue_bg3.png in queue_application/queue_gui/")
+            raise FileNotFoundError("Background image not found. Place queue_bg_custom.png or queue_bg4.png in queue_application/queue_gui/")
         self.bg_photo = ImageTk.PhotoImage(self.bg_image.resize((1920, 1080)))
         self.bg_image_id = self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
         
@@ -252,8 +252,8 @@ class QueueGUI(tk.Frame):
         # Adjust coordinates to match the background layout
         start_x = 160     # leftmost column (slot number)
         col_gap = 180     # horizontal gap between columns
-        start_y = 140     # top of first row
-        row_gap = 80      # vertical spacing between rows
+        start_y = 120     # top of first row
+        row_gap = 70      # vertical spacing between rows
 
         for i, car in enumerate(self.garage.queue):
             y = start_y + i * row_gap
