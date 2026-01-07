@@ -237,36 +237,32 @@ class QueueGUI(tk.Frame):
 
     def draw_waiting_area(self):
         self.canvas.delete("waiting")
-        
-        y = 600
-        self.canvas.create_text(
-            300, y,
-            text="WAITING AREA",
-            font=("VT323", 18, "bold"),
-            tags="waiting"
-        )
 
-        y += 30
-        for car in self.garage.waiting:
+        start_x = 95
+        start_y = 160
+        slot_gap = 65
+
+        for i, car in enumerate(self.garage.waiting):
+            y = start_y + i * slot_gap
             color = "red" if car["time_left"] <= 2 else "white"
-            
+
             self.canvas.create_text(
-                300, y,
-                text=f"{car['plate_number']} | Time left: {car['time_left']}",
+                start_x,
+                y,
+                text=car["plate_number"],
                 font=("VT323", 14),
-                fill = color,
+                fill=color,
                 tags="waiting"
             )
-            y += 25 
-            
-        y += 30
-        self.canvas.create_text(
-            300, y,
-            text=f"FAILED CARS: {self.garage.failed_cars}",
-            font=("VT323", 16, "bold"),
-            fill="red",
-            tags="waiting"
-        )
+
+            self.canvas.create_text(
+                start_x,
+                y + 20,
+                text=f"TIME: {car['time_left']}",
+                font=("VT323", 12),
+                fill=color,
+                tags="waiting"
+            )
 
     def stop(self):
         self.running = False
