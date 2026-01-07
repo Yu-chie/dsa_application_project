@@ -97,17 +97,6 @@ class QueueGUI(tk.Frame):
         )
         self.depart_btn_window = self.canvas.create_window(1800, PANEL_Y_QUEUE + 40, window=self.depart_btn, anchor="ne")
         
-        self.exit_btn = tk.Button(
-            self,
-            text="Exit",
-            font=("VT323", 16),
-            width=15,
-            command=self.exit_to_menu
-        )
-        
-        # Place buttons initially (will be repositioned on resize)
-        self.exit_btn_window = self.canvas.create_window(1550, 450, window=self.exit_btn, anchor="ne")
-        
         if self.garage.mode == "AUTO":
             self.arrive_btn.config(state="disabled")
             self.depart_btn.config(state="disabled")
@@ -252,9 +241,6 @@ class QueueGUI(tk.Frame):
         self.canvas.coords(self.arrive_btn_window, right_x, PANEL_Y_QUEUE)
         self.canvas.coords(self.depart_btn_window, right_x, PANEL_Y_QUEUE + 40)
 
-        # Exit button sits slightly further down
-        self.canvas.coords(self.exit_btn_window, right_x, 450)
-
         self.draw_waiting_area()
         
     def auto_arrival(self):
@@ -314,15 +300,6 @@ class QueueGUI(tk.Frame):
     def stop(self):
         self.running = False
         self.destroy()
-
-    def exit_to_menu(self):
-        # stop all loops
-        self.running = False
-        self.auto_arrival_running = False
-        self.auto_depart_running = False
-
-        # return to main menu
-        self.controller.show_frame("StartPage")
 
     def tick(self):
         if not self.running:
