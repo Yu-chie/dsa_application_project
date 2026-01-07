@@ -287,7 +287,8 @@ class QueueGUI(tk.Frame):
         for i, car in enumerate(self.garage.waiting):
             x = WAITING_X_START + i * WAITING_GAP
 
-            self.canvas.create_text(
+            # car image
+            self.canvas.create_image(
                 x,
                 WAITING_Y_IMAGE,
                 image=self.car_images[i % len(self.car_images)],
