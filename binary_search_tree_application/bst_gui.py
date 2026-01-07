@@ -23,6 +23,20 @@ class BSTPage(tk.Frame):
         # auto resizing bg 
         self.canvas.bind("<Configure>", self.resize_bg)
         
+        ''' for scrollable tree canvas '''
+        self.tree_frame = tk.Frame(self)
+        self.tree_frame.place(x=50, y=120, width=1000, height=600)
+        
+        self.tree_canvas = tk.Canvas(self.tree_frame, bg="#b6aff0", highlightthickness=0)
+        self.tree_canvas.pack(side="left", fill="both", expand=True)
+        
+        ''' for scrollbar '''
+        self.tree_scrollbar = tk.Scrollbar(
+            self.tree_frame, orient="vertical", command=self.tree_canvas.yview)
+        self.tree_scrollbar.pack(side="right", fill="y")
+        
+        self.tree_canvas.configure(yscrollcommand=self.tree_scrollbar.set)
+        
         # to home button
         home_button = tk.Button(
             self,
@@ -249,30 +263,48 @@ class BSTPage(tk.Frame):
     
     ''' USER: DRAWING BSTREE '''
     def generate_ubst(self):
-        self.canvas.delete("tree")
+        self.tree_canvas.delete("tree")
         
         def draw_nodes(node, x, y ,r):
             if node is None:
                 return
             
             if node.left:
-                self.canvas.create_line(x, y, x-r, y+80-20, tags="tree")
+                self.tree_canvas.create_line(x, y, x-r, y+80-20, tags="tree")
                 draw_nodes(node.left, x-r, y+80, r//2)
                 
             if node.right:
-                self.canvas.create_line(x, y, x+r, y+80-20, tags="tree")
+                self.tree_canvas.create_line(x, y, x+r, y+80-20, tags="tree")
                 draw_nodes(node.right, x+r, y+80, r//2)
                 
-            self.canvas.create_oval(
+            self.tree_canvas.create_oval(
                 x-20, y-20, x+20, y+20, 
                 fill="#ecb1ff", outline="#330084", tags="tree")
             
-            self.canvas.create_text(
+            self.tree_canvas.create_text(
                     x, y, text=node.value, 
                     font=("VT323"), tags="tree")
             
         if self.tree and self.tree.root:
-            draw_nodes(self.tree.root, 500, 200, 200)
+            draw_nodes(self.tree.root, 500, 25, 200)
+            
+        # for scroll
+        self.tree_canvas.update_idletasks()
+        
+        bstbox = self.tree_canvas.bbox("tree")
+        if bstbox: 
+            x1, y1, x2, y2, = bstbox
+            
+            canvas_width = self.tree_canvas.winfo_width()
+            canvas_height = self.tree_canvas.winfo_height()
+            
+            # forced top allignment of tree 
+            self.tree_canvas.configure(
+                scrollregion=(0, 0, max(x2, canvas_width), max(y2, canvas_height))
+                )
+            
+            # view on top
+            self.tree_canvas.yview_moveto(0)
     
     ''' RANDOMIZED: DRAWING BSTREE '''
     def generate_rbst(self):
