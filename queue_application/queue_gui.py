@@ -38,7 +38,8 @@ class QueueGUI(tk.Frame):
             font=("VT323", 18),
             bg="#b6a7f2"
         )
-        self.canvas.create_window(220, PANEL_Y_MODE - 40, window=self.mode_label)
+        # place near upper-right (actual coords are updated in resize_bg)
+        self.mode_label_window = self.canvas.create_window(1800, PANEL_Y_MODE - 40, window=self.mode_label, anchor="ne")
 
         self.manual_btn = tk.Button(
             self,
@@ -47,7 +48,7 @@ class QueueGUI(tk.Frame):
             width=BTN_WIDTH,
             command=lambda: self.set_mode("MANUAL")
         )
-        self.canvas.create_window(PANEL_X_LEFT, PANEL_Y_MODE, window=self.manual_btn)
+        self.manual_btn_window = self.canvas.create_window(1800, PANEL_Y_MODE, window=self.manual_btn, anchor="ne")
 
         self.auto_btn = tk.Button(
             self,
@@ -56,7 +57,7 @@ class QueueGUI(tk.Frame):
             width=BTN_WIDTH,
             command=lambda: self.set_mode("AUTO")
         )
-        self.canvas.create_window(PANEL_X_RIGHT, PANEL_Y_MODE, window=self.auto_btn)
+        self.auto_btn_window = self.canvas.create_window(1800, PANEL_Y_MODE + 40, window=self.auto_btn, anchor="ne")
 
         self.queue_label = tk.Label(
             self,
@@ -64,7 +65,7 @@ class QueueGUI(tk.Frame):
             font=("VT323", 16),
             bg="#b6a7f2"
         )
-        self.canvas.create_window(220, PANEL_Y_QUEUE - 40, window=self.queue_label)
+        self.queue_label_window = self.canvas.create_window(1800, PANEL_Y_QUEUE - 40, window=self.queue_label, anchor="ne")
 
         self.arrive_btn = tk.Button(
             self,
@@ -73,7 +74,7 @@ class QueueGUI(tk.Frame):
             width=BTN_WIDTH,
             command=self.handle_arrive_click
         )
-        self.canvas.create_window(PANEL_X_LEFT, PANEL_Y_QUEUE, window=self.arrive_btn)
+        self.arrive_btn_window = self.canvas.create_window(1800, PANEL_Y_QUEUE, window=self.arrive_btn, anchor="ne")
 
         self.depart_btn = tk.Button(
             self,
@@ -82,7 +83,7 @@ class QueueGUI(tk.Frame):
             width=BTN_WIDTH,
             command=self.handle_depart_click
         )
-        self.canvas.create_window(PANEL_X_RIGHT, PANEL_Y_QUEUE, window=self.depart_btn)
+        self.depart_btn_window = self.canvas.create_window(1800, PANEL_Y_QUEUE + 40, window=self.depart_btn, anchor="ne")
         
         self.exit_btn = tk.Button(
             self,
@@ -93,7 +94,7 @@ class QueueGUI(tk.Frame):
         )
         
         # Place buttons initially (will be repositioned on resize)
-        self.exit_btn_window = self.canvas.create_window(1550, 450, window=self.exit_btn)
+        self.exit_btn_window = self.canvas.create_window(1550, 450, window=self.exit_btn, anchor="ne")
         
         if self.garage.mode == "AUTO":
             self.arrive_btn.config(state="disabled")
@@ -237,8 +238,18 @@ class QueueGUI(tk.Frame):
         self.bg_photo = ImageTk.PhotoImage(resized_bg)
         self.canvas.itemconfig(self.bg_image_id, image=self.bg_photo)
         
-        # Reposition buttons in upper-right box
-        self.canvas.coords(self.exit_btn_window, event.width - 400, 450)
+        # Reposition control buttons to upper-right
+        right_x = event.width - 40
+        self.canvas.coords(self.mode_label_window, right_x, PANEL_Y_MODE - 40)
+        self.canvas.coords(self.manual_btn_window, right_x, PANEL_Y_MODE)
+        self.canvas.coords(self.auto_btn_window, right_x, PANEL_Y_MODE + 40)
+
+        self.canvas.coords(self.queue_label_window, right_x, PANEL_Y_QUEUE - 40)
+        self.canvas.coords(self.arrive_btn_window, right_x, PANEL_Y_QUEUE)
+        self.canvas.coords(self.depart_btn_window, right_x, PANEL_Y_QUEUE + 40)
+
+        # Exit button sits slightly further down
+        self.canvas.coords(self.exit_btn_window, right_x, 450)
 
         self.draw_waiting_area()
         
