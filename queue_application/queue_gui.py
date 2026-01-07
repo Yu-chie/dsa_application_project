@@ -102,6 +102,9 @@ class QueueGUI(tk.Frame):
         elif self.garage.mode == "MANUAL":
             pass  # slower arrivals
         
+        self.auto_arrival_running = False
+        self.auto_depart_running = False
+        
         self.draw_table()
         self.draw_waiting_area()
         self.tick()                
