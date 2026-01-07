@@ -51,7 +51,7 @@ class BSTPage(tk.Frame):
         
         self.canvas.itemconfig(self.canvas_bg, image=self.btree_bg)
     
-    ''' NODE COUNT INPUT '''
+    ''' GENERAL: NODE COUNT INPUT '''
     def nodecount_input(self):
         self.asknodes_label = tk.Label(
             self.canvas,
@@ -81,7 +81,7 @@ class BSTPage(tk.Frame):
         self.canvas.create_window(1296, 170, window=self.ncount_entry)
         self.canvas.create_window(1295, 230, window=self.ncount_button)
     
-    ''' NODE COUNT CONFIRMATION '''
+    ''' GENERAL: NODE COUNT CONFIRMATION '''
     def confirm_nodecount(self):
         try:
             max_node = int(self.ncount_entry.get())
@@ -120,7 +120,7 @@ class BSTPage(tk.Frame):
         
         self.user_decision()
     
-    ''' BST METHOD CHOICE '''
+    ''' GENERAL: METHOD CHOICE '''
     def user_decision(self):
         self.askuser_label = tk.Label(
             self.canvas, 
@@ -157,8 +157,12 @@ class BSTPage(tk.Frame):
         self.canvas.create_window(1293, 185, window=self.userinput_button)
         self.canvas.create_window(1293, 235, window=self.randombst_button)
     
-    ''' USER PROVIDED VALUES FOR BST BUTTONS '''
-    def node_user(self):
+    ''' USER: NODE VALUE INPUT '''
+    def nodeval_user(self):
+        pass
+    
+    ''' USER: ADD NODE VALUES MANUALLY LOGIC '''
+    def add_nvalue(self):
         pass
     
     ''' DRAWING BSTREE '''
