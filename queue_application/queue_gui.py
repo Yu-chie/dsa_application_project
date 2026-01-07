@@ -26,8 +26,20 @@ class QueueGUI(tk.Frame):
         self.canvas.pack(fill="both", expand=True)
         self.canvas.bind("<Configure>", self.resize_bg)
         
-        # Background image
-        self.bg_image = Image.open("queue_application/queue_gui/queue_bg.png")
+        # Background image: prefer user-supplied custom background, fallback to existing
+        bg_path_candidates = [
+            "queue_application/queue_gui/queue_bg_custom.png",
+            "queue_application/queue_gui/queue_bg.png"
+        ]
+        self.bg_image = None
+        for p in bg_path_candidates:
+            try:
+                self.bg_image = Image.open(p)
+                break
+            except FileNotFoundError:
+                continue
+        if self.bg_image is None:
+            raise FileNotFoundError("Background image not found. Place queue_bg_custom.png or queue_bg.png in queue_application/queue_gui/")
         self.bg_photo = ImageTk.PhotoImage(self.bg_image.resize((1920, 1080)))
         self.bg_image_id = self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
         
@@ -196,41 +208,34 @@ class QueueGUI(tk.Frame):
             self.auto_depart_running = False
 
     def draw_table(self):
+        """
+        Simplified overlay: the background image already contains the table grid.
+        This method only draws the table data (slot / plate / arrivals / departures)
+        aligned over the background (no headers/grid lines).
+        """
         self.canvas.delete("table")
-        
-        y = 80
-        headers = ["Slot", "Plate Number", "# of Arrivals", "# of Departures"]
-        
-        for i, header in enumerate(headers):
-            self.canvas.create_text(
-                150 + i*150, y, 
-                text=header, 
-                font=("VT323", 14, "bold"), 
-                tags="table"
-            )
-            
-        y += 30
-        
+
+        # Adjust coordinates to match the background layout; tweak as needed.
+        start_x = 160     # leftmost column (slot number)
+        col_gap = 180     # horizontal gap between columns
+        start_y = 140     # top of first row
+        row_gap = 80      # vertical spacing between rows
+
         for i, car in enumerate(self.garage.queue):
-            if car is None:
-                values = [i+1, "-", "-", "-"]
-            else:
-                values = [
-                    i + 1,
-                    car['plate_number'],
-                    car['arrival_count'],
-                    car['departure_count']
-                ]
-            
+            y = start_y + i * row_gap
+            slot_text = i + 1
+            plate_text = "-" if car is None else car['plate_number']
+            arrivals_text = "-" if car is None else str(car['arrival_count'])
+            departures_text = "-" if car is None else str(car['departure_count'])
+
+            values = [slot_text, plate_text, arrivals_text, departures_text]
             for j, value in enumerate(values):
                 self.canvas.create_text(
-                    150 + j*150, y, 
-                    text=value, 
-                    font=("VT323", 12), 
+                    start_x + j * col_gap, y,
+                    text=value,
+                    font=("VT323", 14),
                     tags="table"
                 )
-            
-            y += 25
         
     def resize_bg(self, event):
         # Resize background
