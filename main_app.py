@@ -220,7 +220,8 @@ class StackPage(tk.Frame):
     pass
 
 class QueuePage(tk.Frame):
-    def __init__(self, parent, controller):
+    def __init__(self, parent, garage, controller):
+        self.controller = controller
         super().__init__(parent)
         
         # File Manager setup
