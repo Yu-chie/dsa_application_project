@@ -115,6 +115,7 @@ class QueueGUI(tk.Frame):
         self.car_images = []
         self.load_car_images()
         
+        self.draw_table()
         self.draw_stats()
         self.draw_waiting_area()
         self.tick()                
@@ -166,6 +167,13 @@ class QueueGUI(tk.Frame):
         if not self.running or not self.auto_arrival_running:
             return
 
+        # if there is space, move waiting car to parking in auto mode
+        if self.garage.waiting and None in self.garage.queue:
+            car = self.garage.waiting.pop(0)
+            self.garage.car_arrives(car["plate_number"])
+            self.draw_table()
+        
+        # Add new car to waiting area
         plate = f"CAR-{random.randint(100,999)}"
         self.garage.add_to_waiting(plate)
 
