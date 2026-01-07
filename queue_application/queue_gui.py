@@ -269,16 +269,6 @@ class QueueGUI(tk.Frame):
         self.bg_photo = ImageTk.PhotoImage(resized_bg)
         self.canvas.itemconfig(self.bg_image_id, image=self.bg_photo)
         
-        # Reposition control buttons to upper-right
-        right_x = event.width - 40
-        self.canvas.coords(self.mode_label_window, right_x, PANEL_Y_MODE - 40)
-        self.canvas.coords(self.manual_btn_window, right_x, PANEL_Y_MODE)
-        self.canvas.coords(self.auto_btn_window, right_x, PANEL_Y_MODE + 40)
-
-        self.canvas.coords(self.queue_label_window, right_x, PANEL_Y_QUEUE - 40)
-        self.canvas.coords(self.arrive_btn_window, right_x, PANEL_Y_QUEUE)
-        self.canvas.coords(self.depart_btn_window, right_x, PANEL_Y_QUEUE + 40)
-
         self.draw_waiting_area()
 
     def draw_waiting_area(self):
