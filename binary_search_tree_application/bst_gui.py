@@ -74,7 +74,7 @@ class BSTPage(tk.Frame):
             fg = "#330084",
             activebackground="#330084",
             activeforeground="#ffffff",
-            command=self.user_decision
+            command=self.confirm_nodecount
         )
         
         self.canvas.create_window(1298, 108, window=self.asknodes_label)
@@ -83,7 +83,42 @@ class BSTPage(tk.Frame):
     
     ''' NODE COUNT CONFIRMATION '''
     def confirm_nodecount(self):
-        pass
+        try:
+            max_node = int(self.ncount_entry.get())
+            
+            if not isinstance(max_node, int):
+                raise TypeError
+            
+            if max_node < 10 or max_node > 30:
+                raise ValueError
+            
+            self.tree = BSTree(max_node)
+            
+        except TypeError:
+            self.ncount_entry.delete(0, tk.END)
+            messagebox.showerror(
+                "Invalid",
+                "Nodes must be between 10-30 only"  
+            )
+            
+            return
+        
+        except ValueError:
+            self.ncount_entry.delete(0, tk.END)
+            messagebox.showerror(
+                "Invalid",
+                "Nodes must be between 10-30 only" 
+            )
+            
+            return
+        
+        self.tree = BSTree(max_node)
+        
+        self.asknodes_label.destroy()
+        self.ncount_entry.destroy()
+        self.ncount_button.destroy()
+        
+        self.user_decision()
     
     ''' BST METHOD CHOICE '''
     def user_decision(self):
