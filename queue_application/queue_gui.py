@@ -284,7 +284,16 @@ class QueueGUI(tk.Frame):
     def stop(self):
         self.running = False
         self.destroy()
-        
+
+    def exit_to_menu(self):
+        # stop all loops
+        self.running = False
+        self.auto_arrival_running = False
+        self.auto_depart_running = False
+
+        # return to main menu
+        self.controller.show_frame("StartPage")
+
     def tick(self):
         if not self.running:
             return
