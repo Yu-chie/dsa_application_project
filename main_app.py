@@ -160,7 +160,7 @@ class SelectPage(tk.Frame):
             activebackground="#330084",
             activeforeground="#ffffff",
             padx=70,
-            command=lambda: controller.show_frame("QueueModePage")
+            command=lambda: controller.show_frame("QueuePage")
         )
         
         self.canvas.create_window(1250, 400, window=queue_button)

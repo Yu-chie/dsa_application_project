@@ -155,8 +155,13 @@ class QueueGUI(tk.Frame):
         self.garage.mode = mode
 
         if mode == "AUTO":
+            self.arrive_btn.config(state="disabled")
+            self.depart_btn.config(state="disabled")
             self.auto_arrival()
             self.auto_depart()
+        else:
+            self.arrive_btn.config(state="normal")
+            self.depart_btn.config(state="normal")
 
     def draw_table(self):
         self.canvas.delete("table")
@@ -202,8 +207,6 @@ class QueueGUI(tk.Frame):
         self.canvas.itemconfig(self.bg_image_id, image=self.bg_photo)
         
         # Reposition buttons in upper-right box
-        self.canvas.coords(self.arrive_btn_window, event.width - 400, 250)
-        self.canvas.coords(self.depart_btn_window, event.width - 400, 350)
         self.canvas.coords(self.exit_btn_window, event.width - 400, 450)
 
         self.draw_waiting_area()
