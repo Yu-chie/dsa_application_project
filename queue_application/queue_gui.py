@@ -240,7 +240,7 @@ class QueueGUI(tk.Frame):
         self.after(3000, self.auto_arrival)
 
     def auto_depart(self):
-        if not self.running or self.garage.mode != "AUTO":
+        if not self.running or not self.auto_depart_running:
             return
 
         for car in self.garage.queue:
