@@ -111,9 +111,21 @@ class QueueGUI(tk.Frame):
         elif self.garage.mode == "MANUAL":
             pass  # slower arrivals
         
+        # cars
+        self.car_images = []
+        self.load_car_images()
+        
         self.draw_stats()
         self.draw_waiting_area()
         self.tick()                
+        
+    def load_car_images(self):
+        self.car_images.clear()
+
+        for i in range(1, 11):
+            path = f"queue_application/queue_gui/cars/C{str(i).zfill(2)}.PNG"
+            img = Image.open(path).resize((90, 150))
+            self.car_images.append(ImageTk.PhotoImage(img))
         
     def car_arrives(self, plate=None):
         if self.garage.game_over:
