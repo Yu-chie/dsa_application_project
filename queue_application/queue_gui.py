@@ -45,59 +45,58 @@ class QueueGUI(tk.Frame):
         self.bg_photo = ImageTk.PhotoImage(self.bg_image.resize((1920, 1080)))
         self.bg_image_id = self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
         
-        # Buttons
-        self.mode_label = tk.Label(
-            self,
-            text="MODE",
-            font=("VT323", 18),
-            bg="#b6a7f2"
-        )
-        # place near upper-right (actual coords are updated in resize_bg)
-        self.mode_label_window = self.canvas.create_window(1800, PANEL_Y_MODE - 40, window=self.mode_label, anchor="ne")
-
+        # Buttons inside upper right box
         self.manual_btn = tk.Button(
             self,
             text="MANUAL",
             font=("VT323", 14),
-            width=BTN_WIDTH,
+            width=15,
             command=lambda: self.set_mode("MANUAL")
         )
-        self.manual_btn_window = self.canvas.create_window(1800, PANEL_Y_MODE, window=self.manual_btn, anchor="ne")
+
+        self.manual_btn_window = self.canvas.create_window(
+            CONTROL_X - 80, CONTROL_Y,
+            window=self.manual_btn
+        )
 
         self.auto_btn = tk.Button(
             self,
             text="AUTO",
             font=("VT323", 14),
-            width=BTN_WIDTH,
+            width=15,
             command=lambda: self.set_mode("AUTO")
         )
-        self.auto_btn_window = self.canvas.create_window(1800, PANEL_Y_MODE + 40, window=self.auto_btn, anchor="ne")
 
-        self.queue_label = tk.Label(
-            self,
-            text="QUEUE CONTROLS",
-            font=("VT323", 16),
-            bg="#b6a7f2"
+        self.auto_btn_window = self.canvas.create_window(
+            CONTROL_X + 80, CONTROL_Y,
+            window=self.auto_btn
         )
-        self.queue_label_window = self.canvas.create_window(1800, PANEL_Y_QUEUE - 40, window=self.queue_label, anchor="ne")
 
         self.arrive_btn = tk.Button(
             self,
             text="CAR ARRIVES",
             font=("VT323", 14),
-            width=BTN_WIDTH,
+            width=15,
             command=self.handle_arrive_click
         )
-        self.arrive_btn_window = self.canvas.create_window(1800, PANEL_Y_QUEUE, window=self.arrive_btn, anchor="ne")
+        
+        self.arrive_btn_window = self.canvas.create_window(
+            CONTROL_X - 80, CONTROL_Y + 60,
+            window=self.arrive_btn
+        )
 
         self.depart_btn = tk.Button(
             self,
             text="CAR DEPARTS",
             font=("VT323", 14),
-            width=BTN_WIDTH,
+            width=15,
             command=self.handle_depart_click
         )
-        self.depart_btn_window = self.canvas.create_window(1800, PANEL_Y_QUEUE + 40, window=self.depart_btn, anchor="ne")
+        
+        self.depart_btn_window = self.canvas.create_window(
+            CONTROL_X + 80, CONTROL_Y + 60,
+            window=self.depart_btn
+        )
         
         if self.garage.mode == "AUTO":
             self.arrive_btn.config(state="disabled")
