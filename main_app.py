@@ -235,7 +235,7 @@ class QueuePage(tk.Frame):
         )
         
         # GUI setup
-        queue_gui = QueueGUI(self, garage)
+        queue_gui = QueueGUI(self, garage, controller)
         queue_gui.pack(fill="both", expand=True)
         
         # Home Button

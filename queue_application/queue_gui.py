@@ -17,6 +17,9 @@ class QueueGUI(tk.Frame):
         self.garage = garage
         self.running = True
         
+        self.auto_arrival_running = False
+        self.auto_depart_running = False
+        
         # Canvas setup
         self.canvas = tk.Canvas(self)
         self.canvas.pack(fill="both", expand=True)
@@ -85,7 +88,7 @@ class QueueGUI(tk.Frame):
             text="Exit",
             font=("VT323", 16),
             width=15,
-            command=self.destroy
+            command=self.stop
         )
         
         # Place buttons initially (will be repositioned on resize)
@@ -101,9 +104,6 @@ class QueueGUI(tk.Frame):
             self.auto_depart()
         elif self.garage.mode == "MANUAL":
             pass  # slower arrivals
-        
-        self.auto_arrival_running = False
-        self.auto_depart_running = False
         
         self.draw_table()
         self.draw_waiting_area()
