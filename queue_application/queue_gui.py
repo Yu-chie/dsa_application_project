@@ -242,34 +242,69 @@ class QueueGUI(tk.Frame):
             self.auto_depart_running = False
 
     def draw_table(self):
-        """
-        Simplified overlay: the background image already contains the table grid.
-        This method only draws the table data (slot / plate / arrivals / departures)
-        aligned over the background (no headers/grid lines).
-        """
         self.canvas.delete("table")
 
         # Adjust coordinates to match the background layout
-        start_x = 160     # leftmost column (slot number)
-        col_gap = 180     # horizontal gap between columns
+        start_x = 100     # leftmost column (slot number)
+        col_gap = 160     # horizontal gap between columns
         start_y = 120     # top of first row
-        row_gap = 70      # vertical spacing between rows
+        row_gap = 65      # vertical spacing between rows
 
         for i, car in enumerate(self.garage.queue):
             y = start_y + i * row_gap
-            slot_text = i + 1
-            plate_text = "-" if car is None else car['plate_number']
-            arrivals_text = "-" if car is None else str(car['arrival_count'])
-            departures_text = "-" if car is None else str(car['departure_count'])
-
-            values = [slot_text, plate_text, arrivals_text, departures_text]
-            for j, value in enumerate(values):
+            
+            # column 0 - slot number
+            self.canvas.create_text(
+                start_x,
+                y,
+                text=str(i + 1),
+                font=("VT323", 14),
+                tags="table"
+            )
+            
+            # column 1 - car image
+            if car is not None:
+                self.canvas.create_image(
+                    start_x + col_gap,
+                    y,
+                    image=self.car_images[i % len(self.car_images)],
+                    tags="table"
+                )
+            else:
                 self.canvas.create_text(
-                    start_x + j * col_gap, y,
-                    text=value,
+                    start_x + col_gap,
+                    y,
+                    text="-",
                     font=("VT323", 14),
                     tags="table"
                 )
+                
+            # column 2 — plate number
+            self.canvas.create_text(
+                start_x + col_gap * 2,
+                y,
+                text="-" if car is None else car["plate_number"],
+                font=("VT323", 14),
+                tags="table"
+            )
+
+            # column 3 — arrivals
+            self.canvas.create_text(
+                start_x + col_gap * 3,
+                y,
+                text="-" if car is None else car["arrival_count"],
+                font=("VT323", 14),
+                tags="table"
+            )
+
+            # column 4 — departures
+            self.canvas.create_text(
+                start_x + col_gap * 4,
+                y,
+                text="-" if car is None else car["departure_count"],
+                font=("VT323", 14),
+                tags="table"
+            )
         
     def resize_bg(self, event):
         # Resize background
