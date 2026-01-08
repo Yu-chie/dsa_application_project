@@ -1,3 +1,4 @@
+from operator import index
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 from PIL import Image, ImageTk
@@ -269,7 +270,7 @@ class QueueGUI(tk.Frame):
                 self.canvas.create_image(
                     start_x + col_gap,
                     y,
-                    image=self.car_images[i % len(self.car_images)],
+                    image=self.get_car_image(car["plate_number"]),
                     tags="table"
                 )
             else:
@@ -326,7 +327,7 @@ class QueueGUI(tk.Frame):
             self.canvas.create_image(
                 x,
                 WAITING_Y_IMAGE,
-                image=self.car_images[i % len(self.car_images)],
+                image=self.get_car_image(car["plate_number"]),
                 tags="waiting"
             )
 
@@ -405,3 +406,7 @@ class QueueGUI(tk.Frame):
             fill="red",
             tags="stats"
         )
+    
+    def get_car_image(self, plate):
+        index - int(plate[1:]) - 1      # COI is 0
+        return self.car_images[index]
