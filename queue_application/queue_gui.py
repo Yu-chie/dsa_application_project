@@ -158,8 +158,9 @@ class QueueGUI(tk.Frame):
                 "Please switch to MANUAL mode to control the queue."
             )
             return
-        plate = simpledialog.askstring("Car Arrives", "Enter the car's plate number:")
+        plate = self.garage.get_random_plate()
         if not plate:
+            messagebox.showinfo("No Cars", "No available cars to add.")
             return
         self.car_arrives(plate)
         
