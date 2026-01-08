@@ -175,8 +175,9 @@ class QueueGUI(tk.Frame):
             self.draw_table()
         
         # Add new car to waiting area
-        plate = f"CAR-{random.randint(100,999)}"
-        self.garage.add_to_waiting(plate)
+        plate = self.garage.get_random_plate()
+        if plate:
+            self.garage.add_to_waiting(plate)
 
         self.draw_waiting_area()
         self.draw_stats()
