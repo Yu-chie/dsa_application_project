@@ -113,6 +113,7 @@ class QueueGUI(tk.Frame):
             pass  # slower arrivals
         
         # cars
+        self.selected_index = None
         self.car_images = []
         self.load_car_images()
         
