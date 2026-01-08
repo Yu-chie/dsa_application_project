@@ -310,13 +310,28 @@ class BSTPage(tk.Frame):
     def generate_rbst(self):
         pass
     
-    ''' FOR TRAVERSAL TITLE'''
+    ''' GENERAL: TRAVERSAL TITLE'''
     def traversal_title(self):
-        pass
+        self.inorder_title = tk.Label(
+            self.canvas, 
+            text="...",
+            font=("VT323", 15),
+            bg = "#9d8cf3",
+            wraplength=330,
+            justify="left"
+        )
+        
+        self.canvas.create_window(1290, 455, window=self.inorder_title)
     
-    ''' FOR PRINTING TRAVERSAL '''
+    ''' GENERAL: PRINTING TRAVERSAL '''
     def traversal_holder(self):
-        pass
+        if not self.tree or not self.tree.root:
+            return
+        
+        ltr_list = self.tree.trav_inorder(self.tree.root)
+        ltr = " ".join(map(str, ltr_list))
+        
+        self.inorder_title.config(text=ltr, bg="#9d8cf3")
     
     def reset_tree(self):
         pass
