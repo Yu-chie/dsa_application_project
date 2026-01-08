@@ -262,11 +262,6 @@ class QueueGUI(tk.Frame):
             self.auto_depart_running = False
 
     def draw_table(self):
-        """
-        Simplified overlay: the background image already contains the table grid.
-        This method only draws the table data (slot / plate / arrivals / departures)
-        aligned over the background (no headers/grid lines).
-        """
         self.canvas.delete("table")
 
         # Adjust coordinates to match the background layout
