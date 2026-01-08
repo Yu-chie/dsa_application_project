@@ -1,4 +1,5 @@
 from queue_application.file_manager import FileManager
+import random
 
 # PARKING GARAGE CLASS DEFINITION
 class ParkingGarage:
@@ -20,6 +21,7 @@ class ParkingGarage:
         self.score = 0
         self.max_failed = 5        # game over condition
         self.game_over = False
+        self.available_plates = [f"car{str(i).zfill(2)}" for i in range(1, 11)]
         
     # Save current records to file
     def save_records(self):
@@ -161,3 +163,13 @@ class ParkingGarage:
             "score": self.score,
             "game_over": self.game_over
         }
+        
+    def get_random_plate(self):
+        used = {car['plate_number'] for car in self.queue if car}
+        used |= set(self.waiting[i]["plate_number"] for i in range(len(self.waiting)))
+        
+        choices = [plate for plate in self.available_plates if plate not in used]
+        if not choices:
+            return None
+        
+        return random.choice(choices)
