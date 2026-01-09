@@ -67,6 +67,18 @@ class BSTPage(tk.Frame):
         
         self.canvas.create_window(1295, 700, window=self.restartall_button)
         
+        # show randomized values
+        self.random_label = tk.Label(
+            self.canvas,
+            text="",
+            font=("VT323", 13),
+            bg="#b8a8f1",
+            wraplength=330,
+            justify="left"
+        )
+
+        self.canvas.create_window(1295, 150, window=self.random_label)
+        
         ''' LOGIC HOLDERS '''
         self.tree = None
         
@@ -91,7 +103,7 @@ class BSTPage(tk.Frame):
             "asknodes_label", "ncount_entry", "ncount_button",
             "askuser_label", "userinput_button", "randombst_button",
             "value_label", "value_entry", "value_button",
-            "reset_button", "regen_button"
+            "reset_button", "regen_button", "random_label"
         ]
         
         for spec in widgets:
@@ -386,6 +398,10 @@ class BSTPage(tk.Frame):
         self.tree_canvas.delete("tree")
         self.logic_rbst()
         
+        # show randomized value
+        values_str = ", ".join(map(str, self.random_values))
+        self.random_label.config(text=f"Generated Values:\n{values_str}")
+        
         # draw and give traversal
         self.generate_ubst()
         self.traversal_holder()
@@ -396,6 +412,9 @@ class BSTPage(tk.Frame):
         self.tree.root = None
         self.tree.n_count = 0
         
+        # reset values
+        self.random_values = []
+                
         try:
             for _ in range(self.tree.max_node):
                 value = random.randint(1,100)
@@ -408,6 +427,11 @@ class BSTPage(tk.Frame):
         self.tree_canvas.delete("tree")
         
         self.logic_rbst()
+        
+        # show randomized value
+        values_str = ", ".join(map(str, self.random_values))
+        self.random_label.config(text=f"Generated Values:\n{values_str}")
+        
         self.generate_ubst()
         self.traversal_holder()
     
