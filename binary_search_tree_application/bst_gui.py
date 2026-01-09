@@ -307,6 +307,7 @@ class BSTPage(tk.Frame):
             return
         
         self.generate_ubst()
+        self.traversal_holder()
     
     ''' USER: DRAWING BSTREE '''
     def generate_ubst(self):
@@ -336,8 +337,8 @@ class BSTPage(tk.Frame):
                     x, y, text=node.value, 
                     font=("VT323"), tags="tree")
             
-        if self.tree and self.tree.root:
-            draw_nodes(self.tree.root, 500, 25, 200)
+            if self.tree and self.tree.root:
+                draw_nodes(self.tree.root, 500, 25, 200)
             
         ''' for scrollbar in tree frame '''
         self.tree_canvas.update_idletasks()
@@ -418,6 +419,7 @@ class BSTPage(tk.Frame):
         try:
             for _ in range(self.tree.max_node):
                 value = random.randint(1,100)
+                self.random_values.append(value)
                 self.tree.ctrl_insert(value)
         except OverflowError:
             pass
