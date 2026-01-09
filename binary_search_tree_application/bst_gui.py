@@ -301,16 +301,20 @@ class BSTPage(tk.Frame):
         self.tree_canvas.delete("tree")
         
         def draw_nodes(node, x, y ,r):
+            # node drawing control = avoids overlap
+            next_r = max(r//2, 30)
+            level_y = 100
+            
             if node is None:
                 return
             
             if node.left:
-                self.tree_canvas.create_line(x, y, x-r, y+80-20, tags="tree")
-                draw_nodes(node.left, x-r, y+80, r//2)
+                self.tree_canvas.create_line(x, y, x-r, y+80, tags="tree")
+                draw_nodes(node.left, x-r, y+level_y, next_r)
                 
             if node.right:
-                self.tree_canvas.create_line(x, y, x+r, y+80-20, tags="tree")
-                draw_nodes(node.right, x+r, y+80, r//2)
+                self.tree_canvas.create_line(x, y, x+r, y+80, tags="tree")
+                draw_nodes(node.right, x+r, y+level_y, next_r)
                 
             self.tree_canvas.create_oval(
                 x-20, y-20, x+20, y+20, 
