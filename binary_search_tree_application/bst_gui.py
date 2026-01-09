@@ -312,6 +312,12 @@ class BSTPage(tk.Frame):
         self.userinput_button.destroy()
         self.randombst_button.destroy()
         
+        # draw and give traversal
+        self.generate_ubst()
+        self.traversal_holder()
+        
+    ''' RANDOMIZED: DRAWING BSTREE LOGIC '''
+    def draw_rbst(self):
         # reset root just in case
         self.tree.root = None
         self.tree.n_count = 0
@@ -323,10 +329,6 @@ class BSTPage(tk.Frame):
                 self.tree.ctrl_insert(value)
         except OverflowError:
             pass
-        
-        # draw and give traversal
-        self.generate_ubst()
-        self.traversal_holder()
     
     ''' GENERAL: TRAVERSAL TITLE'''
     def traversal_title(self):
