@@ -53,6 +53,20 @@ class BSTPage(tk.Frame):
         
         self.canvas.create_window(103, 45, window=home_button)
         
+        # restart button for all
+        self.restartall_button = tk.Button(
+            self.canvas, 
+            text="Go back to Node Selection",
+            font=("VT323", 15),
+            bg = "#ecb1ff",
+            fg = "#330084",
+            activebackground="#330084",
+            activeforeground="#ffffff",
+            command=self.restart_all
+        ) 
+        
+        self.canvas.create_window(1295, 700, window=self.restartall_button)
+        
         ''' LOGIC HOLDERS '''
         self.tree = None
         
@@ -64,6 +78,27 @@ class BSTPage(tk.Frame):
         self.btree_bg = ImageTk.PhotoImage(resized)
         
         self.canvas.itemconfig(self.canvas_bg, image=self.btree_bg)
+    
+    ''' GENERAL: GO BACK TO NODE SELECTION '''
+    def restart_all(self):
+        # clear tree and traversal
+        self.tree = None
+        self.tree_canvas.delete("tree")
+        self.inorder_title.config(text="...")
+        
+        # destroy widgets
+        widgets = [
+            "asknodes_label", "ncount_entry", "ncount_button",
+            "askuser_label", "userinput_button", "randombst_button",
+            "value_label", "value_entry", "value_button",
+            "reset_button", "regen_button"
+        ]
+        
+        for spec in widgets:
+            if hasattr(self, spec):
+                getattr(self, spec).destroy()
+                
+        self.nodecount_input()
     
     ''' GENERAL: NODE COUNT INPUT '''
     def nodecount_input(self):
