@@ -306,11 +306,30 @@ class BSTPage(tk.Frame):
             # view on top
             self.tree_canvas.yview_moveto(0)
     
+    ''' RANDOMIZED: BUTTON SETUP '''
+    def rbst_setup(self):
+        self.value_entry = tk.Button(
+            self.canvas,
+            text="Regenerate Random Binary Search Tree",
+            font=("VT323", 20),
+            bg = "#ecb1ff",
+            fg = "#330084",
+            activebackground="#330084",
+            activeforeground="#ffffff",
+            command=self.regenerate_rbst
+        )
+        
+        self.canvas.create_window(1295, 230, window=self.value_button)
+    
     ''' RANDOMIZED: DRAWING BSTREE '''
     def generate_rbst(self):
         self.askuser_label.destroy()
         self.userinput_button.destroy()
         self.randombst_button.destroy()
+        
+        # rbst gui logic
+        self.tree_canvas.delete("tree")
+        self.draw_rbst()
         
         # draw and give traversal
         self.generate_ubst()
@@ -321,7 +340,6 @@ class BSTPage(tk.Frame):
         # reset root just in case
         self.tree.root = None
         self.tree.n_count = 0
-        self.tree_canvas.delete("tree")
         
         try:
             for _ in range(self.tree.max_node):
