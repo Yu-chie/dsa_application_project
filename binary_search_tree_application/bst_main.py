@@ -2,7 +2,7 @@ class Node:
     def __init__(self, value):
         self.left = None
         self.value = value
-        self.n_right = None
+        self.right = None
 
 class BSTree:
     def __init__(self, max_node):
