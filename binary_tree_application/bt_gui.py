@@ -56,14 +56,13 @@ class BTPage(tk.Frame):
     def treelvl_input(self):
         self.inputlvl_label = tk.Label(
             self.canvas,
-            text="Enter your Binary Tree Level:",
+            text="Enter your Binary Tree Level (1-5):",
             font=("VT323", 19),
             bg = "#b8a8f1"
         )
         
         self.treelvl_entry = tk.Entry(
             self.canvas,
-            text="Confirm Tree Level",
             font=("VT323", 20),
             justify="center"
         ) 
@@ -142,7 +141,6 @@ class BTPage(tk.Frame):
         
         self.value_entry = tk.Entry(
             self.canvas,
-            text="Confrim Tree Level",
             font=("VT323", 20),
             justify="center"
         )
@@ -279,7 +277,7 @@ class BTPage(tk.Frame):
         
         self.preorder_title.config(text=f"Preorder (TLR): {tlr}", bg="#9d8cf3")
         self.inorder_title.config(text=f"Inorder (LTR): {ltr}", bg="#9d8cf3")
-        self.postorder_title.config(text=f"Postrder (LRT): {lrt}", bg="#9d8cf3")
+        self.postorder_title.config(text=f"Postorder (LRT): {lrt}", bg="#9d8cf3")
     
     ''' FOR RESETTING PROGRESS '''
     def reset_progress(self):
