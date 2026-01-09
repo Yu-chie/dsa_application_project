@@ -305,7 +305,24 @@ class BSTPage(tk.Frame):
             
             # view on top
             self.tree_canvas.yview_moveto(0)
-    
+        
+    ''' USER: RESET PROGRESS '''
+    def reset_tree(self):
+        # clear tree canvas
+        self.tree_canvas.delete("tree")
+        
+        # reset logic
+        if self.tree:
+            self.tree.root = None
+            self.tree.n_count = 0
+            
+        # reset traversal
+        self.inorder_title.config(text="...")
+        
+        # clear entry box
+        if hasattr(self, "value_entry"):
+            self.value_entry.delete(0, tk.END)
+        
     ''' RANDOMIZED: BUTTON SETUP '''
     def rbst_setup(self):
         self.value_entry = tk.Button(
@@ -371,5 +388,3 @@ class BSTPage(tk.Frame):
         
         self.inorder_title.config(text=ltr, bg="#9d8cf3")
     
-    def reset_tree(self):
-        pass
