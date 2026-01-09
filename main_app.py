@@ -9,6 +9,9 @@ from queue_application.queue_gui import QueueGUI
 # BINARY TREE
 from binary_tree_application.bt_gui import BTPage
 
+# BINARY SEARCH TREE
+from binary_search_tree_application.bst_gui import BSTPage
+
 # RECURSION
 from recursion_application.hanoi_gui_code import TowerOfHanoiGUI
 
@@ -29,7 +32,7 @@ class MainApp(tk.Tk):
         
         self.frames = {}
         # list of pages included (so if may dinedevelop na page i-add ung class dito para magpakita pag ni-run)
-        for page in (StartPage, SelectPage, DevPage, QueuePage, BTPage, HanoiPage):  
+        for page in (StartPage, SelectPage, DevPage, QueuePage, BTPage, BSTPage, HanoiPage):  
             frame = page(container, self)
             self.frames[page.__name__] = frame
             frame.place(relwidth=1, relheight=1)
