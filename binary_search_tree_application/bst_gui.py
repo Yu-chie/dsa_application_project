@@ -322,13 +322,18 @@ class BSTPage(tk.Frame):
         # clear entry box
         if hasattr(self, "value_entry"):
             self.value_entry.delete(0, tk.END)
+
+    ''' RANDOMIZED: DRAWING BSTREE '''
+    def generate_rbst(self):
+        self.askuser_label.destroy()
+        self.userinput_button.destroy()
+        self.randombst_button.destroy()
         
-    ''' RANDOMIZED: BUTTON SETUP '''
-    def rbst_setup(self):
-        self.value_entry = tk.Button(
+        # button for generate
+        self.regen_button = tk.Button(
             self.canvas,
             text="Regenerate Random Binary Search Tree",
-            font=("VT323", 20),
+            font=("VT323", 15),
             bg = "#ecb1ff",
             fg = "#330084",
             activebackground="#330084",
@@ -336,24 +341,18 @@ class BSTPage(tk.Frame):
             command=self.regenerate_rbst
         )
         
-        self.canvas.create_window(1295, 230, window=self.value_button)
+        self.canvas.create_window(1295, 230, window=self.regen_button)
     
-    ''' RANDOMIZED: DRAWING BSTREE '''
-    def generate_rbst(self):
-        self.askuser_label.destroy()
-        self.userinput_button.destroy()
-        self.randombst_button.destroy()
-        
         # rbst gui logic
         self.tree_canvas.delete("tree")
-        self.draw_rbst()
+        self.logic_rbst()
         
         # draw and give traversal
         self.generate_ubst()
         self.traversal_holder()
         
     ''' RANDOMIZED: DRAWING BSTREE LOGIC '''
-    def draw_rbst(self):
+    def logic_rbst(self):
         # reset root just in case
         self.tree.root = None
         self.tree.n_count = 0
@@ -364,6 +363,14 @@ class BSTPage(tk.Frame):
                 self.tree.ctrl_insert(value)
         except OverflowError:
             pass
+        
+    ''' RANDOMIZED: REGENERATE RBST '''
+    def regenerate_rbst(self):
+        self.tree_canvas.delete("tree")
+        
+        self.logic_rbst()
+        self.generate_ubst()
+        self.traversal_holder()
     
     ''' GENERAL: TRAVERSAL TITLE'''
     def traversal_title(self):
