@@ -96,14 +96,16 @@ class BSTPage(tk.Frame):
         # clear tree and traversal
         self.tree = None
         self.tree_canvas.delete("tree")
+        self.tree_canvas.configure(scrollregion=(0, 0, 0, 0))
         self.inorder_title.config(text="...")
+        self.random_label.config(text="")
         
         # destroy widgets
         widgets = [
             "asknodes_label", "ncount_entry", "ncount_button",
             "askuser_label", "userinput_button", "randombst_button",
             "value_label", "value_entry", "value_button",
-            "reset_button", "regen_button", "random_label"
+            "reset_button", "regen_button"
         ]
         
         for spec in widgets:
