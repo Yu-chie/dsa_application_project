@@ -1,7 +1,7 @@
 class Node:
-    def __init__(self, data):
-        self.n_left = None
-        self.n_val = data
+    def __init__(self, value):
+        self.left = None
+        self.value = value
         self.n_right = None
 
 class BSTree:
