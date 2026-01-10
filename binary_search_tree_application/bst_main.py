@@ -30,6 +30,12 @@ class BSTree:
             
         return node
     
+    # compute width
+    def subtree_size(self, node):
+        if node is None:
+            return 0
+        return 1 + self.subtree_size(node.left) + self.subtree_size(node.right)
+    
     # LTR (inorder) traversal
     def trav_inorder(self, node, inorder=None):
         if inorder is None:
