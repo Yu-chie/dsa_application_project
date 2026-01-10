@@ -1,8 +1,8 @@
 class Node:
-    def __init__(self, data):
-        self.n_left = None
-        self.n_val = data
-        self.n_right = None
+    def __init__(self, value):
+        self.left = None
+        self.value = value
+        self.right = None
 
 class BSTree:
     def __init__(self, max_node):
@@ -29,6 +29,12 @@ class BSTree:
             node.right = self.insert_node(node.right, value)
             
         return node
+    
+    # compute width
+    def subtree_size(self, node):
+        if node is None:
+            return 0
+        return 1 + self.subtree_size(node.left) + self.subtree_size(node.right)
     
     # LTR (inorder) traversal
     def trav_inorder(self, node, inorder=None):
