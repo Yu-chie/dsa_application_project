@@ -27,16 +27,6 @@ class BSTPage(tk.Frame):
         self.tree_frame = tk.Frame(self)
         self.tree_frame.place(x=50, y=120, width=1000, height=600)
         
-        self.tree_canvas = tk.Canvas(self.tree_frame, bg="#b6aff0", highlightthickness=0)
-        self.tree_canvas.pack(side="left", fill="both", expand=True)
-        
-        ''' for scrollbar '''
-        self.tree_scrollbar = tk.Scrollbar(
-            self.tree_frame, orient="vertical", command=self.tree_canvas.yview)
-        self.tree_scrollbar.pack(side="right", fill="y")
-        
-        self.tree_canvas.configure(yscrollcommand=self.tree_scrollbar.set)
-        
         # to home button
         home_button = tk.Button(
             self,
@@ -52,6 +42,21 @@ class BSTPage(tk.Frame):
         )
         
         self.canvas.create_window(103, 45, window=home_button)
+        
+        ''' SCROLLBAR '''
+        self.canvas_container = tk.Frame(self.tree_frame)
+        self.canvas_container.pack(side="top", fill="both", expand=True)
+
+        self.tree_canvas = tk.Canvas(self.canvas_container, bg="#b6aff0", highlightthickness=0)
+        self.tree_canvas.pack(side="left", fill="both", expand=True)
+
+        self.tree_yscrollbar = tk.Scrollbar(self.canvas_container, orient="vertical", command=self.tree_canvas.yview)
+        self.tree_yscrollbar.pack(side="right", fill="y")
+
+        self.tree_xscrollbar = tk.Scrollbar(self.tree_frame, orient="horizontal", command=self.tree_canvas.xview)
+        self.tree_xscrollbar.pack(side="bottom", fill="x")
+
+        self.tree_canvas.configure(yscrollcommand=self.tree_yscrollbar.set,xscrollcommand=self.tree_xscrollbar.set) 
         
         # restart button for all
         self.restartall_button = tk.Button(
@@ -84,7 +89,7 @@ class BSTPage(tk.Frame):
         
         self.nodecount_input()
         self.traversal_title()
-    
+        
     def resize_bg(self, event):
         resized = self.bg_img.resize((event.width, event.height))
         self.btree_bg = ImageTk.PhotoImage(resized)
@@ -97,6 +102,8 @@ class BSTPage(tk.Frame):
         self.tree = None
         self.tree_canvas.delete("tree")
         self.tree_canvas.configure(scrollregion=(0, 0, 0, 0))
+        self.tree_canvas.xview_moveto(0)    
+        self.tree_canvas.yview_moveto(0)
         self.inorder_title.config(text="...")
         self.random_label.config(text="")
         
@@ -113,7 +120,7 @@ class BSTPage(tk.Frame):
                 getattr(self, spec).destroy()
                 
         self.nodecount_input()
-    
+
     ''' GENERAL: NODE COUNT INPUT '''
     def nodecount_input(self):
         self.asknodes_label = tk.Label(
@@ -202,7 +209,7 @@ class BSTPage(tk.Frame):
             fg = "#330084",
             activebackground="#330084",
             activeforeground="#ffffff",
-            command=self.nodeval_user
+            command=self.nodeval_user   
         )
         
         self.randombst_button = tk.Button(
@@ -310,29 +317,39 @@ class BSTPage(tk.Frame):
         
         self.generate_ubst()
         self.traversal_holder()
-    
+        
     ''' USER: DRAWING BSTREE '''
     def generate_ubst(self):
         self.tree_canvas.delete("tree")
         
-        def draw_nodes(node, x, y ,r):
-            # node drawing control = avoids overlap
-            next_r = max(r//2, 30)
-            level_y = 100
-            
+        def draw_nodes(node, x, y):
             if node is None:
                 return
             
+            # node drawing control = avoids overlap
+            level_y = 100
+            n_radius = 20
+            x_gap = 60
+            
+            left_size = self.tree.subtree_size(node.left)
+            right_size = self.tree.subtree_size(node.right)
+            
             if node.left:
-                self.tree_canvas.create_line(x, y, x-r, y+80, tags="tree")
-                draw_nodes(node.left, x-r, y+level_y, next_r)
+                childx = x - (right_size + 1) * x_gap
+                childy = y + level_y
+                
+                self.tree_canvas.create_line(x, y + n_radius, childx, childy - n_radius, tags="tree")
+                draw_nodes(node.left, childx, childy)
                 
             if node.right:
-                self.tree_canvas.create_line(x, y, x+r, y+80, tags="tree")
-                draw_nodes(node.right, x+r, y+level_y, next_r)
+                childx = x + (left_size + 1) * x_gap
+                childy = y + level_y
+                
+                self.tree_canvas.create_line(x, y + n_radius, childx, childy - n_radius, tags="tree")
+                draw_nodes(node.right, childx, childy)
                 
             self.tree_canvas.create_oval(
-                x-20, y-20, x+20, y+20, 
+                x-n_radius, y-n_radius, x+n_radius, y+n_radius, 
                 fill="#ecb1ff", outline="#330084", tags="tree")
             
             self.tree_canvas.create_text(
@@ -340,9 +357,11 @@ class BSTPage(tk.Frame):
                     font=("VT323"), tags="tree")
             
         if self.tree and self.tree.root:
-            draw_nodes(self.tree.root, 500, 25, 200)
-            
-        ''' for scrollbar in tree frame '''
+            self.tree_canvas.update_idletasks()
+            canvas_width = self.tree_canvas.winfo_width()
+            draw_nodes(self.tree.root, canvas_width // 2, 25)
+
+        # for scroll
         self.tree_canvas.update_idletasks()
         
         bstbox = self.tree_canvas.bbox("tree")
@@ -353,13 +372,16 @@ class BSTPage(tk.Frame):
             canvas_height = self.tree_canvas.winfo_height()
             
             # forced top allignment of tree 
+            padding = 40
+            
             self.tree_canvas.configure(
-                scrollregion=(0, 0, max(x2, canvas_width), max(y2, canvas_height))
-                )
+                scrollregion=(x1 - padding, y1 - padding,
+                              x2 + padding, y2 + padding)
+            )
             
             # view on top
             self.tree_canvas.yview_moveto(0)
-        
+    
     ''' USER: RESET PROGRESS '''
     def reset_tree(self):
         # clear tree canvas
@@ -376,7 +398,11 @@ class BSTPage(tk.Frame):
         # clear entry box
         if hasattr(self, "value_entry"):
             self.value_entry.delete(0, tk.END)
-
+            
+        self.tree_canvas.configure(scrollregion=(0, 0, 0, 0))
+        self.tree_canvas.xview_moveto(0)
+        self.tree_canvas.yview_moveto(0)
+    
     ''' RANDOMIZED: DRAWING BSTREE '''
     def generate_rbst(self):
         self.askuser_label.destroy()
@@ -408,7 +434,7 @@ class BSTPage(tk.Frame):
         # draw and give traversal
         self.generate_ubst()
         self.traversal_holder()
-        
+    
     ''' RANDOMIZED: DRAWING BSTREE LOGIC '''
     def logic_rbst(self):
         # reset root just in case
@@ -417,7 +443,7 @@ class BSTPage(tk.Frame):
         
         # reset values
         self.random_values = []
-                
+
         try:
             for _ in range(self.tree.max_node):
                 value = random.randint(1,100)
@@ -461,4 +487,3 @@ class BSTPage(tk.Frame):
         ltr = " ".join(map(str, ltr_list))
         
         self.inorder_title.config(text=ltr, bg="#9d8cf3")
-    
