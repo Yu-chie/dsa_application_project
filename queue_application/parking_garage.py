@@ -174,9 +174,17 @@ class ParkingGarage:
         
         return random.choice(choices)
     
+    # New round
     def reset_game_state(self):
         self.queue = [None] * self.max_parking
         self.waiting.clear()
         self.failed_cars = 0
         self.score = 0
         self.game_over = False
+
+    # New game + wiped records
+    def reset_all(self):
+        self.reset_game_state()
+        self.records.clear()
+        self.save_records()
+
