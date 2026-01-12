@@ -14,7 +14,7 @@ class TowerOfHanoiGUI(tk.Frame):
 
         self.title = "Tower of Hanoi"
         self.delay = 500
-        self.max_disks = 7
+        self.max_disks = 9
 
         self.canvas_width = 1531
         self.canvas_height = 789
