@@ -78,7 +78,7 @@ class TowerOfHanoiGUI(tk.Frame):
         inner_frame.pack(expand=True)
 
         # Label + Entry
-        Label(inner_frame, text="DISKS (5–7):", font=self.ui_font, bg="#3b2f9a", fg="white").pack(side=LEFT, padx=5)
+        Label(inner_frame, text="DISKS (7-9):", font=self.ui_font, bg="#3b2f9a", fg="white").pack(side=LEFT, padx=5)
         self.enter_disks = Entry(inner_frame, font=self.ui_font,
                                  width=5, justify="center")
         self.enter_disks.insert(0, str(self.max_disks))
@@ -139,13 +139,13 @@ class TowerOfHanoiGUI(tk.Frame):
     def generate(self):
         try:
             entered = int(self.enter_disks.get())
-            if entered < 5 or entered > 7:
+            if entered < 7 or entered > 9:
                 raise ValueError
             self.num_disks = entered
         except ValueError:
             messagebox.showerror(
                 "Invalid Input",
-                "Please enter a number between 5 and 7."
+                "Please enter a number between 7 and 9."
             )
             self.enter_disks.delete(0, END)
             self.enter_disks.insert(0, str(self.max_disks))
