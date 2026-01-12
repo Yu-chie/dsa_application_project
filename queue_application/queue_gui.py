@@ -6,13 +6,13 @@ from queue_application.parking_garage import ParkingGarage
 import random 
 
 # Control Panel Layout (Upper Right Box)
-CONTROL_X = 1400
-CONTROL_Y = 250
+CONTROL_X = 1200
+CONTROL_Y = 225
 
-WAITING_X_START = 1150
-WAITING_Y_IMAGE = 600
-WAITING_Y_TEXT = 690
-WAITING_GAP = 220
+WAITING_X_START = 990
+WAITING_Y_IMAGE = 590
+WAITING_Y_TEXT = 650
+WAITING_GAP = 200
 
 class QueueGUI(tk.Frame):
     def __init__(self, parent, garage, controller):
