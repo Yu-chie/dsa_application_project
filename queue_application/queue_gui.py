@@ -111,7 +111,23 @@ class QueueGUI(tk.Frame):
             self.auto_depart()
         elif self.garage.mode == "MANUAL":
             pass  # slower arrivals
-        
+
+        self.retry_btn = tk.Button(
+            self,
+            text="RETRY",
+            font=("VT323", 14),
+            width=15,
+            command=self.retry_game
+        )
+
+        self.new_game_btn = tk.Button(
+            self,
+            text="NEW GAME",
+            font=("VT323", 14),
+            width=15,
+            command=self.new_game
+        )
+
         # cars
         self.selected_index = None
         self.car_images = []
@@ -411,3 +427,16 @@ class QueueGUI(tk.Frame):
     def get_car_image(self, plate):
         index = int(plate[3:]) - 1      # COI is 0
         return self.car_images[index]
+
+    def retry_game(self):
+        self.garage.reset_game_state()
+        self.draw_table()
+        self.draw_waiting_area()
+        self.draw_stats()
+
+    def new_game(self):
+        if messagebox.askyesno("Confirm", "This will erase all records. Continue?"):
+            self.garage.reset_all()
+            self.draw_table()
+            self.draw_waiting_area()
+            self.draw_stats()
