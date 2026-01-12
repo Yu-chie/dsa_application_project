@@ -132,6 +132,7 @@ class ParkingGarage:
         if len(self.waiting) >= self.max_waiting:
             return "Waiting Area Full"
         
+        wait_time = random.randint(10, 20)  # seconds
         self.waiting.append({
             "plate_number": plate_number,
             "time_left": 5      # seconds
