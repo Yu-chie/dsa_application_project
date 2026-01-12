@@ -184,6 +184,7 @@ class ParkingGarage:
         self.failed_cars = 0
         self.score = 0
         self.game_over = False
+        self.available_plates = [f"car{str(i).zfill(2)}" for i in range(1, 11)]
 
     # New game + wiped records
     def reset_all(self):
