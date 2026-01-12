@@ -32,8 +32,11 @@ class ParkingGarage:
     def car_arrives(self, plate_number):
         # If parking is full
         if None not in self.queue:
-            return "Parking Garage is Full"
-        
+            if len(self.waiting) < self.max_waiting:
+                self.add_to_waiting(plate_number)
+                return "Parking full. Car added to waiting area."
+            return "Parking Garage and Waiting Area are Full"
+
         # Prevent duplicate entries
         for car in self.queue:
             if car is not None and car['plate_number'] == plate_number:
