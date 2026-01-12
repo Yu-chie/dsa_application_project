@@ -431,6 +431,8 @@ class QueueGUI(tk.Frame):
         return self.car_images[index]
 
     def retry_game(self):
+        self.auto_arrival_running = False
+        self.auto_depart_running = False
         self.garage.reset_game_state()
         self.draw_table()
         self.draw_waiting_area()
@@ -443,6 +445,8 @@ class QueueGUI(tk.Frame):
             self.auto_depart()
 
     def new_game(self):
+        self.auto_arrival_running = False
+        self.auto_depart_running = False
         if messagebox.askyesno("Confirm", "This will erase all records. Continue?"):
             self.garage.reset_all()
             self.draw_table()
