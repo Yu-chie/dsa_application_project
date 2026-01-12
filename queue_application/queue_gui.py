@@ -127,7 +127,7 @@ class QueueGUI(tk.Frame):
 
         for i in range(1, 11):
             path = f"queue_application/queue_gui/cars/C{str(i).zfill(2)}.PNG"
-            img = Image.open(path).resize((90, 150))
+            img = Image.open(path).resize((90, 90))
             self.car_images.append(ImageTk.PhotoImage(img))
         
     def car_arrives(self, plate=None):
