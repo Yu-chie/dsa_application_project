@@ -223,10 +223,9 @@ class StackPage(tk.Frame):
     pass
 
 class QueuePage(tk.Frame):
-    def __init__(self, parent, garage, controller):
+    def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller        # store controller reference
-        self.garage = garage
         self.running = True
         
         # File Manager setup
@@ -235,13 +234,10 @@ class QueuePage(tk.Frame):
         mode = getattr(controller, "queue_mode", "MANUAL")
         
         # Parking Garage Logic
-        garage = ParkingGarage(
-            file_manager=file_manager,
-            mode=mode
-        )
+        self.garage = ParkingGarage(file_manager=file_manager, mode=mode)
         
         # GUI setup
-        queue_gui = QueueGUI(self, garage, controller)
+        queue_gui = QueueGUI(self, self.garage, controller)
         queue_gui.pack(fill="both", expand=True)
         
         # Home Button
@@ -252,7 +248,7 @@ class QueuePage(tk.Frame):
             bg="#594faf",
             fg="#ffffff",
             padx=65,
-            command=queue_gui.exit_to_menu
+            command=lambda: controller.show_frame("StartPage")
         )
         home_button.place(x=30, y=30)
 

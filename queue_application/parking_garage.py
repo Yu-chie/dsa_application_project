@@ -1,4 +1,5 @@
 from queue_application.file_manager import FileManager
+import random
 
 # PARKING GARAGE CLASS DEFINITION
 class ParkingGarage:
@@ -20,6 +21,7 @@ class ParkingGarage:
         self.score = 0
         self.max_failed = 5        # game over condition
         self.game_over = False
+        self.available_plates = [f"car{str(i).zfill(2)}" for i in range(1, 11)]
         
     # Save current records to file
     def save_records(self):
@@ -30,8 +32,11 @@ class ParkingGarage:
     def car_arrives(self, plate_number):
         # If parking is full
         if None not in self.queue:
-            return "Parking Garage is Full"
-        
+            if len(self.waiting) < self.max_waiting:
+                self.add_to_waiting(plate_number)
+                return "Parking full. Car added to waiting area."
+            return "Parking Garage and Waiting Area are Full"
+
         # Prevent duplicate entries
         for car in self.queue:
             if car is not None and car['plate_number'] == plate_number:
@@ -127,6 +132,7 @@ class ParkingGarage:
         if len(self.waiting) >= self.max_waiting:
             return "Waiting Area Full"
         
+        wait_time = random.randint(10, 20)  # seconds
         self.waiting.append({
             "plate_number": plate_number,
             "time_left": 5      # seconds
@@ -161,3 +167,29 @@ class ParkingGarage:
             "score": self.score,
             "game_over": self.game_over
         }
+        
+    def get_random_plate(self):
+        used = {car['plate_number'] for car in self.queue if car}
+        used |= set(self.waiting[i]["plate_number"] for i in range(len(self.waiting)))
+        
+        choices = [plate for plate in self.available_plates if plate not in used]
+        if not choices:
+            return None
+        
+        return random.choice(choices)
+    
+    # New round
+    def reset_game_state(self):
+        self.queue = [None] * self.max_parking
+        self.waiting.clear()
+        self.failed_cars = 0
+        self.score = 0
+        self.game_over = False
+        self.available_plates = [f"car{str(i).zfill(2)}" for i in range(1, 11)]
+
+    # New game + wiped records
+    def reset_all(self):
+        self.reset_game_state()
+        self.records.clear()
+        self.save_records()
+
