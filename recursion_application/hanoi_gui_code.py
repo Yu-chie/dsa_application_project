@@ -12,24 +12,19 @@ class TowerOfHanoiGUI(tk.Frame):
         # Window settings
         # -----------------------------
 
-        if isinstance(parent, (tk.Tk, tk.Toplevel)):
-            parent.title("Tower of Hanoi")
-            parent.geometry("1280x720")
-            parent.resizable(False, False)
-
         self.title = "Tower of Hanoi"
         self.delay = 500
         self.max_disks = 7
 
-        self.canvas_width = 1280
-        self.canvas_height = 720
-
-        self.disk_height = 20
-        self.disk_width_increment = 16
+        self.canvas_width = 1531
+        self.canvas_height = 789
+        
+        self.disk_height = 40
+        self.disk_width_increment = 34
         self.base_height = 80
         self.base_color = "#6b4fd6"
-        self.stack_width = 12
-        self.stack_height = 260
+        self.stack_width = 15
+        self.stack_height = 340
 
         self.colors = ["#ef476f", "#f78c6b", "#ffd166",
                        "#06d6a0", "#118ab2", "#073b4c"]
@@ -37,7 +32,7 @@ class TowerOfHanoiGUI(tk.Frame):
         if isinstance(parent, (tk.Tk, tk.Toplevel)):
             parent.title(self.title)
             parent.geometry(f"{self.canvas_width}x{self.canvas_height}")
-            parent.resizable(False, False)
+            parent.resizable(True, True)
             self.root = parent
 
         # -----------------------------
@@ -74,8 +69,8 @@ class TowerOfHanoiGUI(tk.Frame):
         # Controls Frame (full width, colored background)
         # -----------------------------
         controls_height = 50
-        controls_frame = Frame(parent, width=1242, height=controls_height, bg="#3b2f9a")
-        controls_frame.place(x=19, y=60)  # below title area
+        controls_frame = Frame(parent, width=1490, height=controls_height, bg="#3b2f9a")
+        controls_frame.place(x=22, y=60)  # below title area
         controls_frame.pack_propagate(False)  # fix height
 
         # Inner frame for centering contents
@@ -232,11 +227,11 @@ class TowerOfHanoiGUI(tk.Frame):
             return
 
         self.next_step()
-        self.root.after(self.delay, self.auto_step)
+        self.after(self.delay, self.auto_step)
 
     def auto(self):
         self.auto_running = True
-        self.root.after(self.delay, self.auto_step)
+        self.after(self.delay, self.auto_step)
 
     def stop(self):
         self.auto_running = False

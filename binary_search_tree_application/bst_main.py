@@ -1,43 +1,49 @@
-import tkinter as tk
-import random
-
 class Node:
-    def __init__(self, data):
-        self.n_left = None
-        self.n_val = data
-        self.n_right = None
+    def __init__(self, value):
+        self.left = None
+        self.value = value
+        self.right = None
 
 class BSTree:
-    def __init__(self, countnode):
-        if not isinstance(countnode, int):
-            raise TypeError("Enter a valid number between 10 to 30 only")
-        if countnode < 10 or countnode > 30:
-            raise ValueError("Enter a valid number between 10 to 30 only")
+    def __init__(self, max_node):
+        self.root = None
+        self.max_node = max_node
+        self.n_count = 0
+      
+    # error handling for insert  
+    def ctrl_insert(self, value):
+        if self.n_count >= self.max_node:
+            raise OverflowError("Your tree is already full!")
         
-        self.countnode = countnode
-    
-    def create_node(self, value):
-        return Node(value)
-    
-    def node_child(self, node, value):
-        if node == None:
-            return self.create_node(value)
+        self.root = self.insert_node(self.root, value)
+        self.n_count += 1
         
-        if value <= node.n_val:                                    # duplicates will automatically be on the left child (as per sir)
-            node.n_left = self.node_child(node.n_left, value)
+    # build tree
+    def insert_node(self, node, value):
+        if node is None:
+            return Node(value)
+        
+        if value <= node.value:
+            node.left = self.insert_node(node.left, value)
         else:
-            node.n_right = self.node_child(node.n_right, value)
-        
+            node.right = self.insert_node(node.right, value)
+            
         return node
     
+    # compute width
+    def subtree_size(self, node):
+        if node is None:
+            return 0
+        return 1 + self.subtree_size(node.left) + self.subtree_size(node.right)
+    
     # LTR (inorder) traversal
-    def inorder(self, root):
-        if root is not None:
-            self.inorder(root.n_left)
-            print(root.n_val)
-            self.inorder(root.n_right)
-
-class BSTMaker:
-    pass
-
-# if __name__ == "__main__":
+    def trav_inorder(self, node, inorder=None):
+        if inorder is None:
+            inorder = []
+        
+        if node:
+            self.trav_inorder(node.left, inorder)
+            inorder.append(node.value)
+            self.trav_inorder(node.right, inorder)
+        
+        return inorder
