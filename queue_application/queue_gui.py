@@ -409,5 +409,5 @@ class QueueGUI(tk.Frame):
         )
     
     def get_car_image(self, plate):
-        index - int(plate[1:]) - 1      # COI is 0
+        index = int(plate[3:]) - 1      # COI is 0
         return self.car_images[index]
