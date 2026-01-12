@@ -433,6 +433,12 @@ class QueueGUI(tk.Frame):
         self.draw_table()
         self.draw_waiting_area()
         self.draw_stats()
+        self.auto_arrival_running = (self.garage.mode == "AUTO")
+        self.auto_depart_running = (self.garage.mode == "AUTO")
+
+        if self.garage.mode == "AUTO":
+            self.auto_arrival()
+            self.auto_depart()
 
     def new_game(self):
         if messagebox.askyesno("Confirm", "This will erase all records. Continue?"):
@@ -440,3 +446,10 @@ class QueueGUI(tk.Frame):
             self.draw_table()
             self.draw_waiting_area()
             self.draw_stats()
+            self.auto_arrival_running = (self.garage.mode == "AUTO")
+            self.auto_depart_running = (self.garage.mode == "AUTO")
+
+            if self.garage.mode == "AUTO":
+                self.auto_arrival()
+                self.auto_depart()
+
