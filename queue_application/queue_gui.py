@@ -373,8 +373,10 @@ class QueueGUI(tk.Frame):
                 "GAME OVER",
                 f"Too many cars failed!\nFinal Score: {self.garage.score}"
             )
-            self.stop()
-            return
+            if messagebox.askyesno("Game Over", "Retry the game?"):
+                self.retry_game()
+            else:
+                self.stop()
 
         expired = self.garage.update_waiting()
 
