@@ -179,6 +179,7 @@ class ParkingGarage:
         return random.choice(choices)
     
     # New round
+    # New round
     def reset_game_state(self):
         self.queue = [None] * self.max_parking
         self.waiting.clear()
