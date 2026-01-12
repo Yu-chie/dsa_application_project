@@ -373,8 +373,12 @@ class QueueGUI(tk.Frame):
                 "GAME OVER",
                 f"Too many cars failed!\nFinal Score: {self.garage.score}"
             )
+            self.arrive_btn.config(state="disabled")
+            self.depart_btn.config(state="disabled")   
             if messagebox.askyesno("Game Over", "Retry the game?"):
                 self.retry_game()
+                self.arrive_btn.config(state="enabled")
+                self.depart_btn.config(state="enabled")   
             else:
                 self.stop()
 
