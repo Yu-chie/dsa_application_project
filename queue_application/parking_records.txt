@@ -1,12 +1,12 @@
 Plate Number | Arrival Count | Departure Count
 --------------------------------------------------
-car10 | 4 | 4
+car10 | 5 | 4
 car02 | 6 | 3
 car01 | 3 | 2
 car04 | 2 | 2
 car03 | 3 | 1
-car06 | 5 | 1
+car06 | 6 | 2
 car05 | 5 | 2
 car09 | 4 | 2
 car08 | 1 | 0
-car07 | 1 | 0
+car07 | 2 | 0

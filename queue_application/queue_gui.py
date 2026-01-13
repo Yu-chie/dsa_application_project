@@ -110,7 +110,7 @@ class QueueGUI(tk.Frame):
             self.auto_arrival()
             self.auto_depart()
         elif self.garage.mode == "MANUAL":
-            pass  # slower arrivals
+            self.manual_arrival()
 
         self.retry_btn = tk.Button(
             self,
@@ -201,6 +201,18 @@ class QueueGUI(tk.Frame):
         self.draw_stats()
 
         self.after(3000, self.auto_arrival)
+
+    def manual_arrival(self):
+        if not self.running or self.garage.mode != "MANUAL":
+            return
+
+        plate = self.garage.get_random_plate()
+        if plate:
+            self.garage.add_to_waiting(plate)
+            self.draw_waiting_area()
+            self.draw_stats()
+
+        self.after(4000, self.manual_arrival)  # slower than auto
 
     def car_departs(self):
         if self.garage.game_over:
