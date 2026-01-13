@@ -483,8 +483,8 @@ class QueueGUI(tk.Frame):
             self.depart_btn.config(state="disabled")   
             if messagebox.askyesno("Game Over", "Retry the game?"):
                 self.retry_game()
-                self.arrive_btn.config(state="enabled")
-                self.depart_btn.config(state="enabled")   
+                self.arrive_btn.config(state="normal")
+                self.depart_btn.config(state="normal")   
             else:
                 self.stop()
 
