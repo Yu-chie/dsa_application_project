@@ -389,7 +389,7 @@ class QueueGUI(tk.Frame):
             x = WAITING_X_START + i * WAITING_GAP
 
             # car image
-            img_id = self.canvas.create_image(
+            self.canvas.create_image(
                 x,
                 WAITING_Y_IMAGE,
                 image=self.get_car_image(car['plate_number']),
@@ -415,6 +415,16 @@ class QueueGUI(tk.Frame):
                 fill=color,
                 tags=("waiting", f"waiting_{i}")
             )
+            
+            # highlight selected car
+            if i == self.selected_waiting_index:
+                self.canvas.create_rectangle(
+                    x-50, WAITING_Y_IMAGE-50,
+                    x+50, WAITING_Y_IMAGE+50,
+                    outline="cyan",
+                    width=3,
+                    tags="waiting"
+                )
             
             self.canvas.tag_bind(
                 f"waiting_{i}",
