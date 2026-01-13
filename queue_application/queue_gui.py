@@ -380,16 +380,18 @@ class QueueGUI(tk.Frame):
                 font=("VT323", 14),
                 tags="table"
             )
-
-            if i == self.selected_waiting_index:
-                self.canvas.create_rectangle(
-                    x-50, WAITING_Y_IMAGE-50,
-                    x+50, WAITING_Y_IMAGE+50,
-                    outline="cyan",
-                    width=3,
-                    tags="waiting"
-                )
         
+        if i == self.selected_queue_index:
+            self.canvas.create_rectangle(
+                start_x + col_gap - 50,
+                y - 40,
+                start_x + col_gap + 50,
+                y + 40,
+                outline="orange",
+                width=3,
+                tags="table"
+            )
+
     def resize_bg(self, event):
         # Resize background
         resized_bg = self.bg_image.resize((event.width, event.height))
