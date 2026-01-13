@@ -137,6 +137,9 @@ class QueueGUI(tk.Frame):
             command=self.new_game
         )
         
+        self.selected_waiting_index = None
+        self.selected_queue_index = None
+        
         self.draw_table()
         self.draw_stats()
         self.draw_waiting_area()
