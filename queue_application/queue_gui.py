@@ -176,12 +176,20 @@ class QueueGUI(tk.Frame):
                 "Please switch to MANUAL mode to control the queue."
             )
             return
-        plate = self.garage.get_random_plate()
-        if not plate:
+
+        if not self.garage.waiting:
             messagebox.showinfo("No Cars", "No available cars to add.")
             return
-        self.car_arrives(plate)
-        
+    
+        # park the first waiting car
+        car = self.garage.waiting.pop(0)
+        result = self.garage.car_arrives(car["plate_number"])
+
+        messagebox.showinfo("Car Parked", result)
+        self.draw_table()
+        self.draw_waiting_area()
+        self.draw_stats()
+            
     def auto_arrival(self):
         if not self.running or not self.auto_arrival_running:
             return
