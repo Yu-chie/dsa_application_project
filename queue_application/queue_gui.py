@@ -99,6 +99,18 @@ class QueueGUI(tk.Frame):
             window=self.depart_btn
         )
         
+        # Retry button (top-right)
+        self.retry_btn_window = self.canvas.create_window(
+            1600, 120,
+            window=self.retry_btn
+        )
+
+        # New game button (below retry)
+        self.new_game_btn_window = self.canvas.create_window(
+            1600, 170,
+            window=self.new_game_btn
+        )
+        
         if self.garage.mode == "AUTO":
             self.arrive_btn.config(state="disabled")
             self.depart_btn.config(state="disabled")
@@ -403,7 +415,7 @@ class QueueGUI(tk.Frame):
             # car plate
             self.canvas.create_text(
                 x,
-                WAITING_Y_IMAGE - 20,
+                WAITING_Y_IMAGE - 40,
                 text=car['plate_number'],
                 font=("VT323", 12),
                 tags=("waiting", f"waiting_{i}")
