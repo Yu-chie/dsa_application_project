@@ -419,7 +419,7 @@ class QueueGUI(tk.Frame):
             self.canvas.tag_bind(
                 f"waiting_{i}",
                 "<Button-1>",
-                lambda e, idx=i: self.on_waiting_car_click(idx)
+                lambda e, idx=i: self.select_waiting_car(idx)
             )
         
         if i == self.selected_waiting_index:
