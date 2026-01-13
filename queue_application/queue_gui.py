@@ -200,10 +200,10 @@ class QueueGUI(tk.Frame):
             return
 
         if not self.garage.waiting:
-            self.set_status("Select a waiting car first", "yellow")
+            self.set_status("No cars waiting", "yellow")
             return
-    
-        # park the first waiting car
+
+        # FIFO arrival → always take the FRONT car
         car = self.garage.waiting.pop(0)
         result = self.garage.car_arrives(car["plate_number"])
 
@@ -212,7 +212,7 @@ class QueueGUI(tk.Frame):
         self.draw_table()
         self.draw_waiting_area()
         self.draw_stats()
-            
+
     def auto_arrival(self):
         if not self.running or not self.auto_arrival_running:
             return
