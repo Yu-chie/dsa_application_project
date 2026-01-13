@@ -309,12 +309,18 @@ class QueueGUI(tk.Frame):
             )
             
             # column 1 - car image
-            if car is not None:
-                self.canvas.create_image(
+            if car:
+                img_id = self.canvas.create_image(
                     start_x + col_gap,
                     y,
                     image=self.get_car_image(car["plate_number"]),
-                    tags="table"
+                    tags=("table", f"queue_{i}")
+                )
+
+                self.canvas.tag_bind(
+                    f"queue_{i}",
+                    "<Button-1>",
+                    lambda e, idx=i: self.select_queue_car(idx)
                 )
             else:
                 self.canvas.create_text(
@@ -535,4 +541,16 @@ class QueueGUI(tk.Frame):
         self.set_status(
             f"Selected {self.garage.waiting[index]['plate_number']} for arrival",
             color="lightblue"
+        )
+
+    def select_queue_car(self, index):
+        car = self.garage.queue[index]
+        if not car:
+            return
+
+        self.selected_queue_index = index
+        self.selected_waiting_index = None
+        self.set_status(
+            f"Selected {car['plate_number']} for departure",
+            color="orange"
         )
