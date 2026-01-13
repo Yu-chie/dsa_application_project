@@ -135,7 +135,7 @@ class ParkingGarage:
         wait_time = random.randint(10, 20)  # seconds
         self.waiting.append({
             "plate_number": plate_number,
-            "time_left": 5      # seconds
+            "time_left": wait_time      # seconds
         })
         return "Car added to waiting area"
     
