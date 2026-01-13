@@ -102,6 +102,10 @@ class QueueGUI(tk.Frame):
         if self.garage.mode == "AUTO":
             self.arrive_btn.config(state="disabled")
             self.depart_btn.config(state="disabled")
+                
+        # Status message
+        self.status_text_id = None
+        self.status_clear_job = None
         
         # cars
         self.selected_index = None
@@ -481,4 +485,30 @@ class QueueGUI(tk.Frame):
             if self.garage.mode == "AUTO":
                 self.auto_arrival()
                 self.auto_depart()
+
+    def set_status(self, message, color="white", duration=2000):
+        # Remove old status
+        if self.status_text_id:
+            self.canvas.delete(self.status_text_id)
+
+        # Cancel pending clear
+        if self.status_clear_job:
+            self.after_cancel(self.status_clear_job)
+
+        # Draw new status message
+        self.status_text_id = self.canvas.create_text(
+            960, 820,                     # adjust position if needed
+            text=message,
+            font=("VT323", 18, "bold"),
+            fill=color,
+            tags="status"
+        )
+
+        # Auto-clear message
+        self.status_clear_job = self.after(duration, self.clear_status)
+
+    def clear_status(self):
+        if self.status_text_id:
+            self.canvas.delete(self.status_text_id)
+            self.status_text_id = None
 
