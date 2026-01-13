@@ -112,6 +112,10 @@ class QueueGUI(tk.Frame):
         self.car_images = []
         self.load_car_images()
         
+        # selection state
+        self.selected_waiting_index = None
+        self.selected_queue_index = None
+        
         # Game loop
         if self.garage.mode == "AUTO":
             self.auto_arrival_running = True
@@ -136,9 +140,6 @@ class QueueGUI(tk.Frame):
             width=15,
             command=self.new_game
         )
-        
-        self.selected_waiting_index = None
-        self.selected_queue_index = None
         
         self.draw_table()
         self.draw_stats()
