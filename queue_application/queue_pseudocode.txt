@@ -15,7 +15,6 @@ The program should:
 7. File be stored in queue_application folder
 8. Comments to describe some code
 
-
 1️⃣ Manual Mode (Player Mode) FULLY MANUAL
 - Player manages the queue
 - Player decides arrival and departures (car has waiting time to be placed in the queue)
@@ -24,9 +23,22 @@ The program should:
 - Limited resources
 - Risk / failure
 - Goal / score
+- Cars inside queue have internal timer
+- If player doesn’t depart them → penalty
+- Player clicks a car in the queue
+- Click CAR DEPARTS → selected car departs
 
-2️⃣ Auto Mode (Simulation Mode)
-- System manages everything
+2️⃣ WAITING AREA
+- Cars auto-spawn
+- Each car shows:
+    🚗 image
+    🏷 plate number
+    ⏱ waiting time
+- Player clicks a waiting car
+- Click CAR ARRIVES → car moves into queue
+
+3️⃣ Auto Mode (Simulation Mode)
+- System manages everything. Buttons Disabled
 - Player just watches
 - This is for demonstration / explanation
 
