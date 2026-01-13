@@ -363,6 +363,15 @@ class QueueGUI(tk.Frame):
                 font=("VT323", 14),
                 tags="table"
             )
+
+            if i == self.selected_waiting_index:
+                self.canvas.create_rectangle(
+                    x-50, WAITING_Y_IMAGE-50,
+                    x+50, WAITING_Y_IMAGE+50,
+                    outline="cyan",
+                    width=3,
+                    tags="waiting"
+                )
         
     def resize_bg(self, event):
         # Resize background
@@ -410,6 +419,15 @@ class QueueGUI(tk.Frame):
                 f"waiting_{i}",
                 "<Button-1>",
                 lambda e, idx=i: self.on_waiting_car_click(idx)
+            )
+        
+        if i == self.selected_waiting_index:
+            self.canvas.create_rectangle(
+                x-50, WAITING_Y_IMAGE-50,
+                x+50, WAITING_Y_IMAGE+50,
+                outline="cyan",
+                width=3,
+                tags="waiting"
             )
 
     def stop(self):
