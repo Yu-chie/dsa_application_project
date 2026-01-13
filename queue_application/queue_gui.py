@@ -170,7 +170,11 @@ class QueueGUI(tk.Frame):
             messagebox.showinfo("Info", "No cars waiting")
             return
         
-        car = self.garage.waiting.pop(0)
+        if self.selected_waiting_index is None:
+            self.set_status("Select a waiting car first", "yellow")
+            return
+        
+        car = self.garage.waiting.pop(self.selected_waiting_index)
         result = self.garage.car_arrives(car["plate_number"])
         messagebox.showinfo("Car Arrives", result)
         self.draw_table()
