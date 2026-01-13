@@ -178,20 +178,18 @@ class QueueGUI(tk.Frame):
 
     def handle_arrive_click(self):
         if self.garage.mode != "MANUAL":
-            messagebox.showwarning(
-                "Invalid Action",
-                "Please switch to MANUAL mode to control the queue."
-            )
+            self.set_status("Switch to MANUAL mode", "red")
             return
 
         if not self.garage.waiting:
-            messagebox.showinfo("No Cars", "No available cars to add.")
+            self.set_status("Select a waiting car first", "yellow")
             return
     
         # park the first waiting car
         car = self.garage.waiting.pop(0)
         result = self.garage.car_arrives(car["plate_number"])
 
+        self.selected_waiting_index = None
         self.set_status(result, color="lightgreen")
         self.draw_table()
         self.draw_waiting_area()
