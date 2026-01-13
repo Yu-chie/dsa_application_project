@@ -56,7 +56,7 @@ class QueueGUI(tk.Frame):
         )
 
         self.manual_btn_window = self.canvas.create_window(
-            CONTROL_X - 80, CONTROL_Y,
+            CONTROL_X - 90, CONTROL_Y,
             window=self.manual_btn
         )
 
@@ -69,7 +69,7 @@ class QueueGUI(tk.Frame):
         )
 
         self.auto_btn_window = self.canvas.create_window(
-            CONTROL_X + 80, CONTROL_Y,
+            CONTROL_X + 90, CONTROL_Y,
             window=self.auto_btn
         )
         
@@ -83,7 +83,7 @@ class QueueGUI(tk.Frame):
         )
         
         self.arrive_btn_window = self.canvas.create_window(
-            CONTROL_X - 80, CONTROL_Y + 60,
+            CONTROL_X - 90, CONTROL_Y + 60,
             window=self.arrive_btn
         )
 
@@ -96,7 +96,7 @@ class QueueGUI(tk.Frame):
         )
         
         self.depart_btn_window = self.canvas.create_window(
-            CONTROL_X + 80, CONTROL_Y + 60,
+            CONTROL_X + 90, CONTROL_Y + 60,
             window=self.depart_btn
         )
 
@@ -110,7 +110,7 @@ class QueueGUI(tk.Frame):
         )
 
         self.retry_btn_window = self.canvas.create_window(
-            1600, 120,
+            CONTROL_X - 90, 170,
             window=self.retry_btn
         )
         
@@ -124,7 +124,7 @@ class QueueGUI(tk.Frame):
         )
 
         self.new_game_btn_window = self.canvas.create_window(
-            1600, 170,
+            CONTROL_X + 90, 170,
             window=self.new_game_btn
         )
         
