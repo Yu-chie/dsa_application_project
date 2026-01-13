@@ -337,7 +337,7 @@ class QueueGUI(tk.Frame):
                     start_x + col_gap,
                     y,
                     image=self.get_car_image(car["plate_number"]),
-                    tags=("table", f"queue_{i}")
+                    tags=("table", "queue_car", f"queue_{i}")
                 )
 
                 self.canvas.tag_bind(
@@ -391,6 +391,12 @@ class QueueGUI(tk.Frame):
                 width=3,
                 tags="table"
             )
+        
+        self.canvas.tag_bind(
+            "queue_car",
+            "<Button-1>",
+            self.on_queue_click
+        )
 
     def resize_bg(self, event):
         # Resize background
@@ -607,3 +613,12 @@ class QueueGUI(tk.Frame):
             f"Selected {car['plate_number']} for departure",
             color="orange"
         )
+    
+    def on_queue_click(self, event):
+        item = self.canvas.find_withtag("current")
+        tags = self.canvas.gettags(item)
+        for tag in tags:
+            if tag.startswith("queue_"):
+                index = int(tag.split("_")[1])
+                self.select_queue_car(index)
+                break
