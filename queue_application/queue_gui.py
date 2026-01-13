@@ -367,23 +367,37 @@ class QueueGUI(tk.Frame):
             x = WAITING_X_START + i * WAITING_GAP
 
             # car image
-            self.canvas.create_image(
+            img_id = self.canvas.create_image(
                 x,
                 WAITING_Y_IMAGE,
-                image=self.get_car_image(car["plate_number"]),
-                tags="waiting"
+                image=self.get_car_image(car['plate_number']),
+                tags=("waiting", f"waiting_{i}")
             )
-
+            
+            # car plate
+            self.canvas.create_text(
+                x,
+                WAITING_Y_IMAGE - 20,
+                text=car['plate_number'],
+                font=("VT323", 12),
+                tags=("waiting", f"waiting_{i}")
+            )
+            
             # waiting time
             color = "red" if car['time_left'] <= 2 else "white"
-            
             self.canvas.create_text(
                 x,
                 WAITING_Y_TEXT,
-                text=f"Time Left: {car['time_left']}s",
+                text=f"{car['time_left']}s",
                 font=("VT323", 12),
                 fill=color,
-                tags="waiting"
+                tags=("waiting", f"waiting_{i}")
+            )
+            
+            self.canvas.tag_bind(
+                f"waiting_{i}",
+                "<Button-1>",
+                lambda e, idx=i: self.on_waiting_car_click(idx)
             )
 
     def stop(self):
@@ -515,3 +529,10 @@ class QueueGUI(tk.Frame):
             self.canvas.delete(self.status_text_id)
             self.status_text_id = None
 
+    def select_waiting_car(self, index):
+        self.selected_waiting_index = index
+        self.selected_queue_index = None
+        self.set_status(
+            f"Selected {self.garage.waiting[index]['plate_number']} for arrival",
+            color="lightblue"
+        )
