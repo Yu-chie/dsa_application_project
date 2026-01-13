@@ -46,7 +46,7 @@ class QueueGUI(tk.Frame):
         self.bg_photo = ImageTk.PhotoImage(self.bg_image.resize((1920, 1080)))
         self.bg_image_id = self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
         
-        # Buttons inside upper right box
+        # Manual & AUto button
         self.manual_btn = tk.Button(
             self,
             text="MANUAL",
@@ -56,7 +56,7 @@ class QueueGUI(tk.Frame):
         )
 
         self.manual_btn_window = self.canvas.create_window(
-            CONTROL_X - 80, CONTROL_Y,
+            CONTROL_X - 90, CONTROL_Y,
             window=self.manual_btn
         )
 
@@ -69,10 +69,11 @@ class QueueGUI(tk.Frame):
         )
 
         self.auto_btn_window = self.canvas.create_window(
-            CONTROL_X + 80, CONTROL_Y,
+            CONTROL_X + 90, CONTROL_Y,
             window=self.auto_btn
         )
-
+        
+        # Arrive & Depart buttons
         self.arrive_btn = tk.Button(
             self,
             text="CAR ARRIVES",
@@ -82,7 +83,7 @@ class QueueGUI(tk.Frame):
         )
         
         self.arrive_btn_window = self.canvas.create_window(
-            CONTROL_X - 80, CONTROL_Y + 60,
+            CONTROL_X - 90, CONTROL_Y + 60,
             window=self.arrive_btn
         )
 
@@ -95,23 +96,11 @@ class QueueGUI(tk.Frame):
         )
         
         self.depart_btn_window = self.canvas.create_window(
-            CONTROL_X + 80, CONTROL_Y + 60,
+            CONTROL_X + 90, CONTROL_Y + 60,
             window=self.depart_btn
         )
-        
-        if self.garage.mode == "AUTO":
-            self.arrive_btn.config(state="disabled")
-            self.depart_btn.config(state="disabled")
-        
-        # Game loop
-        if self.garage.mode == "AUTO":
-            self.auto_arrival_running = True
-            self.auto_depart_running = True
-            self.auto_arrival()
-            self.auto_depart()
-        elif self.garage.mode == "MANUAL":
-            pass  # slower arrivals
 
+        # Retry button (top-right)
         self.retry_btn = tk.Button(
             self,
             text="RETRY",
@@ -120,6 +109,12 @@ class QueueGUI(tk.Frame):
             command=self.retry_game
         )
 
+        self.retry_btn_window = self.canvas.create_window(
+            CONTROL_X - 90, 170,
+            window=self.retry_btn
+        )
+        
+        # New game button (below retry)
         self.new_game_btn = tk.Button(
             self,
             text="NEW GAME",
@@ -128,11 +123,37 @@ class QueueGUI(tk.Frame):
             command=self.new_game
         )
 
+        self.new_game_btn_window = self.canvas.create_window(
+            CONTROL_X + 90, 170,
+            window=self.new_game_btn
+        )
+        
+        if self.garage.mode == "AUTO":
+            self.arrive_btn.config(state="disabled")
+            self.depart_btn.config(state="disabled")
+                
+        # Status message
+        self.status_text_id = None
+        self.status_clear_job = None
+        
         # cars
         self.selected_index = None
         self.car_images = []
         self.load_car_images()
         
+        # selection state
+        self.selected_waiting_index = None
+        self.selected_queue_index = None
+        
+        # Game loop
+        if self.garage.mode == "AUTO":
+            self.auto_arrival_running = True
+            self.auto_depart_running = True
+            self.auto_arrival()
+            self.auto_depart()
+        elif self.garage.mode == "MANUAL":
+            self.manual_arrival()
+
         self.draw_table()
         self.draw_stats()
         self.draw_waiting_area()
@@ -162,7 +183,11 @@ class QueueGUI(tk.Frame):
             messagebox.showinfo("Info", "No cars waiting")
             return
         
-        car = self.garage.waiting.pop(0)
+        if self.selected_waiting_index is None:
+            self.set_status("Select a waiting car first", "yellow")
+            return
+        
+        car = self.garage.waiting.pop(self.selected_waiting_index)
         result = self.garage.car_arrives(car["plate_number"])
         messagebox.showinfo("Car Arrives", result)
         self.draw_table()
@@ -171,36 +196,53 @@ class QueueGUI(tk.Frame):
 
     def handle_arrive_click(self):
         if self.garage.mode != "MANUAL":
-            messagebox.showwarning(
-                "Invalid Action",
-                "Please switch to MANUAL mode to control the queue."
-            )
+            self.set_status("Switch to MANUAL mode", "red")
             return
-        plate = self.garage.get_random_plate()
-        if not plate:
-            messagebox.showinfo("No Cars", "No available cars to add.")
+
+        if not self.garage.waiting:
+            self.set_status("No cars waiting", "yellow")
             return
-        self.car_arrives(plate)
-        
+
+        # FIFO arrival → always take the FRONT car
+        car = self.garage.waiting.pop(0)
+        result = self.garage.car_arrives(car["plate_number"])
+
+        self.selected_waiting_index = None
+        self.set_status(result, color="lightgreen")
+        self.draw_table()
+        self.draw_waiting_area()
+        self.draw_stats()
+
     def auto_arrival(self):
         if not self.running or not self.auto_arrival_running:
             return
 
-        # if there is space, move waiting car to parking in auto mode
-        if self.garage.waiting and None in self.garage.queue:
-            car = self.garage.waiting.pop(0)
-            self.garage.car_arrives(car["plate_number"])
-            self.draw_table()
-        
-        # Add new car to waiting area
-        plate = self.garage.get_random_plate()
-        if plate:
-            self.garage.add_to_waiting(plate)
+        if self.garage.mode == "AUTO":
+            if self.garage.waiting and None in self.garage.queue:
+                car = self.garage.waiting.pop(0)
+                self.garage.car_arrives(car["plate_number"])
+
+            plate = self.garage.get_random_plate()
+            if plate:
+                self.garage.add_to_waiting(plate)
 
         self.draw_waiting_area()
+        self.draw_table()
         self.draw_stats()
 
         self.after(3000, self.auto_arrival)
+
+    def manual_arrival(self):
+        if not self.running or self.garage.mode != "MANUAL":
+            return
+
+        plate = self.garage.get_random_plate()
+        if plate:
+            self.garage.add_to_waiting(plate)
+            self.draw_waiting_area()
+            self.draw_stats()
+
+        self.after(4000, self.manual_arrival)  # slower than auto
 
     def car_departs(self):
         if self.garage.game_over:
@@ -210,19 +252,27 @@ class QueueGUI(tk.Frame):
         if not plate:
             return
         result = self.garage.car_departs(plate)
-        messagebox.showinfo("Car Departs", result)
+        self.set_status(result, color="orange")
         self.draw_table()
         self.draw_stats()
 
     def handle_depart_click(self):
         if self.garage.mode != "MANUAL":
-            messagebox.showwarning(
-                "Invalid Action",
-                "Please switch to MANUAL mode to control the queue."
-            )
+            self.set_status("Switch to MANUAL mode", "red")
             return
-        self.car_departs()
-    
+
+        if self.selected_queue_index is None:
+            self.set_status("Select a car in the garage", "yellow")
+            return
+
+        plate = self.garage.queue[self.selected_queue_index]["plate_number"]
+        result = self.garage.car_departs(plate)
+
+        self.selected_queue_index = None
+        self.set_status(result, "orange")
+        self.draw_table()
+        self.draw_stats()
+        
     def auto_depart(self):
         if not self.running or not self.auto_depart_running:
             return
@@ -283,12 +333,18 @@ class QueueGUI(tk.Frame):
             )
             
             # column 1 - car image
-            if car is not None:
-                self.canvas.create_image(
+            if car:
+                img_id = self.canvas.create_image(
                     start_x + col_gap,
                     y,
                     image=self.get_car_image(car["plate_number"]),
-                    tags="table"
+                    tags=("table", "queue_car", f"queue_{i}")
+                )
+
+                self.canvas.tag_bind(
+                    f"queue_{i}",
+                    "<Button-1>",
+                    lambda e, idx=i: self.select_queue_car(idx)
                 )
             else:
                 self.canvas.create_text(
@@ -326,6 +382,23 @@ class QueueGUI(tk.Frame):
                 tags="table"
             )
         
+        if i == self.selected_queue_index:
+            self.canvas.create_rectangle(
+                start_x + col_gap - 50,
+                y - 40,
+                start_x + col_gap + 50,
+                y + 40,
+                outline="orange",
+                width=3,
+                tags="table"
+            )
+        
+        self.canvas.tag_bind(
+            "queue_car",
+            "<Button-1>",
+            self.on_queue_click
+        )
+
     def resize_bg(self, event):
         # Resize background
         resized_bg = self.bg_image.resize((event.width, event.height))
@@ -344,20 +417,44 @@ class QueueGUI(tk.Frame):
             self.canvas.create_image(
                 x,
                 WAITING_Y_IMAGE,
-                image=self.get_car_image(car["plate_number"]),
-                tags="waiting"
+                image=self.get_car_image(car['plate_number']),
+                tags=("waiting", f"waiting_{i}")
             )
-
+            
+            # car plate
+            self.canvas.create_text(
+                x,
+                WAITING_Y_IMAGE - 40,
+                text=car['plate_number'],
+                font=("VT323", 12),
+                tags=("waiting", f"waiting_{i}")
+            )
+            
             # waiting time
             color = "red" if car['time_left'] <= 2 else "white"
-            
             self.canvas.create_text(
                 x,
                 WAITING_Y_TEXT,
-                text=f"Time Left: {car['time_left']}s",
+                text=f"{car['time_left']}s",
                 font=("VT323", 12),
                 fill=color,
-                tags="waiting"
+                tags=("waiting", f"waiting_{i}")
+            )
+            
+            # highlight selected car
+            if i == self.selected_waiting_index:
+                self.canvas.create_rectangle(
+                    x-50, WAITING_Y_IMAGE-50,
+                    x+50, WAITING_Y_IMAGE+50,
+                    outline="cyan",
+                    width=3,
+                    tags="waiting"
+                )
+            
+            self.canvas.tag_bind(
+                f"waiting_{i}",
+                "<Button-1>",
+                lambda e, idx=i: self.select_waiting_car(idx)
             )
 
     def stop(self):
@@ -377,8 +474,8 @@ class QueueGUI(tk.Frame):
             self.depart_btn.config(state="disabled")   
             if messagebox.askyesno("Game Over", "Retry the game?"):
                 self.retry_game()
-                self.arrive_btn.config(state="enabled")
-                self.depart_btn.config(state="enabled")   
+                self.arrive_btn.config(state="normal")
+                self.depart_btn.config(state="normal")   
             else:
                 self.stop()
 
@@ -463,3 +560,57 @@ class QueueGUI(tk.Frame):
                 self.auto_arrival()
                 self.auto_depart()
 
+    def set_status(self, message, color="white", duration=2000):
+        # Remove old status
+        if self.status_text_id:
+            self.canvas.delete(self.status_text_id)
+
+        # Cancel pending clear
+        if self.status_clear_job:
+            self.after_cancel(self.status_clear_job)
+
+        # Draw new status message
+        self.status_text_id = self.canvas.create_text(
+            960, 820,                     # adjust position if needed
+            text=message,
+            font=("VT323", 18, "bold"),
+            fill=color,
+            tags="status"
+        )
+
+        # Auto-clear message
+        self.status_clear_job = self.after(duration, self.clear_status)
+
+    def clear_status(self):
+        if self.status_text_id:
+            self.canvas.delete(self.status_text_id)
+            self.status_text_id = None
+
+    def select_waiting_car(self, index):
+        self.selected_waiting_index = index
+        self.selected_queue_index = None
+        self.set_status(
+            f"Selected {self.garage.waiting[index]['plate_number']} for arrival",
+            color="lightblue"
+        )
+
+    def select_queue_car(self, index):
+        car = self.garage.queue[index]
+        if not car:
+            return
+
+        self.selected_queue_index = index
+        self.selected_waiting_index = None
+        self.set_status(
+            f"Selected {car['plate_number']} for departure",
+            color="orange"
+        )
+    
+    def on_queue_click(self, event):
+        item = self.canvas.find_withtag("current")
+        tags = self.canvas.gettags(item)
+        for tag in tags:
+            if tag.startswith("queue_"):
+                index = int(tag.split("_")[1])
+                self.select_queue_car(index)
+                break
