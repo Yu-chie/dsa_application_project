@@ -456,15 +456,6 @@ class QueueGUI(tk.Frame):
                 "<Button-1>",
                 lambda e, idx=i: self.select_waiting_car(idx)
             )
-        
-        if i == self.selected_waiting_index:
-            self.canvas.create_rectangle(
-                x-50, WAITING_Y_IMAGE-50,
-                x+50, WAITING_Y_IMAGE+50,
-                outline="cyan",
-                width=3,
-                tags="waiting"
-            )
 
     def stop(self):
         self.running = False
