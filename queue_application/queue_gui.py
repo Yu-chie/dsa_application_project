@@ -46,7 +46,7 @@ class QueueGUI(tk.Frame):
         self.bg_photo = ImageTk.PhotoImage(self.bg_image.resize((1920, 1080)))
         self.bg_image_id = self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
         
-        # Buttons inside upper right box
+        # Manual & AUto button
         self.manual_btn = tk.Button(
             self,
             text="MANUAL",
@@ -72,7 +72,8 @@ class QueueGUI(tk.Frame):
             CONTROL_X + 80, CONTROL_Y,
             window=self.auto_btn
         )
-
+        
+        # Arrive & Depart buttons
         self.arrive_btn = tk.Button(
             self,
             text="CAR ARRIVES",
@@ -98,14 +99,30 @@ class QueueGUI(tk.Frame):
             CONTROL_X + 80, CONTROL_Y + 60,
             window=self.depart_btn
         )
-        
+
         # Retry button (top-right)
+        self.retry_btn = tk.Button(
+            self,
+            text="RETRY",
+            font=("VT323", 14),
+            width=15,
+            command=self.retry_game
+        )
+
         self.retry_btn_window = self.canvas.create_window(
             1600, 120,
             window=self.retry_btn
         )
-
+        
         # New game button (below retry)
+        self.new_game_btn = tk.Button(
+            self,
+            text="NEW GAME",
+            font=("VT323", 14),
+            width=15,
+            command=self.new_game
+        )
+
         self.new_game_btn_window = self.canvas.create_window(
             1600, 170,
             window=self.new_game_btn
@@ -137,22 +154,6 @@ class QueueGUI(tk.Frame):
         elif self.garage.mode == "MANUAL":
             self.manual_arrival()
 
-        self.retry_btn = tk.Button(
-            self,
-            text="RETRY",
-            font=("VT323", 14),
-            width=15,
-            command=self.retry_game
-        )
-
-        self.new_game_btn = tk.Button(
-            self,
-            text="NEW GAME",
-            font=("VT323", 14),
-            width=15,
-            command=self.new_game
-        )
-        
         self.draw_table()
         self.draw_stats()
         self.draw_waiting_area()
