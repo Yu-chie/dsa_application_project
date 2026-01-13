@@ -240,13 +240,21 @@ class QueueGUI(tk.Frame):
 
     def handle_depart_click(self):
         if self.garage.mode != "MANUAL":
-            messagebox.showwarning(
-                "Invalid Action",
-                "Please switch to MANUAL mode to control the queue."
-            )
+            self.set_status("Switch to MANUAL mode", "red")
             return
-        self.car_departs()
-    
+
+        if self.selected_queue_index is None:
+            self.set_status("Select a car in the garage", "yellow")
+            return
+
+        plate = self.garage.queue[self.selected_queue_index]["plate_number"]
+        result = self.garage.car_departs(plate)
+
+        self.selected_queue_index = None
+        self.set_status(result, "orange")
+        self.draw_table()
+        self.draw_stats()
+        
     def auto_depart(self):
         if not self.running or not self.auto_depart_running:
             return
