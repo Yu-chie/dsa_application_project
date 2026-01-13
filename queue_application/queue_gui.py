@@ -189,7 +189,7 @@ class QueueGUI(tk.Frame):
         car = self.garage.waiting.pop(0)
         result = self.garage.car_arrives(car["plate_number"])
 
-        messagebox.showinfo("Car Parked", result)
+        self.set_status(result, color="lightgreen")
         self.draw_table()
         self.draw_waiting_area()
         self.draw_stats()
@@ -233,7 +233,7 @@ class QueueGUI(tk.Frame):
         if not plate:
             return
         result = self.garage.car_departs(plate)
-        messagebox.showinfo("Car Departs", result)
+        self.set_status(result, color="orange")
         self.draw_table()
         self.draw_stats()
 
