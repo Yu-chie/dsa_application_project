@@ -98,12 +98,14 @@ class ParkingGarage:
         new_queue = self.queue[target_index + 1:self.max_parking]   # cars after target
         new_queue = [c for c in new_queue if c is not None]         # remove None values
         new_queue.extend(temp_queue)                                # add temporarily exited cars
+        
+        # Fill remaining slots with none
         new_queue += [None] * (self.max_parking - len(new_queue))   # fill remaining with None
         self.queue = new_queue
         self.save_records()
         
         self.score += 2
-        return "Car Departed Successfully!"
+        return f"Car {target_plate} departed. {len(temp_queue)} cars shuffled."
 
     # OPTION 3: DISPLAY PARKING TABLE
     def display_table(self):
