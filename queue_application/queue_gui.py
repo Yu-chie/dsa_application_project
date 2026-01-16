@@ -139,7 +139,7 @@ class QueueGUI(tk.Frame):
             text="START",
             font=("VT323", 14),
             width=15,
-            command=self.controller.start_simulation
+            command=self.start_simulation
         )
         
         self.start_btn_window = self.canvas.create_window(
@@ -152,7 +152,7 @@ class QueueGUI(tk.Frame):
             text="STOP",
             font=("VT323", 14),
             width=15,
-            command=self.controller.stop_simulation
+            command=self.stop_simulation
         )
 
         self.stop_btn_window = self.canvas.create_window(
