@@ -131,7 +131,34 @@ class QueueGUI(tk.Frame):
         if self.garage.mode == "AUTO":
             self.arrive_btn.config(state="disabled")
             self.depart_btn.config(state="disabled")
-                
+        
+        # Start and Stop Button
+        self.start_btn = tk.Button(
+            self,
+            text="START",
+            font=("VT323", 14),
+            width=15,
+            command=self.controller.start_application
+        )
+        
+        self.start_btn_window = self.canvas.create_window(
+            CONTROL_X - 90, CONTROL_Y + 120,
+            window=self.start_btn
+        )
+
+        self.stop_btn = tk.Button(
+            self,
+            text="STOP",
+            font=("VT323", 14),
+            width=15,
+            command=self.controller.stop_application
+        )
+
+        self.stop_btn_window = self.canvas.create_window(
+            CONTROL_X + 90, CONTROL_Y + 120,
+            window=self.stop_btn
+        )
+
         # Status message
         self.status_text_id = None
         self.status_clear_job = None
