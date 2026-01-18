@@ -20,6 +20,7 @@ class QueueGUI(tk.Frame):
         self.garage = garage
         self.controller = controller
         self.running = True
+        self.is_active = False
         
         self.auto_arrival_running = False
         self.auto_depart_running = False
@@ -131,7 +132,34 @@ class QueueGUI(tk.Frame):
         if self.garage.mode == "AUTO":
             self.arrive_btn.config(state="disabled")
             self.depart_btn.config(state="disabled")
-                
+        
+        # Start and Stop Button
+        self.start_btn = tk.Button(
+            self,
+            text="START",
+            font=("VT323", 14),
+            width=15,
+            command=self.start_simulation
+        )
+        
+        self.start_btn_window = self.canvas.create_window(
+            CONTROL_X - 90, CONTROL_Y + 120,
+            window=self.start_btn
+        )
+
+        self.stop_btn = tk.Button(
+            self,
+            text="STOP",
+            font=("VT323", 14),
+            width=15,
+            command=self.stop_simulation
+        )
+
+        self.stop_btn_window = self.canvas.create_window(
+            CONTROL_X + 90, CONTROL_Y + 120,
+            window=self.stop_btn
+        )
+
         # Status message
         self.status_text_id = None
         self.status_clear_job = None
@@ -149,15 +177,14 @@ class QueueGUI(tk.Frame):
         if self.garage.mode == "AUTO":
             self.auto_arrival_running = True
             self.auto_depart_running = True
-            self.auto_arrival()
             self.auto_depart()
+            self.auto_arrival()
         elif self.garage.mode == "MANUAL":
             self.manual_arrival()
 
         self.draw_table()
         self.draw_stats()
-        self.draw_waiting_area()
-        self.tick()                
+        self.draw_waiting_area()                
         
     def load_car_images(self):
         self.car_images.clear()
@@ -214,7 +241,7 @@ class QueueGUI(tk.Frame):
         self.draw_stats()
 
     def auto_arrival(self):
-        if not self.running or not self.auto_arrival_running:
+        if not self.running or not self.is_active or not self.auto_arrival_running:
             return
 
         if self.garage.mode == "AUTO":
@@ -460,9 +487,24 @@ class QueueGUI(tk.Frame):
     def stop(self):
         self.running = False
         self.destroy()
+        
+    def start_simulation(self):
+        if not self.is_active:
+            self.is_active = True
+            self.set_status("SIMULATION STARTED", "lightgreen")
+            self.tick() # Start the main game loop
+            if self.garage.mode == "AUTO":
+                self.auto_arrival()
+                self.auto_depart()
+            else:
+                self.manual_arrival()
 
+    def stop_simulation(self):
+        self.is_active = False
+        self.set_status("SIMULATION PAUSED", "red")
+        
     def tick(self):
-        if not self.running:
+        if not self.running or not self.is_active:
             return
         
         if self.garage.game_over:
