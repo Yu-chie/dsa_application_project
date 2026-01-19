@@ -16,7 +16,7 @@ class ParkingGarage:
         # Game-related attributes
         self.mode = mode           # manual or auto
         self.waiting = []          # Cars waiting to be parked
-        self.max_waiting = 5       # limit
+        self.max_waiting = 3       # limit 3
         self.failed_cars= 0
         self.score = 0
         self.max_failed = 5        # game over condition

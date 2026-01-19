@@ -500,8 +500,15 @@ class QueueGUI(tk.Frame):
                 self.manual_arrival()
 
     def stop_simulation(self):
+        self.running = False
         self.is_active = False
         self.set_status("SIMULATION PAUSED", "red")
+        self.auto_arrival_running = False
+        self.auto_depart_running = False
+        # Ensure no new cars enter the waiting area
+        self.after_cancel(self.manual_arrival)  # Cancel manual arrival loop
+        self.after_cancel(self.auto_arrival)    # Cancel auto arrival loop
+
         
     def tick(self):
         if not self.running or not self.is_active:
