@@ -144,8 +144,9 @@ class ParkingGarage:
     def update_waiting(self):
         expired = []
         for car in self.waiting:
-            car["time_left"] -= 1  # Decrease time left by 1 second
-            if car["time_left"] <= 0:
+            if car["time_left"] > 0:
+                car["time_left"] -= 1  # Decrease time left by 1 second
+            if car["time_left"] == 0:
                 expired.append(car)
 
         for car in expired:
