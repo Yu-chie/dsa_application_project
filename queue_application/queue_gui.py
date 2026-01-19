@@ -680,3 +680,15 @@ class QueueGUI(tk.Frame):
                 index = int(tag.split("_")[1])
                 self.select_queue_car(index)
                 break
+
+    def update_simulation(self):
+        if self.garage.mode == "AUTO":
+            # In AUTO mode, everything is automatic
+            self.garage.update_waiting()
+            self.garage.update_parking()
+        elif self.garage.mode == "MANUAL":
+            # In MANUAL mode, only the waiting area is automatic
+            self.garage.update_waiting()
+
+        self.draw_table()
+        self.draw_stats()
