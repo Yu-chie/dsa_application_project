@@ -285,15 +285,32 @@ class QueueGUI(tk.Frame):
 
     def handle_depart_click(self):
         if self.garage.mode != "MANUAL":
-            self.set_status("Switch to MANUAL mode", "red")
             return
 
         if self.selected_queue_index is None:
-            self.set_status("Select a car in the garage", "yellow")
+            messagebox.showerror("Error", "No car selected in the queue.")
             return
 
+        # Get the selected car's plate number
         plate = self.garage.queue[self.selected_queue_index]["plate_number"]
-        result = self.garage.car_departs(plate)
+
+        if self.selected_queue_index == 0:
+            # Depart the first car and shift others forward
+            result = self.garage.car_departs(plate)
+        else:
+            # Depart cars in front, re-enter them at the end, then depart the selected car
+            temp_queue = []
+            for i in range(self.selected_queue_index):
+                car = self.garage.queue[i]
+                if car is not None:
+                    temp_queue.append(car["plate_number"])
+
+            # Depart the selected car
+            result = self.garage.car_departs(plate)
+
+            # Re-enter cars in front at the end of the queue
+            for plate_number in temp_queue:
+                self.garage.car_arrives(plate_number)
 
         self.selected_queue_index = None
         self.set_status(result, "orange")
