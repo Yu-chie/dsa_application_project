@@ -134,27 +134,31 @@ class ParkingGarage:
         if len(self.waiting) >= self.max_waiting:
             return "Waiting Area Full"
         
-        wait_time = random.randint(10, 20)  # seconds
+        wait_time = random.randint(10, 20)  # Adjusted to a more reasonable range
         self.waiting.append({
             "plate_number": plate_number,
-            "time_left": 5      # seconds
+            "time_left": wait_time  # Use the adjusted wait time
         })
         return "Car added to waiting area"
     
     def update_waiting(self):
         expired = []
         for car in self.waiting:
-            car["time_left"] -= 1
+            car["time_left"] -= 1  # Decrease time left by 1 second
             if car["time_left"] <= 0:
                 expired.append(car)
 
         for car in expired:
             self.waiting.remove(car)
             self.failed_cars += 1
-            self.score -= 5     # penalty
-            
+            self.score -= 5  # penalty
+
             if self.failed_cars >= self.max_failed:
                 self.game_over = True
+
+        # Ensure the GUI updates after changes
+        if hasattr(self, 'draw_waiting_area'):
+            self.draw_waiting_area()
 
         return expired
     
