@@ -571,7 +571,7 @@ class QueueGUI(tk.Frame):
             self.canvas.delete(self.status_text_id)
 
         self.status_text_id = self.canvas.create_text(
-            CONTROL_X, CONTROL_Y - 40, text=stats_text, fill="white", font=("VT323", 16), anchor="n"
+            CONTROL_X, CONTROL_Y - 110, text=stats_text, fill="white", font=("VT323", 16), anchor="n"
         )
 
     def get_car_image(self, plate):
