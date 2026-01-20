@@ -664,13 +664,23 @@ class QueueGUI(tk.Frame):
                 break
 
     def update_simulation(self):
+        """
+        Updates the simulation based on the current mode (AUTO or MANUAL).
+        In AUTO mode, all operations are automated, and buttons are disabled.
+        """
         if self.garage.mode == "AUTO":
-            # In AUTO mode, everything is automatic
+            # Automate arrivals and departures
             self.garage.update_waiting()
             self.garage.update_parking()
+
+            # Disable manual buttons
+            self.arrive_btn.config(state="disabled")
+            self.depart_btn.config(state="disabled")
         elif self.garage.mode == "MANUAL":
-            # In MANUAL mode, only the waiting area is automatic
-            self.garage.update_waiting()
+            # Enable manual buttons
+            self.arrive_btn.config(state="normal")
+            self.depart_btn.config(state="normal")
 
         self.draw_table()
         self.draw_stats()
+        self.draw_waiting_area()
