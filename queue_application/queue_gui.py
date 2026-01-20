@@ -558,41 +558,24 @@ class QueueGUI(tk.Frame):
         self.after(1000, self.tick)
 
     def draw_stats(self):
-        self.canvas.delete("stats")
-
+        """
+        Updates the GUI to display the number of arrivals and departures for each car.
+        """
         stats = self.garage.get_stats()
-
-        y = 900
-        self.canvas.create_text(
-            300, y,
-            text=f"TOTAL ARRIVALS: {stats['total_arrivals']}",
-            font=("VT323", 14),
-            tags="stats"
+        stats_text = (
+            f"Total Arrivals: {stats['total_arrivals']}\n"
+            f"Total Departures: {stats['total_departures']}\n"
+            f"Failed Cars: {stats['failed_cars']}\n"
+            f"Score: {stats['score']}\n"
         )
 
-        self.canvas.create_text(
-            300, y + 25,
-            text=f"TOTAL DEPARTURES: {stats['total_departures']}",
-            font=("VT323", 14),
-            tags="stats"
-        )
-        
-        self.canvas.create_text(
-            300, y + 50,
-            text=f"SCORE: {stats['score']}",
-            font=("VT323", 16, "bold"),
-            fill="yellow",
-            tags="stats"
+        if self.status_text_id:
+            self.canvas.delete(self.status_text_id)
+
+        self.status_text_id = self.canvas.create_text(
+            1500, 100, text=stats_text, fill="white", font=("VT323", 16), anchor="nw"
         )
 
-        self.canvas.create_text(
-            300, y + 75,
-            text=f"FAILED CARS: {stats['failed_cars']} / {self.garage.max_failed}",
-            font=("VT323", 14),
-            fill="red",
-            tags="stats"
-        )
-    
     def get_car_image(self, plate):
         index = int(plate[3:]) - 1      # COI is 0
         return self.car_images[index]
