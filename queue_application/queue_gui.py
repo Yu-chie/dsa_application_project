@@ -460,37 +460,28 @@ class QueueGUI(tk.Frame):
         self.draw_waiting_area()
 
     def draw_waiting_area(self):
-        self.canvas.delete("waiting")
-        
+        """
+        Draws the waiting area in the GUI, showing cars with their plate numbers, images, and timers.
+        """
+        self.canvas.delete("waiting_area")
+
         for i, car in enumerate(self.garage.waiting):
             x = WAITING_X_START + i * WAITING_GAP
+            y_image = WAITING_Y_IMAGE
+            y_text = WAITING_Y_TEXT
 
-            # car image
-            self.canvas.create_image(
-                x,
-                WAITING_Y_IMAGE,
-                image=self.get_car_image(car['plate_number']),
-                tags=("waiting", f"waiting_{i}")
-            )
-            
-            # car plate
+            # Draw car image
+            car_image = self.get_car_image(car["plate_number"])
+            self.canvas.create_image(x, y_image, image=car_image, anchor="nw", tags="waiting_area")
+
+            # Draw plate number and timer
             self.canvas.create_text(
-                x,
-                WAITING_Y_IMAGE - 40,
-                text=car['plate_number'],
-                font=("VT323", 12),
-                tags=("waiting", f"waiting_{i}")
-            )
-            
-            # waiting time
-            color = "red" if car['time_left'] <= 2 else "white"
-            self.canvas.create_text(
-                x,
-                WAITING_Y_TEXT,
-                text=f"{car['time_left']}s",
-                font=("VT323", 12),
-                fill=color,
-                tags=("waiting", f"waiting_{i}")
+                x + 50, y_text,
+                text=f"{car['plate_number']}\n{car['time_left']}s",
+                fill="white",
+                font=("VT323", 14),
+                tags="waiting_area",
+                anchor="n"
             )
             
             # highlight selected car
