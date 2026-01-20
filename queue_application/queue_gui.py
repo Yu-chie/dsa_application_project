@@ -222,12 +222,15 @@ class QueueGUI(tk.Frame):
         self.draw_stats()
 
     def handle_arrive_click(self):
+        """
+        Handles the arrival of a car in manual mode. The player selects a car from the waiting area.
+        """
         if self.garage.mode != "MANUAL":
-            self.set_status("Switch to MANUAL mode", "red")
+            messagebox.showerror("Error", "Manual mode is not active.")
             return
 
         if not self.garage.waiting:
-            self.set_status("No cars waiting", "yellow")
+            messagebox.showinfo("Info", "No cars in the waiting area.")
             return
 
         # FIFO arrival → always take the FRONT car
@@ -284,7 +287,11 @@ class QueueGUI(tk.Frame):
         self.draw_stats()
 
     def handle_depart_click(self):
+        """
+        Handles the departure of a car in manual mode. The player selects a car from the queue.
+        """
         if self.garage.mode != "MANUAL":
+            messagebox.showerror("Error", "Manual mode is not active.")
             return
 
         if self.selected_queue_index is None:
@@ -293,27 +300,10 @@ class QueueGUI(tk.Frame):
 
         # Get the selected car's plate number
         plate = self.garage.queue[self.selected_queue_index]["plate_number"]
-
-        if self.selected_queue_index == 0:
-            # Depart the first car and shift others forward
-            result = self.garage.car_departs(plate)
-        else:
-            # Depart cars in front, re-enter them at the end, then depart the selected car
-            temp_queue = []
-            for i in range(self.selected_queue_index):
-                car = self.garage.queue[i]
-                if car is not None:
-                    temp_queue.append(car["plate_number"])
-
-            # Depart the selected car
-            result = self.garage.car_departs(plate)
-
-            # Re-enter cars in front at the end of the queue
-            for plate_number in temp_queue:
-                self.garage.car_arrives(plate_number)
+        result = self.garage.car_departs(plate)
 
         self.selected_queue_index = None
-        self.set_status(result, "orange")
+        self.set_status(result, color="orange")
         self.draw_table()
         self.draw_stats()
         
