@@ -27,13 +27,16 @@ class ParkingGarage:
     def save_records(self):
         """
         Saves all car records to a file in the queue_application folder.
+        This method ensures that the current state of the parking garage is persisted.
         """
         if self.file_manager:
             self.file_manager.save_records(self.records)
 
+    # Load records from file
     def load_records(self):
         """
         Loads car records from a file in the queue_application folder.
+        This method restores the state of the parking garage from a previous session.
         """
         if self.file_manager:
             self.records = self.file_manager.load_records()
@@ -42,6 +45,10 @@ class ParkingGarage:
     def car_arrives(self, plate_number):
         """
         Handles the arrival of a car. If the parking garage is full, the car is added to the waiting area.
+        Args:
+            plate_number (str): The plate number of the arriving car.
+        Returns:
+            str: A message indicating the result of the operation.
         """
         # If parking is full
         if None not in self.queue:
@@ -54,26 +61,26 @@ class ParkingGarage:
         for car in self.queue:
             if car is not None and car['plate_number'] == plate_number:
                 return "Car with this Plate Number is already in the Garage."
-        
+
         # If car already has a record, update arrival count
         if plate_number in self.records:
             car = self.records[plate_number]
             car['arrival_count'] += 1
-        # If new car, create record
         else:
+            # If new car, create record
             car = {
                 'plate_number': plate_number,
                 'arrival_count': 1,
                 'departure_count': 0
             }
             self.records[plate_number] = car
-         
+
         # Enqueue car in first empty slot
         for i in range(self.max_parking):
             if self.queue[i] is None:
                 self.queue[i] = car
                 break
-        
+
         self.save_records()
         self.score += 10
         return "Car Parked Successfully!"
