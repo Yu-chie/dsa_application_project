@@ -683,3 +683,11 @@ class QueueGUI(tk.Frame):
         self.draw_table()
         self.draw_stats()
         self.draw_waiting_area()
+
+        # Ensure the game starts only when the Start button is clicked
+        self.running = False
+        self.garage.reset_all()  # Always start with a new game
+
+        # Disable auto-arrival and auto-depart by default
+        self.auto_arrival_running = False
+        self.auto_depart_running = False
