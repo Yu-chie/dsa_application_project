@@ -25,8 +25,18 @@ class ParkingGarage:
         
     # Save current records to file
     def save_records(self):
+        """
+        Saves all car records to a file in the queue_application folder.
+        """
         if self.file_manager:
             self.file_manager.save_records(self.records)
+
+    def load_records(self):
+        """
+        Loads car records from a file in the queue_application folder.
+        """
+        if self.file_manager:
+            self.records = self.file_manager.load_records()
             
     # OPTION 1: ENQUEUE CAR
     def car_arrives(self, plate_number):
