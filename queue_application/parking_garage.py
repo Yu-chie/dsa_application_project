@@ -30,6 +30,9 @@ class ParkingGarage:
             
     # OPTION 1: ENQUEUE CAR
     def car_arrives(self, plate_number):
+        """
+        Handles the arrival of a car. If the parking garage is full, the car is added to the waiting area.
+        """
         # If parking is full
         if None not in self.queue:
             if len(self.waiting) < self.max_waiting:
@@ -67,6 +70,9 @@ class ParkingGarage:
 
     # OPTION 2: DEQUEUE CAR
     def car_departs(self, target_plate):
+        """
+        Handles the departure of a car. Cars in front temporarily leave and re-enter the queue.
+        """
         # If parking is empty
         if all(slots is None for slots in self.queue):
             return "Parking Garage is Empty"
