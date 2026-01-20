@@ -561,19 +561,17 @@ class QueueGUI(tk.Frame):
         Updates the GUI to display the number of arrivals and departures for each car.
         """
         stats = self.garage.get_stats()
+        # Move stats text above control buttons and make it horizontal
         stats_text = (
-            f"Total Arrivals: {stats['total_arrivals']}\n"
-            f"Total Departures: {stats['total_departures']}\n"
-            f"Failed Cars: {stats['failed_cars']}\n"
-            f"Score: {stats['score']}\n"
+            f"Arrivals: {stats['total_arrivals']} | Departures: {stats['total_departures']} | "
+            f"Failed: {stats['failed_cars']} | Score: {stats['score']}"
         )
 
         if self.status_text_id:
             self.canvas.delete(self.status_text_id)
 
-        # Move stats text near control buttons
         self.status_text_id = self.canvas.create_text(
-            CONTROL_X, CONTROL_Y + 180, text=stats_text, fill="white", font=("VT323", 16), anchor="nw"
+            CONTROL_X, CONTROL_Y - 40, text=stats_text, fill="white", font=("VT323", 16), anchor="n"
         )
 
     def get_car_image(self, plate):
