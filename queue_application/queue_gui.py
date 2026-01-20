@@ -12,7 +12,7 @@ CONTROL_Y = 225
 WAITING_X_START = 990
 WAITING_Y_IMAGE = 590
 WAITING_Y_TEXT = 650
-WAITING_GAP = 150
+WAITING_GAP = 200
 
 class QueueGUI(tk.Frame):
     def __init__(self, parent, garage, controller):
@@ -465,9 +465,11 @@ class QueueGUI(tk.Frame):
         """
         self.canvas.delete("waiting_area")
 
+        # Adjust column spacing for waiting area
+        smaller_gap = 150  # Reduced gap between columns
 
         for i, car in enumerate(self.garage.waiting):
-            x = WAITING_X_START + i * WAITING_GAP
+            x = WAITING_X_START + i * smaller_gap
             y_image = WAITING_Y_IMAGE
             y_text = WAITING_Y_TEXT
 
