@@ -12,7 +12,7 @@ CONTROL_Y = 225
 WAITING_X_START = 990
 WAITING_Y_IMAGE = 590
 WAITING_Y_TEXT = 650
-WAITING_GAP = 200
+WAITING_GAP = 150
 
 class QueueGUI(tk.Frame):
     def __init__(self, parent, garage, controller):
@@ -464,6 +464,7 @@ class QueueGUI(tk.Frame):
         Draws the waiting area in the GUI, showing cars with their plate numbers, images, and timers.
         """
         self.canvas.delete("waiting_area")
+
 
         for i, car in enumerate(self.garage.waiting):
             x = WAITING_X_START + i * WAITING_GAP
