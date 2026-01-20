@@ -571,8 +571,9 @@ class QueueGUI(tk.Frame):
         if self.status_text_id:
             self.canvas.delete(self.status_text_id)
 
+        # Move stats text near control buttons
         self.status_text_id = self.canvas.create_text(
-            1500, 100, text=stats_text, fill="white", font=("VT323", 16), anchor="nw"
+            CONTROL_X, CONTROL_Y + 180, text=stats_text, fill="white", font=("VT323", 16), anchor="nw"
         )
 
     def get_car_image(self, plate):
