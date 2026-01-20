@@ -16,7 +16,7 @@ class ParkingGarage:
         # Game-related attributes
         self.mode = mode           # manual or auto
         self.waiting = []          # Cars waiting to be parked
-        self.max_waiting = 5       # limit
+        self.max_waiting = 3       # limit 3
         self.failed_cars= 0
         self.score = 0
         self.max_failed = 5        # game over condition
@@ -25,11 +25,31 @@ class ParkingGarage:
         
     # Save current records to file
     def save_records(self):
+        """
+        Saves all car records to a file in the queue_application folder.
+        This method ensures that the current state of the parking garage is persisted.
+        """
         if self.file_manager:
             self.file_manager.save_records(self.records)
+
+    # Load records from file
+    def load_records(self):
+        """
+        Loads car records from a file in the queue_application folder.
+        This method restores the state of the parking garage from a previous session.
+        """
+        if self.file_manager:
+            self.records = self.file_manager.load_records()
             
     # OPTION 1: ENQUEUE CAR
     def car_arrives(self, plate_number):
+        """
+        Handles the arrival of a car. If the parking garage is full, the car is added to the waiting area.
+        Args:
+            plate_number (str): The plate number of the arriving car.
+        Returns:
+            str: A message indicating the result of the operation.
+        """
         # If parking is full
         if None not in self.queue:
             if len(self.waiting) < self.max_waiting:
@@ -41,32 +61,35 @@ class ParkingGarage:
         for car in self.queue:
             if car is not None and car['plate_number'] == plate_number:
                 return "Car with this Plate Number is already in the Garage."
-        
+
         # If car already has a record, update arrival count
         if plate_number in self.records:
             car = self.records[plate_number]
             car['arrival_count'] += 1
-        # If new car, create record
         else:
+            # If new car, create record
             car = {
                 'plate_number': plate_number,
                 'arrival_count': 1,
                 'departure_count': 0
             }
             self.records[plate_number] = car
-         
+
         # Enqueue car in first empty slot
         for i in range(self.max_parking):
             if self.queue[i] is None:
                 self.queue[i] = car
                 break
-        
+
         self.save_records()
         self.score += 10
         return "Car Parked Successfully!"
 
     # OPTION 2: DEQUEUE CAR
     def car_departs(self, target_plate):
+        """
+        Handles the departure of a car. Cars in front temporarily leave and re-enter the queue.
+        """
         # If parking is empty
         if all(slots is None for slots in self.queue):
             return "Parking Garage is Empty"
@@ -134,27 +157,32 @@ class ParkingGarage:
         if len(self.waiting) >= self.max_waiting:
             return "Waiting Area Full"
         
-        wait_time = random.randint(10, 20)  # seconds
+        wait_time = random.randint(10, 20)  # Adjusted to a more reasonable range
         self.waiting.append({
             "plate_number": plate_number,
-            "time_left": 5      # seconds
+            "time_left": wait_time  # Use the adjusted wait time
         })
         return "Car added to waiting area"
     
     def update_waiting(self):
         expired = []
         for car in self.waiting:
-            car["time_left"] -= 1
-            if car["time_left"] <= 0:
+            if car["time_left"] > 0:
+                car["time_left"] -= 1  # Decrease time left by 1 second
+            if car["time_left"] == 0:
                 expired.append(car)
 
         for car in expired:
             self.waiting.remove(car)
             self.failed_cars += 1
-            self.score -= 5     # penalty
-            
+            self.score -= 5  # penalty
+
             if self.failed_cars >= self.max_failed:
                 self.game_over = True
+
+        # Ensure the GUI updates after changes
+        if hasattr(self, 'draw_waiting_area'):
+            self.draw_waiting_area()
 
         return expired
     

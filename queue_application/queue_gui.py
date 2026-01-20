@@ -222,12 +222,15 @@ class QueueGUI(tk.Frame):
         self.draw_stats()
 
     def handle_arrive_click(self):
+        """
+        Handles the arrival of a car in manual mode. The player selects a car from the waiting area.
+        """
         if self.garage.mode != "MANUAL":
-            self.set_status("Switch to MANUAL mode", "red")
+            messagebox.showerror("Error", "Manual mode is not active.")
             return
 
         if not self.garage.waiting:
-            self.set_status("No cars waiting", "yellow")
+            messagebox.showinfo("Info", "No cars in the waiting area.")
             return
 
         # FIFO arrival → always take the FRONT car
@@ -284,16 +287,38 @@ class QueueGUI(tk.Frame):
         self.draw_stats()
 
     def handle_depart_click(self):
+        """
+        Handles the departure of a car in manual mode. The player selects a car from the queue.
+        Ensures FIFO behavior by re-entering cars in front of the departing car at the rear.
+        """
         if self.garage.mode != "MANUAL":
-            self.set_status("Switch to MANUAL mode", "red")
+            messagebox.showerror("Error", "Manual mode is not active.")
             return
 
         if self.selected_queue_index is None:
-            self.set_status("Select a car in the garage", "yellow")
+            messagebox.showerror("Error", "No car selected in the queue.")
             return
 
+        # Get the selected car's plate number
         plate = self.garage.queue[self.selected_queue_index]["plate_number"]
-        result = self.garage.car_departs(plate)
+
+        if self.selected_queue_index == 0:
+            # Depart the first car and shift others forward
+            result = self.garage.car_departs(plate)
+        else:
+            # Depart cars in front, re-enter them at the end, then depart the selected car
+            temp_queue = []
+            for i in range(self.selected_queue_index):
+                car = self.garage.queue[i]
+                if car is not None:
+                    temp_queue.append(car["plate_number"])
+
+            # Depart the selected car
+            result = self.garage.car_departs(plate)
+
+            # Re-enter cars in front at the end of the queue
+            for plate_number in temp_queue:
+                self.garage.car_arrives(plate_number)
 
         self.selected_queue_index = None
         self.set_status(result, "orange")
@@ -435,37 +460,31 @@ class QueueGUI(tk.Frame):
         self.draw_waiting_area()
 
     def draw_waiting_area(self):
-        self.canvas.delete("waiting")
-        
-        for i, car in enumerate(self.garage.waiting):
-            x = WAITING_X_START + i * WAITING_GAP
+        """
+        Draws the waiting area in the GUI, showing cars with their plate numbers, images, and timers.
+        """
+        self.canvas.delete("waiting_area")
 
-            # car image
-            self.canvas.create_image(
-                x,
-                WAITING_Y_IMAGE,
-                image=self.get_car_image(car['plate_number']),
-                tags=("waiting", f"waiting_{i}")
-            )
-            
-            # car plate
+        # Adjust column spacing for waiting area
+        smaller_gap = 150  # Reduced gap between columns
+
+        for i, car in enumerate(self.garage.waiting):
+            x = WAITING_X_START + i * smaller_gap
+            y_image = WAITING_Y_IMAGE
+            y_text = WAITING_Y_TEXT
+
+            # Draw car image
+            car_image = self.get_car_image(car["plate_number"])
+            self.canvas.create_image(x, y_image, image=car_image, anchor="nw", tags="waiting_area")
+
+            # Draw plate number and timer
             self.canvas.create_text(
-                x,
-                WAITING_Y_IMAGE - 40,
-                text=car['plate_number'],
-                font=("VT323", 12),
-                tags=("waiting", f"waiting_{i}")
-            )
-            
-            # waiting time
-            color = "red" if car['time_left'] <= 2 else "white"
-            self.canvas.create_text(
-                x,
-                WAITING_Y_TEXT,
-                text=f"{car['time_left']}s",
-                font=("VT323", 12),
-                fill=color,
-                tags=("waiting", f"waiting_{i}")
+                x + 50, y_text,
+                text=f"{car['plate_number']}\n{car['time_left']}s",
+                fill="white",
+                font=("VT323", 14),
+                tags="waiting_area",
+                anchor="n"
             )
             
             # highlight selected car
@@ -500,8 +519,15 @@ class QueueGUI(tk.Frame):
                 self.manual_arrival()
 
     def stop_simulation(self):
+        self.running = False
         self.is_active = False
         self.set_status("SIMULATION PAUSED", "red")
+        self.auto_arrival_running = False
+        self.auto_depart_running = False
+        # Ensure no new cars enter the waiting area
+        self.after_cancel(self.manual_arrival)  # Cancel manual arrival loop
+        self.after_cancel(self.auto_arrival)    # Cancel auto arrival loop
+
         
     def tick(self):
         if not self.running or not self.is_active:
@@ -534,41 +560,23 @@ class QueueGUI(tk.Frame):
         self.after(1000, self.tick)
 
     def draw_stats(self):
-        self.canvas.delete("stats")
-
+        """
+        Updates the GUI to display the number of arrivals and departures for each car.
+        """
         stats = self.garage.get_stats()
-
-        y = 900
-        self.canvas.create_text(
-            300, y,
-            text=f"TOTAL ARRIVALS: {stats['total_arrivals']}",
-            font=("VT323", 14),
-            tags="stats"
+        # Move stats text above control buttons and make it horizontal
+        stats_text = (
+            f"Arrivals: {stats['total_arrivals']} | Departures: {stats['total_departures']} | "
+            f"Failed: {stats['failed_cars']} | Score: {stats['score']}"
         )
 
-        self.canvas.create_text(
-            300, y + 25,
-            text=f"TOTAL DEPARTURES: {stats['total_departures']}",
-            font=("VT323", 14),
-            tags="stats"
-        )
-        
-        self.canvas.create_text(
-            300, y + 50,
-            text=f"SCORE: {stats['score']}",
-            font=("VT323", 16, "bold"),
-            fill="yellow",
-            tags="stats"
+        if self.status_text_id:
+            self.canvas.delete(self.status_text_id)
+
+        self.status_text_id = self.canvas.create_text(
+            CONTROL_X, CONTROL_Y - 110, text=stats_text, fill="white", font=("VT323", 16), anchor="n"
         )
 
-        self.canvas.create_text(
-            300, y + 75,
-            text=f"FAILED CARS: {stats['failed_cars']} / {self.garage.max_failed}",
-            font=("VT323", 14),
-            fill="red",
-            tags="stats"
-        )
-    
     def get_car_image(self, plate):
         index = int(plate[3:]) - 1      # COI is 0
         return self.car_images[index]
@@ -656,3 +664,33 @@ class QueueGUI(tk.Frame):
                 index = int(tag.split("_")[1])
                 self.select_queue_car(index)
                 break
+
+    def update_simulation(self):
+        """
+        Updates the simulation based on the current mode (AUTO or MANUAL).
+        In AUTO mode, all operations are automated, and buttons are disabled.
+        """
+        if self.garage.mode == "AUTO":
+            # Automate arrivals and departures
+            self.garage.update_waiting()
+            self.garage.update_parking()
+
+            # Disable manual buttons
+            self.arrive_btn.config(state="disabled")
+            self.depart_btn.config(state="disabled")
+        elif self.garage.mode == "MANUAL":
+            # Enable manual buttons
+            self.arrive_btn.config(state="normal")
+            self.depart_btn.config(state="normal")
+
+        self.draw_table()
+        self.draw_stats()
+        self.draw_waiting_area()
+
+        # Ensure the game starts only when the Start button is clicked
+        self.running = False
+        self.garage.reset_all()  # Always start with a new game
+
+        # Disable auto-arrival and auto-depart by default
+        self.auto_arrival_running = False
+        self.auto_depart_running = False
