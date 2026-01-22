@@ -1,86 +1,107 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from .stack_logic import ParkingManager
 
-class StackPage(tk.Frame):
-    def __init__(self, parent, controller):
-        super().__init__(parent)
-        self.logic = ParkingManager()
-        self.car_visuals = {} # Stores the "ID" of cars on the canvas
+class StackGui(tk.Frame):
+    def __init__(self, parent, garage_logic, controller):
+        super().__init__(parent, bg="#330084")
+        self.garage = garage_logic
+        self.controller = controller
 
-        # 1. THE CANVAS (This draws your Canva background)
-        self.canvas = tk.Canvas(self, width=1024, height=576)
-        self.canvas.pack(fill="both", expand=True)
+        # Title
+        title_label = tk.Label(
+            self, text="STACK PARKING GARAGE", 
+            font=("VT323", 30), bg="#330084", fg="#ecb1ff"
+        )
+        title_label.pack(pady=20)
+
+        # Main Container
+        main_container = tk.Frame(self, bg="#330084")
+        main_container.pack(fill="both", expand=True, padx=50)
+
+        # --- LEFT SIDE: INPUT & CONTROLS ---
+        control_frame = tk.Frame(main_container, bg="#330084")
+        control_frame.pack(side="left", fill="y", padx=20)
+
+        tk.Label(control_frame, text="Plate Number:", font=("VT323", 16), bg="#330084", fg="white").pack(anchor="w")
+        self.plate_entry = tk.Entry(control_frame, font=("Arial", 14))
+        self.plate_entry.pack(fill="x", pady=5)
+
+        btn_style = {"font": ("VT323", 14), "bg": "#ecb1ff", "fg": "#330084", "activebackground": "#ffffff", "pady": 5}
+
+        tk.Button(control_frame, text="PARK CAR", command=self.park_car, **btn_style).pack(fill="x", pady=10)
+        tk.Button(control_frame, text="REMOVE TOP (POP)", command=self.pop_car, **btn_style).pack(fill="x", pady=5)
+        tk.Button(control_frame, text="REMOVE SPECIFIC", command=self.remove_specific, **btn_style).pack(fill="x", pady=5)
+
+        # --- MIDDLE: VISUAL STACK ---
+        stack_frame = tk.Frame(main_container, bg="#330084")
+        stack_frame.pack(side="left", fill="both", expand=True, padx=20)
         
-        # Load your Canva background
-        self.bg_img = tk.PhotoImage(file="stack_bg.png")
-        self.canvas.create_image(0, 0, image=self.bg_img, anchor="nw")
-        
-        # Load your car icon (ensure this filename matches your photo!)
-        self.car_img = tk.PhotoImage(file="cars.png")
+        tk.Label(stack_frame, text="GARAGE STACK (Top at Bottom)", font=("VT323", 16), bg="#330084", fg="white").pack()
+        self.stack_listbox = tk.Listbox(stack_frame, font=("VT323", 18), bg="#594faf", fg="white", justify="center")
+        self.stack_listbox.pack(fill="both", expand=True)
 
-        # 2. THE TABLE (The "Treeview")
-        # Matches your middle box: No., Plate Number, Arrival, Departure
-        self.tree = ttk.Treeview(self, columns=("No", "Plate", "In", "Out"), show='headings')
-        self.tree.heading("No", text="Slot")
+        # --- RIGHT SIDE: TRANSACTION TABLE ---
+        table_frame = tk.Frame(main_container, bg="#330084")
+        table_frame.pack(side="right", fill="both", expand=True)
+
+        tk.Label(table_frame, text="HISTORY LOG", font=("VT323", 16), bg="#330084", fg="white").pack()
+        
+        self.tree = ttk.Treeview(table_frame, columns=("Plate", "Arr", "Dep"), show="headings", height=10)
         self.tree.heading("Plate", text="Plate Number")
-        self.tree.heading("In", text="Arrival")
-        self.tree.heading("Out", text="Departure")
-        
-        # Placing it in the middle purple area
-        self.tree.place(x=250, y=110, width=320, height=400)
+        self.tree.heading("Arr", text="Arrivals")
+        self.tree.heading("Dep", text="Departures")
+        self.tree.column("Plate", width=100)
+        self.tree.column("Arr", width=50)
+        self.tree.column("Dep", width=50)
+        self.tree.pack(fill="both", expand=True)
 
-        # 3. INPUTS (Right side purple box)
-        self.plate_label = tk.Label(self, text="ENTER PLATE:", bg="#b19cd9") # Matches purple theme
-        self.plate_label.place(x=620, y=170)
-        
-        self.plate_entry = tk.Entry(self, font=("Arial", 12))
-        self.plate_entry.place(x=620, y=200, width=150)
-        
-        park_btn = tk.Button(self, text="PARK", command=self.handle_park, bg="green", fg="white")
-        park_btn.place(x=620, y=240, width=70)
-        
-        exit_btn = tk.Button(self, text="EXIT", command=self.handle_exit, bg="red", fg="white")
-        exit_btn.place(x=700, y=240, width=70)
+        self.update_display()
 
-    # Where the cars appear on the left (Slots 1-10)
-    def get_slot_coords(self, slot_num):
-        # Slot 1 is at the bottom, Slot 10 is at the top
-        bottom_y = 480 
-        gap = 42 
-        return (100, bottom_y - ((slot_num - 1) * gap))
-
-    def handle_park(self):
+    def park_car(self):
         plate = self.plate_entry.get().upper()
         if not plate:
-            messagebox.showwarning("Warning", "Plate Number required!")
+            messagebox.showwarning("Input Error", "Please enter a plate number.")
             return
-
-        car, error = self.logic.park_car(plate)
-        if car:
-            # Update Table
-            self.tree.insert("", "end", iid=car.plate_number, values=(car.slot, car.plate_number, car.arrival, car.departure))
-            
-            # Show Car visually in the "Entrance/Exit" area
-            x, y = self.get_slot_coords(len(self.logic.stack))
-            car_id = self.canvas.create_image(x, y, image=self.car_img)
-            self.car_visuals[car.plate_number] = car_id
-            
+        
+        success, msg = self.garage.park_car(plate)
+        if success:
             self.plate_entry.delete(0, tk.END)
+            self.update_display()
         else:
-            messagebox.showerror("Error", error)
+            messagebox.showerror("Error", msg)
 
-    def handle_exit(self):
-        car = self.logic.exit_car()
-        if car:
-            # Update Departure in Table
-            self.tree.item(car.plate_number, values=(car.slot, car.plate_number, car.arrival, car.departure))
-            
-            # Remove car from visual (LIFO - Last In First Out)
-            car_id = self.car_visuals.get(car.plate_number)
-            if car_id:
-                self.canvas.delete(car_id)
-            
-            messagebox.showinfo("Success", f"Car {car.plate_number} exited from {car.slot}")
+    def pop_car(self):
+        success, msg = self.garage.remove_top_car()
+        if success:
+            self.update_display()
         else:
-            messagebox.showwarning("Empty", "Garage is already empty!")
+            messagebox.showerror("Error", msg)
+
+    def remove_specific(self):
+        plate = self.plate_entry.get().upper()
+        if not plate:
+            messagebox.showwarning("Input Error", "Enter plate to remove.")
+            return
+        
+        success, msg = self.garage.remove_specific_car(plate)
+        if success:
+            self.plate_entry.delete(0, tk.END)
+            self.update_display()
+            messagebox.showinfo("Shuffle Pop", msg)
+        else:
+            messagebox.showerror("Error", msg)
+
+    def update_display(self):
+        # Update Visual Stack
+        self.stack_listbox.delete(0, tk.END)
+        # Displaying so top of stack is at the bottom visually (like a garage floor)
+        for car in reversed(self.garage.garage_stack):
+            self.stack_listbox.insert(tk.END, f"|  {car.plate_number}  |")
+        
+        # Update Table
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+        
+        # We show all cars currently in garage for the table
+        for car in self.garage.garage_stack:
+            self.tree.insert("", tk.END, values=(car.plate_number, car.arrival_count, car.departure_count))
