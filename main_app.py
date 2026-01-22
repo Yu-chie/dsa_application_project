@@ -1,6 +1,10 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 
+#STACK
+from stack_application.stack_gui import StackGui         
+from stack_application.stack_logic import StackParkingGarage 
+
 # QUEUE
 from queue_application.parking_garage import ParkingGarage
 from queue_application.file_manager import FileManager
@@ -32,7 +36,7 @@ class MainApp(tk.Tk):
         
         self.frames = {}
         # list of pages included (so if may dinedevelop na page i-add ung class dito para magpakita pag ni-run)
-        for page in (StartPage, SelectPage, DevPage, QueuePage, BTPage, BSTPage, HanoiPage):  
+        for page in (StartPage, SelectPage, DevPage, StackPage, QueuePage, BTPage, BSTPage, HanoiPage):  
             frame = page(container, self)
             self.frames[page.__name__] = frame
             frame.place(relwidth=1, relheight=1)
@@ -220,7 +224,28 @@ class SelectPage(tk.Frame):
         self.canvas.itemconfig(self.canvas_bg, image=self.select_bg)
 
 class StackPage(tk.Frame):
-    pass
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        
+        # 1. Initialize the logic
+        self.garage_logic = StackParkingGarage(capacity=10)
+        
+        # 2. Call/Embed the GUI class from stack_gui.py
+        # We pass 'self' as the parent so the GUI draws inside this frame
+        stack_gui = StackGui(self, self.garage_logic, controller)
+        stack_gui.pack(fill="both", expand=True)
+
+        # 3. Add the Home Button (so you don't get stuck!)
+        home_button = tk.Button(
+            self,
+            text="HOME",
+            font=("VT323", 12),
+            bg="#594faf",
+            fg="#ffffff",
+            padx=65,
+            command=lambda: controller.show_frame("StartPage")
+        )
+        home_button.place(x=30, y=30)
 
 class QueuePage(tk.Frame):
     def __init__(self, parent, controller):
