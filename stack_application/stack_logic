@@ -1,0 +1,23 @@
+import datetime
+
+class Car:
+    def __init__(self, plate_number):
+        self.plate_number = plate_number
+        self.arrival_time = datetime.datetime.now().strftime("%I:%M %p")
+
+class ParkingManager:
+    def __init__(self):
+        self.stack = []  # Internal LIFO Stack
+        self.max_capacity = 10
+
+    def push_car(self, plate):
+        if len(self.stack) < self.max_capacity:
+            new_car = Car(plate)
+            self.stack.append(new_car)
+            return new_car, None
+        return None, "Garage is Full!"
+
+    def pop_car(self):
+        if self.stack:
+            return self.stack.pop()
+        return None
