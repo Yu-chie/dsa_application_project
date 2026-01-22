@@ -26,7 +26,7 @@ class MainApp(tk.Tk):
         self.queue_mode = "MANUAL"  # default value
         
         # general window title, dimension, and allow fullscreen
-        self.title("DSA App")
+        self.title("AlgoCraft")
         self.geometry("1920x1080")
         self.resizable(True, True)
         
@@ -61,7 +61,7 @@ class StartPage(tk.Frame):
         self.canvas.pack(fill="both", expand=True)
         
         # load the background image in canvas
-        self.bg_img = Image.open("assets/test_main_bg.png")
+        self.bg_img = Image.open("assets/main_bg.png")
         self.start_bg = ImageTk.PhotoImage(self.bg_img)
         
         # draw bg
@@ -84,7 +84,7 @@ class StartPage(tk.Frame):
             command=lambda: controller.show_frame("SelectPage")            # will direct to select page upon click
         )
         
-        self.canvas.create_window(450, 500, window=play_button)     # will create the button window (450, 500) is x and y position
+        self.canvas.create_window(435, 520, window=play_button)     # will create the button window (450, 500) is x and y position
         
         # dev button to direct to dev page
         dev_button = tk.Button(
@@ -98,7 +98,7 @@ class StartPage(tk.Frame):
             padx=36,
             command=lambda: controller.show_frame("DevPage")             # will direct to dev page upon click
         )
-        self.canvas.create_window(450, 570, window=dev_button)
+        self.canvas.create_window(435, 590, window=dev_button)
         
     def resize_bg(self, event):
         resized = self.bg_img.resize((event.width, event.height))
@@ -307,7 +307,7 @@ class DevPage(tk.Frame):
         self.canvas.pack(fill="both", expand=True)
         
         # load the background image in canvas
-        self.bg_img = Image.open("assets/test_dev_bg.png")
+        self.bg_img = Image.open("assets/dev_bg.png")
         self.dev_bg = ImageTk.PhotoImage(self.bg_img)
         
         # draw bg 
