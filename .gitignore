@@ -1,0 +1,7 @@
+# remove tracking for pycache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ignore all txt files
+*.txt
